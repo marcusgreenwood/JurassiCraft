@@ -1,6 +1,6 @@
 package org.jurassicraft.server.entity.ai;
 
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.world.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.util.math.RayTraceResult;
 import org.jurassicraft.client.model.animation.EntityAnimation;
@@ -35,7 +35,7 @@ public class RaptorLeapEntityAI extends EntityAIBase {
             float distance = this.entity.getDistance(target);
 
             if (distance >= 5 && distance <= 6 && this.entity.onGround) {
-                RayTraceResult result = this.entity.world.rayTraceBlocks(this.entity.getPositionVector().addVector(0.0, 1.0, 0.0), target.getPositionVector(), false, true, false);
+                RayTraceResult result = this.entity.world.rayTraceBlocks(this.entity.position().addVector(0.0, 1.0, 0.0), target.position(), false, true, false);
                 if (result == null || result.typeOfHit != RayTraceResult.Type.BLOCK) {
                     this.target = target;
                     return true;
@@ -62,20 +62,20 @@ public class RaptorLeapEntityAI extends EntityAIBase {
 
             this.entity.playSound(this.entity.getSoundForAnimation(EntityAnimation.ATTACKING.get()), this.entity.getSoundVolume(), this.entity.getSoundPitch());
 
-            double targetSpeedX = this.target.posX - (!this.ticked ? this.target.prevPosX : this.targetPrevPosX);
-            double targetSpeedZ = this.target.posZ - (!this.ticked ? this.target.prevPosZ : this.targetPrevPosZ);
+            double targetSpeedX = this.target.getX() - (!this.ticked ? this.target.prevPosX : this.targetPrevPosX);
+            double targetSpeedZ = this.target.getZ() - (!this.ticked ? this.target.prevPosZ : this.targetPrevPosZ);
 
             double length = this.entity.width * 6.0F;
 
-            double destX = this.target.posX + targetSpeedX * length;
-            double destZ = this.target.posZ + targetSpeedZ * length;
+            double destX = this.target.getX() + targetSpeedX * length;
+            double destZ = this.target.getZ() + targetSpeedZ * length;
 
-            double delta = Math.sqrt((destX - this.entity.posX) * (destX - this.entity.posX) + (destZ - this.entity.posZ) * (destZ - this.entity.posZ));
-            double angle = Math.atan2(destZ - this.entity.posZ, destX - this.entity.posX);
+            double delta = Math.sqrt((destX - this.entity.getX()) * (destX - this.entity.getX()) + (destZ - this.entity.getZ()) * (destZ - this.entity.getZ()));
+            double angle = Math.atan2(destZ - this.entity.getZ(), destX - this.entity.getX());
 
             this.entity.motionX = delta / length * Math.cos(angle);
             this.entity.motionZ = (delta / length * Math.sin(angle));
-            this.entity.motionY = Math.min(0.3, Math.max(0, (this.target.posY - this.entity.posY) * 0.1)) + 0.6;
+            this.entity.motionY = Math.min(0.3, Math.max(0, (this.target.getY() - this.entity.getY()) * 0.1)) + 0.6;
         } else if (this.animation == EntityAnimation.LEAP && this.entity.motionY < 0) {
             this.animation = EntityAnimation.LEAP_LAND;
         } else if (this.animation == EntityAnimation.LEAP_LAND && (this.entity.onGround || this.entity.isSwimming())) {
@@ -86,8 +86,8 @@ public class RaptorLeapEntityAI extends EntityAIBase {
             }
         }
 
-        this.targetPrevPosX = this.target.posX;
-        this.targetPrevPosZ = this.target.posZ;
+        this.targetPrevPosX = this.target.getX();
+        this.targetPrevPosZ = this.target.getZ();
         this.ticked = true;
 
         if (this.entity.getAnimation() != this.animation.get()) {
@@ -105,6 +105,6 @@ public class RaptorLeapEntityAI extends EntityAIBase {
 
     @Override
     public boolean shouldContinueExecuting() {
-        return !this.target.isDead && !(this.target instanceof DinosaurEntity && ((DinosaurEntity) this.target).isCarcass()) && this.animation != EntityAnimation.IDLE;
+        return !this.target.isRemoved() && !(this.target instanceof DinosaurEntity && ((DinosaurEntity) this.target).isCarcass()) && this.animation != EntityAnimation.IDLE;
     }
 }

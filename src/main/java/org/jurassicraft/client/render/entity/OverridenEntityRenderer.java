@@ -14,10 +14,10 @@ import java.util.List;
 import java.util.Random;
 import javax.annotation.Nullable;
 import javax.imageio.ImageIO;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockBed;
-import net.minecraft.block.material.Material;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.BlockBed;
+import net.minecraft.world.level.material.MapColor;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.gui.FontRenderer;
@@ -49,38 +49,38 @@ import net.minecraft.crash.CrashReport;
 import net.minecraft.crash.CrashReportCategory;
 import net.minecraft.crash.ICrashReportDetail;
 import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItemFrame;
 import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.monster.EntityEnderman;
 import net.minecraft.entity.monster.EntitySpider;
 import net.minecraft.entity.passive.EntityAnimal;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.MobEffects;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EntitySelectors;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.core.Direction;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.MouseFilter;
 import net.minecraft.util.ReportedException;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.ScreenShotHelper;
 import net.minecraft.util.SoundCategory;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.core.BlockPos;
+import net.minecraft.util.Mth;
 import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.GameType;
-import net.minecraft.world.World;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.biome.Biome;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.DistOnly;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.lwjgl.input.Mouse;
@@ -88,7 +88,6 @@ import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GLContext;
 import org.lwjgl.util.glu.Project;
 
-@SideOnly(Side.CLIENT)
 public class OverridenEntityRenderer extends EntityRenderer {
 	private static final Logger LOGGER = LogManager.getLogger();
 	private static final ResourceLocation RAIN_TEXTURES = new ResourceLocation("textures/environment/rain.png");
@@ -364,7 +363,7 @@ public class OverridenEntityRenderer extends EntityRenderer {
 		Entity entity = this.mc.getRenderViewEntity();
 
 		if (entity != null) {
-			if (this.mc.world != null) {
+			if (this.mc.level() != null) {
 				this.mc.mcProfiler.startSection("pick");
 				this.mc.pointedEntity = null;
 				double d0 = (double) this.mc.playerController.getBlockReachDistance();
@@ -547,9 +546,9 @@ public class OverridenEntityRenderer extends EntityRenderer {
 	private void orientCamera(float partialTicks) {
 		Entity entity = this.mc.getRenderViewEntity();
 		float f = entity.getEyeHeight();
-		double d0 = entity.prevPosX + (entity.posX - entity.prevPosX) * (double) partialTicks;
-		double d1 = entity.prevPosY + (entity.posY - entity.prevPosY) * (double) partialTicks + (double) f;
-		double d2 = entity.prevPosZ + (entity.posZ - entity.prevPosZ) * (double) partialTicks;
+		double d0 = entity.prevPosX + (entity.getX() - entity.prevPosX) * (double) partialTicks;
+		double d1 = entity.prevPosY + (entity.getY() - entity.prevPosY) * (double) partialTicks + (double) f;
+		double d2 = entity.prevPosZ + (entity.getZ() - entity.prevPosZ) * (double) partialTicks;
 
 		if (entity instanceof EntityLivingBase && ((EntityLivingBase) entity).isPlayerSleeping()) {
 			f = (float) ((double) f + 1.0D);
@@ -630,9 +629,9 @@ public class OverridenEntityRenderer extends EntityRenderer {
 		}
 
 		GlStateManager.translate(0.0F, -f, 0.0F);
-		d0 = entity.prevPosX + (entity.posX - entity.prevPosX) * (double) partialTicks;
-		d1 = entity.prevPosY + (entity.posY - entity.prevPosY) * (double) partialTicks + (double) f;
-		d2 = entity.prevPosZ + (entity.posZ - entity.prevPosZ) * (double) partialTicks;
+		d0 = entity.prevPosX + (entity.getX() - entity.prevPosX) * (double) partialTicks;
+		d1 = entity.prevPosY + (entity.getY() - entity.prevPosY) * (double) partialTicks + (double) f;
+		d2 = entity.prevPosZ + (entity.getZ() - entity.prevPosZ) * (double) partialTicks;
 		this.cloudFog = this.mc.renderGlobal.hasCloudFog(d0, d1, d2, partialTicks);
 	}
 
@@ -986,7 +985,7 @@ public class OverridenEntityRenderer extends EntityRenderer {
 			final int l1 = j1 - Mouse.getY() * j1 / this.mc.displayHeight - 1;
 			int i2 = this.mc.gameSettings.limitFramerate;
 
-			if (this.mc.world != null) {
+			if (this.mc.level() != null) {
 				this.mc.mcProfiler.startSection("level");
 				int j = Math.min(Minecraft.getDebugFPS(), i2);
 				j = Math.max(j, 60);
@@ -1188,9 +1187,9 @@ public class OverridenEntityRenderer extends EntityRenderer {
 		this.mc.mcProfiler.endStartSection("culling");
 		ICamera icamera = new Frustum();
 		Entity entity = this.mc.getRenderViewEntity();
-		double d0 = entity.lastTickPosX + (entity.posX - entity.lastTickPosX) * (double) partialTicks;
-		double d1 = entity.lastTickPosY + (entity.posY - entity.lastTickPosY) * (double) partialTicks;
-		double d2 = entity.lastTickPosZ + (entity.posZ - entity.lastTickPosZ) * (double) partialTicks;
+		double d0 = entity.lastTickPosX + (entity.getX() - entity.lastTickPosX) * (double) partialTicks;
+		double d1 = entity.lastTickPosY + (entity.getY() - entity.lastTickPosY) * (double) partialTicks;
+		double d2 = entity.lastTickPosZ + (entity.getZ() - entity.lastTickPosZ) * (double) partialTicks;
 		icamera.setPosition(d0, d1, d2);
 
 		if (this.mc.gameSettings.renderDistanceChunks >= 4) {
@@ -1210,7 +1209,7 @@ public class OverridenEntityRenderer extends EntityRenderer {
 		this.setupFog(0, partialTicks);
 		GlStateManager.shadeModel(7425);
 
-		if (entity.posY + (double) entity.getEyeHeight() < 128.0D) {
+		if (entity.getY() + (double) entity.getEyeHeight() < 128.0D) {
 			this.renderCloudsCheck(renderglobal, partialTicks, pass, d0, d1, d2);
 		}
 
@@ -1321,7 +1320,7 @@ public class OverridenEntityRenderer extends EntityRenderer {
 		GlStateManager.disableBlend();
 		GlStateManager.disableFog();
 
-		if (entity.posY + (double) entity.getEyeHeight() >= 128.0D) {
+		if (entity.getY() + (double) entity.getEyeHeight() >= 128.0D) {
 			this.mc.mcProfiler.endStartSection("aboveClouds");
 			this.renderCloudsCheck(renderglobal, partialTicks, pass, d0, d1, d2);
 		}
@@ -1440,9 +1439,9 @@ public class OverridenEntityRenderer extends EntityRenderer {
 			this.enableLightmap();
 			Entity entity = this.mc.getRenderViewEntity();
 			World world = this.mc.world;
-			int i = MathHelper.floor(entity.posX);
-			int j = MathHelper.floor(entity.posY);
-			int k = MathHelper.floor(entity.posZ);
+			int i = MathHelper.floor(entity.getX());
+			int j = MathHelper.floor(entity.getY());
+			int k = MathHelper.floor(entity.getZ());
 			Tessellator tessellator = Tessellator.getInstance();
 			BufferBuilder bufferbuilder = tessellator.getBuffer();
 			GlStateManager.disableCull();
@@ -1450,9 +1449,9 @@ public class OverridenEntityRenderer extends EntityRenderer {
 			GlStateManager.enableBlend();
 			GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
 			GlStateManager.alphaFunc(516, 0.1F);
-			double d0 = entity.lastTickPosX + (entity.posX - entity.lastTickPosX) * (double) partialTicks;
-			double d1 = entity.lastTickPosY + (entity.posY - entity.lastTickPosY) * (double) partialTicks;
-			double d2 = entity.lastTickPosZ + (entity.posZ - entity.lastTickPosZ) * (double) partialTicks;
+			double d0 = entity.lastTickPosX + (entity.getX() - entity.lastTickPosX) * (double) partialTicks;
+			double d1 = entity.lastTickPosY + (entity.getY() - entity.lastTickPosY) * (double) partialTicks;
+			double d2 = entity.lastTickPosZ + (entity.getZ() - entity.lastTickPosZ) * (double) partialTicks;
 			int l = MathHelper.floor(d1);
 			int i1 = 5;
 
@@ -1511,8 +1510,8 @@ public class OverridenEntityRenderer extends EntityRenderer {
 
 								double d5 = -((double) (this.rendererUpdateCount + l1 * l1 * 3121 + l1 * 45238971 + k1 * k1 * 418711 + k1 * 13761 & 31) + (double) partialTicks) / 32.0D
 										* (3.0D + this.random.nextDouble());
-								double d6 = (double) ((float) l1 + 0.5F) - entity.posX;
-								double d7 = (double) ((float) k1 + 0.5F) - entity.posZ;
+								double d6 = (double) ((float) l1 + 0.5F) - entity.getX();
+								double d7 = (double) ((float) k1 + 0.5F) - entity.getZ();
 								float f3 = MathHelper.sqrt(d6 * d6 + d7 * d7) / (float) i1;
 								float f4 = ((1.0F - f3 * f3) * 0.5F + 0.5F) * f;
 								blockpos$mutableblockpos.setPos(l1, i3, k1);
@@ -1537,8 +1536,8 @@ public class OverridenEntityRenderer extends EntityRenderer {
 								double d8 = (double) (-((float) (this.rendererUpdateCount & 511) + partialTicks) / 512.0F);
 								double d9 = this.random.nextDouble() + (double) f1 * 0.01D * (double) ((float) this.random.nextGaussian());
 								double d10 = this.random.nextDouble() + (double) (f1 * (float) this.random.nextGaussian()) * 0.001D;
-								double d11 = (double) ((float) l1 + 0.5F) - entity.posX;
-								double d12 = (double) ((float) k1 + 0.5F) - entity.posZ;
+								double d11 = (double) ((float) l1 + 0.5F) - entity.getX();
+								double d12 = (double) ((float) k1 + 0.5F) - entity.getZ();
 								float f6 = MathHelper.sqrt(d11 * d11 + d12 * d12) / (float) i1;
 								float f5 = ((1.0F - f6 * f6) * 0.3F + 0.5F) * f;
 								blockpos$mutableblockpos.setPos(l1, i3, k1);
@@ -1663,7 +1662,7 @@ public class OverridenEntityRenderer extends EntityRenderer {
 		this.fogColorRed *= f13;
 		this.fogColorGreen *= f13;
 		this.fogColorBlue *= f13;
-		double d1 = (entity.lastTickPosY + (entity.posY - entity.lastTickPosY) * (double) partialTicks) * world.provider.getVoidFogYFactor();
+		double d1 = (entity.lastTickPosY + (entity.getY() - entity.lastTickPosY) * (double) partialTicks) * world.provider.getVoidFogYFactor();
 
 		if (entity instanceof EntityLivingBase && ((EntityLivingBase) entity).isPotionActive(MobEffects.BLINDNESS)) {
 			int i = ((EntityLivingBase) entity).getActivePotionEffect(MobEffects.BLINDNESS).getDuration();
@@ -1802,7 +1801,7 @@ public class OverridenEntityRenderer extends EntityRenderer {
 				GlStateManager.glFogi(34138, 34139);
 			}
 
-			if (this.mc.world.provider.doesXZShowFog((int) entity.posX, (int) entity.posZ) || this.mc.ingameGUI.getBossOverlay().shouldCreateFog()) {
+			if (this.mc.world.provider.doesXZShowFog((int) entity.getX(), (int) entity.getZ()) || this.mc.ingameGUI.getBossOverlay().shouldCreateFog()) {
 				GlStateManager.setFogStart(f * 0.05F);
 				GlStateManager.setFogEnd(Math.min(f, 192.0F) * 0.5F);
 			}

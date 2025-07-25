@@ -2,23 +2,23 @@ package org.jurassicraft.server.block.plant;
 
 import java.util.Random;
 import org.jurassicraft.server.util.GameRuleHandler;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockGlass;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.BlockGlass;
 import net.minecraft.block.SoundType;
-import net.minecraft.block.material.Material;
+import net.minecraft.world.level.material.MapColor;
 import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.BlockRenderLayer;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraft.world.level.Level;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.DistOnly;
 
 public class AncientCoralBlock extends AncientPlantBlock {
 	
@@ -183,7 +183,6 @@ public class AncientCoralBlock extends AncientPlantBlock {
         return BlockFaceShape.SOLID;
     }
     
-    @SideOnly(Side.CLIENT)
     @Override
     public BlockRenderLayer getBlockLayer()
     {

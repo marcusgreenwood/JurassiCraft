@@ -1,26 +1,26 @@
 package org.jurassicraft.server.block;
 
 import com.google.common.collect.Lists;
-import net.minecraft.block.Block;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.block.material.EnumPushReaction;
-import net.minecraft.block.material.Material;
+import net.minecraft.world.level.material.MapColor;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.entity.EntityLivingBase;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.core.Direction;
 import net.minecraft.util.IStringSerializable;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.core.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
+import net.minecraft.world.level.Level;
 import org.jurassicraft.server.block.entity.TourRailBlockEntity;
 import org.jurassicraft.server.entity.vehicle.VehicleEntity;
 import org.jurassicraft.server.tab.TabHandler;
@@ -32,7 +32,7 @@ import java.util.Locale;
 import java.util.Random;
 import java.util.function.Predicate;
 
-import static net.minecraft.util.EnumFacing.*;
+import static net.minecraft.core.Direction.*;
 
 public final class TourRailBlock extends Block {
 
@@ -89,7 +89,7 @@ public final class TourRailBlock extends Block {
 
     public boolean canPlaceBlockAt(World worldIn, BlockPos pos)
     {
-        return worldIn.getBlockState(pos.down()).isSideSolid(worldIn, pos.down(), EnumFacing.UP);
+        return worldIn.getBlockState(pos.down()).isSideSolid(worldIn, pos.down(), Direction.UP);
     }
 
     @Override
@@ -134,24 +134,24 @@ public final class TourRailBlock extends Block {
             TourRailBlock.EnumRailDirection dir = getRailDirection(worldIn, pos);
             boolean flag = false;
 
-            if (!worldIn.getBlockState(pos.down()).isSideSolid(worldIn, pos.down(), EnumFacing.UP))
+            if (!worldIn.getBlockState(pos.down()).isSideSolid(worldIn, pos.down(), Direction.UP))
             {
                 flag = true;
             }
 
-            if (dir == TourRailBlock.EnumRailDirection.ASCENDING_EAST && !worldIn.getBlockState(pos.east()).isSideSolid(worldIn, pos.east(), EnumFacing.UP))
+            if (dir == TourRailBlock.EnumRailDirection.ASCENDING_EAST && !worldIn.getBlockState(pos.east()).isSideSolid(worldIn, pos.east(), Direction.UP))
             {
                 flag = true;
             }
-            else if (dir == TourRailBlock.EnumRailDirection.ASCENDING_WEST && !worldIn.getBlockState(pos.west()).isSideSolid(worldIn, pos.west(), EnumFacing.UP))
+            else if (dir == TourRailBlock.EnumRailDirection.ASCENDING_WEST && !worldIn.getBlockState(pos.west()).isSideSolid(worldIn, pos.west(), Direction.UP))
             {
                 flag = true;
             }
-            else if (dir == TourRailBlock.EnumRailDirection.ASCENDING_NORTH && !worldIn.getBlockState(pos.north()).isSideSolid(worldIn, pos.north(), EnumFacing.UP))
+            else if (dir == TourRailBlock.EnumRailDirection.ASCENDING_NORTH && !worldIn.getBlockState(pos.north()).isSideSolid(worldIn, pos.north(), Direction.UP))
             {
                 flag = true;
             }
-            else if (dir == TourRailBlock.EnumRailDirection.ASCENDING_SOUTH && !worldIn.getBlockState(pos.south()).isSideSolid(worldIn, pos.south(), EnumFacing.UP))
+            else if (dir == TourRailBlock.EnumRailDirection.ASCENDING_SOUTH && !worldIn.getBlockState(pos.south()).isSideSolid(worldIn, pos.south(), Direction.UP))
             {
                 flag = true;
             }
@@ -355,7 +355,7 @@ public final class TourRailBlock extends Block {
 
         public Rail(World worldIn, BlockPos pos, IBlockState state)
         {
-            this.world = worldIn;
+            this.level() = worldIn;
             this.pos = pos;
             this.state = state;
             this.block = (TourRailBlock)state.getBlock();

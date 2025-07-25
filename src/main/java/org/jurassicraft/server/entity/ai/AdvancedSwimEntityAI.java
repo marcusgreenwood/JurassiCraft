@@ -2,7 +2,7 @@ package org.jurassicraft.server.entity.ai;
 
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.pathfinding.Path;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.core.BlockPos;
 import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.SynchronousQueue;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -25,7 +25,7 @@ public class AdvancedSwimEntityAI extends EntityAIBase {
 
     @Override
     public boolean shouldExecute() {
-        return this.entity.isSwimming() && this.entity.getNavigator().noPath() && (this.entity.getAttackTarget() == null || this.entity.getAttackTarget().isDead) && this.entity.canDinoSwim();
+        return this.entity.isSwimming() && this.entity.getNavigator().noPath() && (this.entity.getAttackTarget() == null || this.entity.getAttackTarget().isRemoved()) && this.entity.canDinoSwim();
     }
 
 	@Override

@@ -1,13 +1,13 @@
 package org.jurassicraft.server.container;
 
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IContainerListener;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraft.world.item.ItemStack;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.DistOnly;
 
 public abstract class MachineContainer extends Container {
     private int[] fields;
@@ -39,7 +39,6 @@ public abstract class MachineContainer extends Container {
     
 
     @Override
-    @SideOnly(Side.CLIENT)
     public void updateProgressBar(int id, int data) {
         this.inventory.setField(id, data);
     }

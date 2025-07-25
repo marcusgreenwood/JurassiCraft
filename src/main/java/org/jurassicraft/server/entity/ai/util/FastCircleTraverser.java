@@ -1,6 +1,6 @@
 package org.jurassicraft.server.entity.ai.util;
 
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.core.BlockPos;
 
 import java.util.Iterator;
 

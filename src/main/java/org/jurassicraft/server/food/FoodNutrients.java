@@ -1,7 +1,7 @@
 package org.jurassicraft.server.food;
 
 import net.minecraft.init.Items;
-import net.minecraft.item.Item;
+import net.minecraft.world.item.Item;
 import org.jurassicraft.server.item.ItemHandler;
 
 import java.util.HashMap;

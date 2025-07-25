@@ -3,17 +3,16 @@ package org.jurassicraft.client.model;
 import net.ilexiconn.llibrary.client.model.tabula.ITabulaModelAnimator;
 import net.ilexiconn.llibrary.client.model.tabula.container.TabulaModelContainer;
 import net.ilexiconn.llibrary.client.model.tools.AdvancedModelRenderer;
-import net.minecraft.entity.Entity;
-import net.minecraft.util.math.MathHelper;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.util.Mth;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.DistOnly;
 import org.jurassicraft.server.api.Animatable;
 import org.jurassicraft.server.entity.AnimalMetadata;
 
 import java.util.Map;
 import java.util.Set;
 
-@SideOnly(Side.CLIENT)
 public class AnimatableModel extends FixedTabulaModel {
 
     public AnimatableModel(final TabulaModelContainer model, final AnimalMetadata animal, final ITabulaModelAnimator animator) {

@@ -1,10 +1,10 @@
 package org.jurassicraft.server.api;
 
 import com.google.common.collect.Lists;
-import net.minecraft.block.Block;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.util.NonNullList;
 import org.apache.commons.lang3.tuple.Pair;
 

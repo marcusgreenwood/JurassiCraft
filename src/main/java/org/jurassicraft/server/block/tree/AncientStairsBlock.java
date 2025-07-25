@@ -1,7 +1,7 @@
 package org.jurassicraft.server.block.tree;
 
-import net.minecraft.block.BlockStairs;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.world.level.block.BlockStairs;
+import net.minecraft.world.level.block.state.BlockState;
 import org.jurassicraft.server.tab.TabHandler;
 
 import java.util.Locale;

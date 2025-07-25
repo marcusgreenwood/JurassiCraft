@@ -1,21 +1,21 @@
 package org.jurassicraft.server.item.block;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockSlab;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.BlockSlab;
 import net.minecraft.block.SoundType;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemBlock;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemBlock;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
+import net.minecraft.core.Direction;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.util.SoundCategory;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.DistOnly;
 import org.jurassicraft.server.block.tree.AncientDoubleSlabBlock;
 import org.jurassicraft.server.block.tree.AncientSlabBlock;
 import org.jurassicraft.server.block.tree.AncientSlabHalfBlock;
@@ -50,7 +50,7 @@ public class AncientSlabItemBlock extends ItemBlock {
             if (state.getBlock() == this.singleSlab) {
                 AncientSlabBlock.EnumBlockHalf half = state.getValue(BlockSlab.HALF);
 
-                if ((facing == EnumFacing.UP && half == BlockSlab.EnumBlockHalf.BOTTOM || facing == EnumFacing.DOWN && half == BlockSlab.EnumBlockHalf.TOP)) {
+                if ((facing == Direction.UP && half == BlockSlab.EnumBlockHalf.BOTTOM || facing == Direction.DOWN && half == BlockSlab.EnumBlockHalf.TOP)) {
                     AxisAlignedBB collisionBox = state.getSelectedBoundingBox(world, pos);
                     IBlockState doubleSlabState = this.doubleSlab.getDefaultState();
 
@@ -71,7 +71,6 @@ public class AncientSlabItemBlock extends ItemBlock {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
     public boolean canPlaceBlockOnSide(World world, BlockPos pos, EnumFacing side, EntityPlayer player, ItemStack stack) {
         BlockPos placePos = pos;
         IBlockState state = world.getBlockState(pos);
@@ -79,7 +78,7 @@ public class AncientSlabItemBlock extends ItemBlock {
         if (state.getBlock() == this.singleSlab) {
             boolean flag = state.getValue(BlockSlab.HALF) == BlockSlab.EnumBlockHalf.TOP;
 
-            if ((side == EnumFacing.UP && !flag || side == EnumFacing.DOWN && flag)) {
+            if ((side == Direction.UP && !flag || side == Direction.DOWN && flag)) {
                 return true;
             }
         }

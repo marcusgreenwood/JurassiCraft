@@ -2,8 +2,8 @@ package org.jurassicraft.client.event;
 
 import net.ilexiconn.llibrary.LLibrary;
 import net.ilexiconn.llibrary.client.util.ClientUtils;
-import net.minecraft.block.material.Material;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.world.level.material.MapColor;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.gui.FontRenderer;
@@ -18,24 +18,24 @@ import net.minecraft.client.renderer.entity.layers.LayerCustomHead;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.client.settings.KeyBinding;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityLivingBase;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.launchwrapper.Launch;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.core.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.client.event.DrawBlockHighlightEvent;
 import net.minecraftforge.client.event.GuiScreenEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.neoforged.bus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.InputEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import java.util.List;
@@ -139,9 +139,9 @@ public class ClientEventHandler {
 				GlStateManager.depthMask(false);
 
 				if (iblockstate.getMaterial() != Material.AIR && e.getPlayer().world.getWorldBorder().contains(blockpos)) {
-					final double x = e.getPlayer().lastTickPosX + (e.getPlayer().posX - e.getPlayer().lastTickPosX) * (double) e.getPartialTicks();
-					final double y = e.getPlayer().lastTickPosY + (e.getPlayer().posY - e.getPlayer().lastTickPosY) * (double) e.getPartialTicks();
-					final double z = e.getPlayer().lastTickPosZ + (e.getPlayer().posZ - e.getPlayer().lastTickPosZ) * (double) e.getPartialTicks();
+					final double x = e.getPlayer().lastTickPosX + (e.getPlayer().getX() - e.getPlayer().lastTickPosX) * (double) e.getPartialTicks();
+					final double y = e.getPlayer().lastTickPosY + (e.getPlayer().getY() - e.getPlayer().lastTickPosY) * (double) e.getPartialTicks();
+					final double z = e.getPlayer().lastTickPosZ + (e.getPlayer().getZ() - e.getPlayer().lastTickPosZ) * (double) e.getPartialTicks();
 
 					Vec3d pos = new Vec3d(blockpos.getX() + 0.5D, blockpos.getY(), blockpos.getZ() + 0.5D).subtract(new Vec3d(x, y, z));
 					GL11.glPushMatrix();
@@ -284,9 +284,9 @@ public class ClientEventHandler {
 		
 		final Entity cameraEntity = ClientProxy.MC.getRenderViewEntity();
 		Frustum frustrum = new Frustum();
-		final double viewX = cameraEntity.lastTickPosX + (cameraEntity.posX - cameraEntity.lastTickPosX) * event.getPartialTicks();
-		final double viewY = cameraEntity.lastTickPosY + (cameraEntity.posY - cameraEntity.lastTickPosY) * event.getPartialTicks();
-		final double viewZ = cameraEntity.lastTickPosZ + (cameraEntity.posZ - cameraEntity.lastTickPosZ) * event.getPartialTicks();
+		final double viewX = cameraEntity.lastTickPosX + (cameraEntity.getX() - cameraEntity.lastTickPosX) * event.getPartialTicks();
+		final double viewY = cameraEntity.lastTickPosY + (cameraEntity.getY() - cameraEntity.lastTickPosY) * event.getPartialTicks();
+		final double viewZ = cameraEntity.lastTickPosZ + (cameraEntity.getZ() - cameraEntity.lastTickPosZ) * event.getPartialTicks();
 		frustrum.setPosition(viewX, viewY, viewZ);
 
 		final List<Entity> loadedEntities = ClientProxy.MC.world.getLoadedEntityList();

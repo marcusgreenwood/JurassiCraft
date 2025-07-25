@@ -1,23 +1,23 @@
 package org.jurassicraft.server.block.entity;
 
 import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.inventory.ItemStackHelper;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntityLockable;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.core.Direction;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.phys.Vec3;
 import net.minecraft.util.text.ChatType;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.common.capabilities.Capability;
@@ -99,7 +99,7 @@ public class FeederBlockEntity extends TileEntityLockable implements ITickable, 
     @Override
     public void setInventorySlotContents(int index, ItemStack stack) {
     	boolean send = false;
-    	if (!this.world.isRemote) 
+    	if (!this.level().isClientSide) 
 			send = true;
 		
     
@@ -252,7 +252,7 @@ public class FeederBlockEntity extends TileEntityLockable implements ITickable, 
         if (this.open && this.openAnimation == 19) {
             this.stayOpen = 20;
         }
-        if (this.feeding != null && (this.feeding.isCarcass() || this.feeding.isDead)) {
+        if (this.feeding != null && (this.feeding.isCarcass() || this.feeding.isRemoved())) {
             this.feeding = null;
         }
         if (this.feeding != null) {
@@ -322,20 +322,20 @@ public class FeederBlockEntity extends TileEntityLockable implements ITickable, 
                             this.world.spawnEntity(itemEntity);
 
                             this.decrStackSize(feedSlot, 1);
-                            this.feeding.getNavigator().tryMoveToXYZ(itemEntity.posX + motionX, itemEntity.posY + motionY, itemEntity.posZ + motionZ, 0.8);
+                            this.feeding.getNavigator().tryMoveToXYZ(itemEntity.getX() + motionX, itemEntity.getY() + motionY, itemEntity.getZ() + motionZ, 0.8);
                         }
                     }
 
                     this.feeding = null;
                 }
-            } else if (!this.world.isRemote) {
+            } else if (!this.level().isClientSide) {
                 this.setOpen(false);
             }
         }
     }
 
     public void setOpen(boolean open) {
-        if (!this.world.isRemote && this.open != open) {
+        if (!this.level().isClientSide && this.open != open) {
             this.world.addBlockEvent(this.pos, this.getBlockType(), 0, open ? 1 : 0);
         }
 
@@ -384,7 +384,7 @@ public class FeederBlockEntity extends TileEntityLockable implements ITickable, 
     @Nullable
     public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing)
     {
-        if (facing != null && facing == EnumFacing.DOWN && capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+        if (facing != null && facing == Direction.DOWN && capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
                 return (T) handlerPull;
         return super.getCapability(capability, facing);
     }

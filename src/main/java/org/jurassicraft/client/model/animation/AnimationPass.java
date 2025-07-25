@@ -2,7 +2,7 @@ package org.jurassicraft.client.model.animation;
 
 import net.ilexiconn.llibrary.client.model.tools.AdvancedModelRenderer;
 import net.ilexiconn.llibrary.server.animation.Animation;
-import net.minecraft.entity.Entity;
+import net.minecraft.world.entity.Entity;
 
 import org.jurassicraft.JurassiCraft;
 import org.jurassicraft.server.api.Animatable;

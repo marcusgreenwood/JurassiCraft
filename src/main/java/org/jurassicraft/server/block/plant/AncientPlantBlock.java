@@ -1,15 +1,15 @@
 package org.jurassicraft.server.block.plant;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockBush;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.BlockBush;
 import net.minecraft.block.SoundType;
-import net.minecraft.block.material.Material;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.world.level.material.MapColor;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.init.Blocks;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.DistOnly;
 import org.jurassicraft.server.tab.TabHandler;
 import org.jurassicraft.server.util.GameRuleHandler;
 
@@ -113,7 +113,6 @@ public class AncientPlantBlock extends BlockBush {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
     public Block.EnumOffsetType getOffsetType() {
         return EnumOffsetType.XZ;
     }

@@ -6,16 +6,16 @@ import mezz.jei.api.ingredients.IIngredientBlacklist;
 import mezz.jei.api.recipe.IRecipeCategoryRegistration;
 import mezz.jei.api.recipe.VanillaRecipeCategoryUid;
 import mezz.jei.api.recipe.transfer.IRecipeTransferRegistry;
-import net.minecraft.block.Block;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.EnumDyeColor;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.util.NonNullList;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.DistOnly;
 import net.minecraftforge.oredict.OreDictionary;
 import org.jurassicraft.client.gui.*;
 import org.jurassicraft.server.api.*;
@@ -78,7 +78,7 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 @JEIPlugin
-@SideOnly(Side.CLIENT) //TODO: add SequencableItem
+//TODO: add SequencableItem
 public class JurassiCraftJEIPlugin implements IModPlugin {
 
     public static final String FOSSIL_GRINDER = "jurassicraft.fossil_grinder";

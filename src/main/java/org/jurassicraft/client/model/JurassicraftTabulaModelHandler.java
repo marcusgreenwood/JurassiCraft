@@ -14,13 +14,13 @@ import net.minecraft.client.renderer.block.model.ItemTransformVec3f;
 import net.minecraft.client.renderer.block.model.ModelBlock;
 import net.minecraft.client.resources.IResource;
 import net.minecraft.client.resources.IResourceManager;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.client.model.ICustomModelLoader;
 import net.minecraftforge.client.model.IModel;
 import net.minecraftforge.client.model.PerspectiveMapWrapper;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.DistOnly;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -33,7 +33,6 @@ import java.util.zip.ZipInputStream;
 /**
  * @author pau101
  */
-@SideOnly(Side.CLIENT)
 public enum JurassicraftTabulaModelHandler implements ICustomModelLoader, JsonDeserializationContext {
     INSTANCE;
 

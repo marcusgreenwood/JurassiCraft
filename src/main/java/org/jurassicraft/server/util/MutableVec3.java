@@ -1,6 +1,6 @@
 package org.jurassicraft.server.util;
 
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.Mth;
 
 /**
  * Mutable version of Minecraft's Vec3

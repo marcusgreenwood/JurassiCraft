@@ -1,7 +1,7 @@
 package org.jurassicraft.server.genetics;
 
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.text.TextFormatting;
 import org.jurassicraft.server.util.LangUtils;
 

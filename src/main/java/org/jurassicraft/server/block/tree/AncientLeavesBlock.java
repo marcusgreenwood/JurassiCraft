@@ -14,7 +14,7 @@ import net.minecraft.block.state.*;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.*;
 import net.minecraft.util.*;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.*;
 import net.minecraftforge.fml.relauncher.*;
 
@@ -165,13 +165,11 @@ public class AncientLeavesBlock extends BlockLeaves implements SubBlocksBlock {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
     public BlockRenderLayer getBlockLayer() {
         return Blocks.LEAVES.getBlockLayer();
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
     public boolean shouldSideBeRendered(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing side) {
         return Blocks.LEAVES.shouldSideBeRendered(state, world, pos, side);
     }

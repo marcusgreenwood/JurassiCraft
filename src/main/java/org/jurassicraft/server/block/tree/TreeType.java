@@ -1,6 +1,6 @@
 package org.jurassicraft.server.block.tree;
 
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.gen.feature.WorldGenAbstractTree;
 import org.jurassicraft.server.block.BlockHandler;
 import org.jurassicraft.server.item.ItemHandler;

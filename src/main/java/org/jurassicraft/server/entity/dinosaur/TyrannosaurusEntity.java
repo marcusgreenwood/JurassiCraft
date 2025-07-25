@@ -5,16 +5,16 @@ import net.ilexiconn.llibrary.server.animation.AnimationHandler;
 import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.client.renderer.culling.ICamera;
 import net.minecraft.client.renderer.entity.Render;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityLiving;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.passive.EntityVillager;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.util.SoundEvent;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.world.World;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.level.Level;
 import scala.reflect.internal.Trees.This;
 import java.util.HashMap;
 import java.util.Map.Entry;
@@ -80,7 +80,7 @@ public class TyrannosaurusEntity extends DinosaurEntity {
 		if (world.isRemote) {
 		
 			if (!this.isRendered && this.onGround && !this.isInWater() && world.isRemote) {
-				if (this.moveForward > 0 && (this.posX - this.prevPosX > 0 || this.posZ - this.prevPosZ > 0)
+				if (this.moveForward > 0 && (this.getX() - this.prevPosX > 0 || this.getZ() - this.prevPosZ > 0)
 						&& this.stepCount <= 0) {
 					this.playSound(SoundHandler.TYRANNOSAURUS_STOMP, (float) this.interpolate(0.1F, 1.0F),
 							this.getSoundPitch());

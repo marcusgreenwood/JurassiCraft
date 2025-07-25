@@ -1,13 +1,13 @@
 package org.jurassicraft.server.entity.ai;
 
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.world.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.pathfinding.PathPoint;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.core.BlockPos;
+import net.minecraft.util.Mth;
+import net.minecraft.world.phys.Vec3;
 import org.jurassicraft.server.dinosaur.Dinosaur;
 import org.jurassicraft.server.entity.DinosaurEntity;
 import org.jurassicraft.server.util.GameRuleHandler;
@@ -50,7 +50,7 @@ public class Herd implements Iterable<DinosaurEntity> {
     }
 
     public void update() {
-        if (this.leader == null || this.leader.isCarcass() || this.leader.isDead) {
+        if (this.leader == null || this.leader.isCarcass() || this.leader.isRemoved()) {
             this.updateLeader();
         }
 
@@ -83,7 +83,7 @@ public class Herd implements Iterable<DinosaurEntity> {
                     float angle = 0.0F;
 
                     for (EntityLivingBase attacker : this.enemies) {
-                        angle += MathHelper.atan2(this.center.z - attacker.posZ, this.center.x - attacker.posX);
+                        angle += MathHelper.atan2(this.center.z - attacker.getZ(), this.center.x - attacker.getX());
                     }
 
                     angle /= this.enemies.size();
@@ -128,15 +128,15 @@ public class Herd implements Iterable<DinosaurEntity> {
                         float entityMoveX = this.moveX * 8.0F;
                         float entityMoveZ = this.moveZ * 8.0F;
 
-                        float centerDistance = (float) Math.abs(entity.getDistance(this.center.x, entity.posY, this.center.z));
+                        float centerDistance = (float) Math.abs(entity.getDistance(this.center.x, entity.getY(), this.center.z));
 
                         if (this.fleeing) {
                             centerDistance *= 4.0F;
                         }
 
                         if (centerDistance > 0) {
-                            entityMoveX += (this.center.x - entity.posX) / centerDistance;
-                            entityMoveZ += (this.center.z - entity.posZ) / centerDistance;
+                            entityMoveX += (this.center.x - entity.getX()) / centerDistance;
+                            entityMoveZ += (this.center.z - entity.getZ()) / centerDistance;
                         }
 
                         for (DinosaurEntity other : this) {
@@ -147,14 +147,14 @@ public class Herd implements Iterable<DinosaurEntity> {
 
                                 if (distance < separation) {
                                     float scale = distance / separation;
-                                    entityMoveX += (entity.posX - other.posX) / scale;
-                                    entityMoveZ += (entity.posZ - other.posZ) / scale;
+                                    entityMoveX += (entity.getX() - other.getX()) / scale;
+                                    entityMoveZ += (entity.getZ() - other.getZ()) / scale;
                                 }
                             }
                         }
 
-                        double navigateX = entity.posX + entityMoveX;
-                        double navigateZ = entity.posZ + entityMoveZ;
+                        double navigateX = entity.getX() + entityMoveX;
+                        double navigateZ = entity.getZ() + entityMoveZ;
 
                         Dinosaur dinosaur = entity.getDinosaur();
                         double speed = this.state == State.IDLE ? 0.8 : dinosaur.getMetadata().getFlockSpeed();
@@ -208,7 +208,7 @@ public class Herd implements Iterable<DinosaurEntity> {
             List<EntityLivingBase> invalidEnemies = new LinkedList<>();
 
             for (EntityLivingBase enemy : this.enemies) {
-                if (enemy.isDead || (enemy instanceof DinosaurEntity && ((DinosaurEntity) enemy).isCarcass()) || (enemy instanceof EntityPlayer && ((EntityPlayer) enemy).capabilities.isCreativeMode) || enemy.getDistanceSq(this.center.x, this.center.y, this.center.z) > 1024 || this.members.contains(enemy)) {
+                if (enemy.isRemoved() || (enemy instanceof DinosaurEntity && ((DinosaurEntity) enemy).isCarcass()) || (enemy instanceof EntityPlayer && ((EntityPlayer) enemy).capabilities.isCreativeMode) || enemy.getDistanceSq(this.center.x, this.center.y, this.center.z) > 1024 || this.members.contains(enemy)) {
                     invalidEnemies.add(enemy);
                 }
             }
@@ -268,7 +268,7 @@ public class Herd implements Iterable<DinosaurEntity> {
             List<Herd> otherHerds = new LinkedList<>();
 
             for (DinosaurEntity entity : this.leader.world.getEntitiesWithinAABB(this.leader.getClass(), searchBounds)) {
-                if (!entity.isCarcass() && !entity.isDead && !(entity.getMetabolism().isStarving() || entity.getMetabolism().isDehydrated())) {
+                if (!entity.isCarcass() && !entity.isRemoved() && !(entity.getMetabolism().isStarving() || entity.getMetabolism().isDehydrated())) {
                     Herd otherHerd = entity.herd;
                     if (otherHerd == null || otherHerd.members.size() == 1) {
                     	if (this.size() >= this.herdType.getMetadata().getMaxHerdSize()) {
@@ -321,7 +321,7 @@ public class Herd implements Iterable<DinosaurEntity> {
 
     public Vec3d getCenterPosition() {
         if (this.members.size() == 1) {
-            return this.leader.getPositionVector();
+            return this.leader.position();
         }
 
         double x = 0.0;
@@ -331,8 +331,8 @@ public class Herd implements Iterable<DinosaurEntity> {
 
         for (DinosaurEntity member : this.members) {
             if (!member.isCarcass() && !member.isInWater()) {
-                x += member.posX;
-                z += member.posZ;
+                x += member.getX();
+                z += member.getZ();
 
                 count++;
             }
@@ -342,7 +342,7 @@ public class Herd implements Iterable<DinosaurEntity> {
             x /= count;
             z /= count;
         } else {
-            return this.leader.getPositionVector();
+            return this.leader.position();
         }
 
         return new Vec3d(x, this.leader.world.getHeight(new BlockPos(x, 0, z)).getY(), z);

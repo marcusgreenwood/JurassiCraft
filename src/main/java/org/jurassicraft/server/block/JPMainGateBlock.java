@@ -2,8 +2,8 @@ package org.jurassicraft.server.block;
 
 import org.jurassicraft.server.tab.TabHandler;
 
-import net.minecraft.block.BlockDoor;
-import net.minecraft.block.material.Material;
+import net.minecraft.world.level.block.BlockDoor;
+import net.minecraft.world.level.material.MapColor;
 
 public class JPMainGateBlock extends BlockDoor {
     public JPMainGateBlock() {

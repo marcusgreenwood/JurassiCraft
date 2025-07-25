@@ -1,12 +1,12 @@
 package org.jurassicraft.server.entity;
 
-import net.minecraft.entity.MoverType;
+import net.minecraft.world.entity.MoverType;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityMoveHelper;
 import net.minecraft.pathfinding.PathNavigateSwimmer;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.World;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.util.Mth;
+import net.minecraft.world.level.Level;
 import org.jurassicraft.server.entity.ai.MoveUnderwaterEntityAI;
 
 public abstract class SwimmingDinosaurEntity extends DinosaurEntity {
@@ -69,9 +69,9 @@ public abstract class SwimmingDinosaurEntity extends DinosaurEntity {
         @Override
         public void onUpdateMoveHelper() {
             if (this.action == EntityMoveHelper.Action.MOVE_TO && !this.swimmingEntity.getNavigator().noPath()) {
-                double distanceX = this.posX - this.swimmingEntity.posX;
-                double distanceY = this.posY - this.swimmingEntity.posY;
-                double distanceZ = this.posZ - this.swimmingEntity.posZ;
+                double distanceX = this.getX() - this.swimmingEntity.getX();
+                double distanceY = this.getY() - this.swimmingEntity.getY();
+                double distanceZ = this.getZ() - this.swimmingEntity.getZ();
                 double distance = Math.abs(distanceX * distanceX + distanceY * distanceY + distanceZ * distanceZ);
                 distance = (double) MathHelper.sqrt(distance);
                 distanceY /= distance;

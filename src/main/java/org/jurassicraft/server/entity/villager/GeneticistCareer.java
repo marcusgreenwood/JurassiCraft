@@ -3,7 +3,7 @@ package org.jurassicraft.server.entity.villager;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.village.MerchantRecipe;
 import net.minecraftforge.fml.common.registry.VillagerRegistry;
 import org.jurassicraft.JurassiCraft;

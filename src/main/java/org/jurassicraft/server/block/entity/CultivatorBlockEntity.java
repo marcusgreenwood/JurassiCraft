@@ -1,7 +1,7 @@
 package org.jurassicraft.server.block.entity;
 
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.player.PlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.Container;
@@ -9,19 +9,19 @@ import net.minecraft.inventory.ContainerChest;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryLargeChest;
 import net.minecraft.inventory.ItemStackHelper;
-import net.minecraft.item.ItemBucketMilk;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.world.item.ItemBucketMilk;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.core.Direction;
 import net.minecraft.util.NonNullList;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.fml.common.FMLCommonHandler;
-import net.minecraftforge.fml.common.ModContainer;
+import net.neoforged.fml.common.ModContainer;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
 import net.minecraftforge.items.CapabilityItemHandler;
@@ -139,7 +139,7 @@ public class CultivatorBlockEntity extends MachineBaseBlockEntity implements Tem
     @Override
     public void update() {
         super.update();
-        if (!this.world.isRemote) {
+        if (!this.level().isClientSide) {
 
         	boolean sync = false;
             if (this.waterLevel < 2 && this.slots.get(2).getItem() == Items.WATER_BUCKET) {
@@ -530,7 +530,7 @@ public class CultivatorBlockEntity extends MachineBaseBlockEntity implements Tem
 	public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
 
 		if (facing != null && capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
-            if(!(facing == EnumFacing.DOWN)){
+            if(!(facing == Direction.DOWN)){
                 return (T) handler;
             }
 		return super.getCapability(capability, facing);

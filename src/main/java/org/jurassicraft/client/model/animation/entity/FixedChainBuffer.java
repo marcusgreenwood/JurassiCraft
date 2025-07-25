@@ -4,16 +4,15 @@ import org.jurassicraft.client.proxy.ClientProxy;
 import net.ilexiconn.llibrary.LLibrary;
 import net.ilexiconn.llibrary.client.util.ClientUtils;
 import net.minecraft.client.model.ModelRenderer;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.util.math.MathHelper;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraft.world.entity.EntityLivingBase;
+import net.minecraft.util.Mth;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.DistOnly;
 
 /**
  * @author LLibrary
  * @version 1.0
  */
-@SideOnly(Side.CLIENT)
 public class FixedChainBuffer {
 	
 	private int yawTimer;

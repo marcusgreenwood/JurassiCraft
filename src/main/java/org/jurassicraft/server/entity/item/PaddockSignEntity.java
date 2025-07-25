@@ -1,17 +1,17 @@
 package org.jurassicraft.server.entity.item;
 
 import io.netty.buffer.ByteBuf;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityHanging;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityHanging;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.Direction;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.DistOnly;
 import org.jurassicraft.server.item.ItemHandler;
 
 public class PaddockSignEntity extends EntityHanging implements IEntityAdditionalSpawnData {
@@ -79,13 +79,12 @@ public class PaddockSignEntity extends EntityHanging implements IEntityAdditiona
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
     public void setPositionAndRotationDirect(double x, double y, double z, float yaw, float pitch, int posRotationIncrements, boolean teleport) {
     }
 
     @Override
     public void setLocationAndAngles(double x, double y, double z, float yaw, float pitch) {
-        BlockPos positionOffset = new BlockPos(x - this.posX, y - this.posY, z - this.posZ);
+        BlockPos positionOffset = new BlockPos(x - this.getX(), y - this.getY(), z - this.getZ());
         BlockPos newPosition = this.hangingPosition.add(positionOffset);
         this.setPosition(newPosition.getX(), newPosition.getY(), newPosition.getZ());
     }

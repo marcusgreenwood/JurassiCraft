@@ -2,10 +2,10 @@ package org.jurassicraft.client.render.entity;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.entity.Entity;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.util.Mth;
 import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.phys.Vec3;
 
 public class ThirdPersonViewRenderer {
 
@@ -37,9 +37,9 @@ public class ThirdPersonViewRenderer {
 	private double getDist(Entity entity, double max, double partialTicks) {
 		float yaw = entity.rotationYaw * 0.017453292F;
 		float pitch = entity.rotationPitch * 0.017453292F;
-		double ex = entity.prevPosX + (entity.posX - entity.prevPosX) * partialTicks;
-		double ey = entity.prevPosY + (entity.posY - entity.prevPosY) * partialTicks + entity.getEyeHeight();
-		double ez = entity.prevPosZ + (entity.posZ - entity.prevPosZ) * partialTicks;
+		double ex = entity.prevPosX + (entity.getX() - entity.prevPosX) * partialTicks;
+		double ey = entity.prevPosY + (entity.getY() - entity.prevPosY) * partialTicks + entity.getEyeHeight();
+		double ez = entity.prevPosZ + (entity.getZ() - entity.prevPosZ) * partialTicks;
 		if (mc.gameSettings.thirdPersonView == 2) {
 			pitch += 180;
 		}

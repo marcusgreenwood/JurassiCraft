@@ -1,12 +1,12 @@
 package org.jurassicraft.server.food;
 
 import com.google.common.collect.Sets;
-import net.minecraft.block.Block;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemFood;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemFood;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
 import org.apache.logging.log4j.Level;
 import org.jurassicraft.JurassiCraft;

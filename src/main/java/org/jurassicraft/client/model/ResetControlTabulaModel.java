@@ -3,7 +3,7 @@ package org.jurassicraft.client.model;
 import net.ilexiconn.llibrary.client.model.tabula.ITabulaModelAnimator;
 import net.ilexiconn.llibrary.client.model.tabula.TabulaModel;
 import net.ilexiconn.llibrary.client.model.tabula.container.TabulaModelContainer;
-import net.minecraft.entity.Entity;
+import net.minecraft.world.entity.Entity;
 
 public class ResetControlTabulaModel<T extends Entity> extends TabulaModel {
     private final ITabulaModelAnimator<T> animator;

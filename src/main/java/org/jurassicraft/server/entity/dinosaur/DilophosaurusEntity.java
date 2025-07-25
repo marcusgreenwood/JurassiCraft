@@ -1,21 +1,21 @@
 package org.jurassicraft.server.entity.dinosaur;
 
 import net.ilexiconn.llibrary.server.animation.Animation;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityLivingBase;
 import net.minecraft.entity.IRangedAttackMob;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.passive.EntityVillager;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.init.MobEffects;
-import net.minecraft.network.datasync.DataParameter;
-import net.minecraft.network.datasync.DataSerializers;
-import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.SoundEvent;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.World;
+import net.minecraft.util.Mth;
+import net.minecraft.world.level.Level;
 import org.jurassicraft.client.model.animation.EntityAnimation;
 import org.jurassicraft.client.sound.SoundHandler;
 import org.jurassicraft.server.entity.DinosaurEntity;
@@ -41,9 +41,9 @@ public class DilophosaurusEntity extends DinosaurEntity implements IRangedAttack
 	    return;
 	}
         VenomEntity venom = new VenomEntity(this.world, this);
-        double deltaX = target.posX - venom.posX;
-        double deltaY = target.posY + (double) target.getEyeHeight() - 1.100000023841858D - venom.posY;
-        double deltaZ = target.posZ - venom.posZ;
+        double deltaX = target.getX() - venom.getX();
+        double deltaY = target.getY() + (double) target.getEyeHeight() - 1.100000023841858D - venom.getY();
+        double deltaZ = target.getZ() - venom.getZ();
         float yOffset = MathHelper.sqrt(deltaX * deltaX + deltaZ * deltaZ) * 0.2F;
         venom.shoot(deltaX, deltaY + (double) yOffset, deltaZ, 1.5F, 0F);
         this.world.spawnEntity(venom);
@@ -73,9 +73,9 @@ public class DilophosaurusEntity extends DinosaurEntity implements IRangedAttack
     public void onUpdate() {
         super.onUpdate();
 
-        if (!this.world.isRemote) {
+        if (!this.level().isClientSide) {
             EntityLivingBase target = this.getAttackTarget();
-            if (target != null && !target.isDead && this.targetCooldown < 50) {
+            if (target != null && !target.isRemoved() && this.targetCooldown < 50) {
                 this.targetCooldown = 50 + this.getRNG().nextInt(30);
             } else if (this.targetCooldown > 0) {
                 this.targetCooldown--;
@@ -100,11 +100,11 @@ public class DilophosaurusEntity extends DinosaurEntity implements IRangedAttack
 
     public boolean hasTarget() {
         if (!this.isCarcass() && !this.isSleeping()) {
-            if (this.world.isRemote) {
+            if (this.level().isClientSide) {
                 return this.dataManager.get(WATCHER_HAS_TARGET);
             } else {
                 EntityLivingBase target = this.getAttackTarget();
-                return (target != null && !target.isDead) || this.targetCooldown > 0;
+                return (target != null && !target.isRemoved()) || this.targetCooldown > 0;
             }
         }
         return false;

@@ -3,14 +3,14 @@ package org.jurassicraft.server.message;
 import io.netty.buffer.ByteBuf;
 import net.ilexiconn.llibrary.server.network.AbstractMessage;
 import net.minecraft.client.Minecraft;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.player.PlayerMP;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.world.WorldServer;
+import net.minecraft.world.level.LevelServer;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.DistOnly;
 import org.jurassicraft.JurassiCraft;
 import org.jurassicraft.server.entity.dinosaur.MicroraptorEntity;
 
@@ -37,7 +37,6 @@ public class MicroraptorDismountMessage extends AbstractMessage<MicroraptorDismo
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
     public void onClientReceived(Minecraft client, MicroraptorDismountMessage message, EntityPlayer player, MessageContext messageContext) {
         Entity entity = client.world.getEntityByID(message.entityId);
         if (entity instanceof MicroraptorEntity) {
@@ -52,7 +51,7 @@ public class MicroraptorDismountMessage extends AbstractMessage<MicroraptorDismo
             MicroraptorEntity microraptor = (MicroraptorEntity) entity;
             if (microraptor.isOwner(player)) {
                 microraptor.dismountRidingEntity();
-                if (!player.world.isRemote) {
+                if (!player.level().isClientSide) {
                     WorldServer worldServer = (WorldServer) player.world;
                     Set<? extends EntityPlayer> trackers = worldServer.getEntityTracker().getTrackingPlayers(microraptor);
                     for (EntityPlayer tracker : trackers) {

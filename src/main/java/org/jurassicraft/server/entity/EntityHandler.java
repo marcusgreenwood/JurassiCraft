@@ -39,15 +39,15 @@ import net.ilexiconn.llibrary.LLibrary;
 import net.ilexiconn.llibrary.server.animation.Animation;
 import net.ilexiconn.llibrary.server.animation.IAnimatedEntity;
 import net.ilexiconn.llibrary.server.network.AnimationMessage;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving.SpawnPlacementType;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.EntitySpawnPlacementRegistry;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityLiving.SpawnPlacementType;
+import net.minecraft.world.entity.EntityLivingBase;
+import net.minecraft.world.entity.EntitySpawnPlacementRegistry;
 import net.minecraft.entity.EnumCreatureType;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.WorldServer;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.player.PlayerMP;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.LevelServer;
 import net.minecraft.world.biome.Biome;
 import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.fml.common.ProgressManager;
@@ -331,7 +331,7 @@ public class EntityHandler {
     }
     
     public static <T extends Entity & Animatable> void sendSpecialAnimationMessage(T entity, Animation animation, byte variant) {
-        if (entity.world.isRemote) {
+        if (entity.level().isClientSide) {
             return;
         }
         for (EntityPlayer trackingPlayer : ((WorldServer) entity.world).getEntityTracker().getTrackingPlayers(entity)) {

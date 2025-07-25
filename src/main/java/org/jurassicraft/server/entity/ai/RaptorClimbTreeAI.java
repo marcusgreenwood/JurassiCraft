@@ -6,18 +6,18 @@ import org.jurassicraft.client.model.animation.EntityAnimation;
 import org.jurassicraft.server.dinosaur.MicroraptorDinosaur;
 import org.jurassicraft.server.entity.dinosaur.MicroraptorEntity;
 
-import net.minecraft.block.material.Material;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.world.level.material.MapColor;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.init.Blocks;
 import net.minecraft.pathfinding.Path;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.core.Direction;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.core.BlockPos;
+import net.minecraft.util.Mth;
 import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.World;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.level.Level;
 
 public class RaptorClimbTreeAI extends EntityAIBase {
     private static final int CLIMB_INTERVAL = 1200;
@@ -45,7 +45,7 @@ public class RaptorClimbTreeAI extends EntityAIBase {
     public RaptorClimbTreeAI(MicroraptorEntity entity, double speed) {
         this.entity = entity;
         this.movementSpeed = speed;
-        this.world = entity.world;
+        this.level() = entity.world;
         this.setMutexBits(Mutex.MOVEMENT | Mutex.ANIMATION);
     }
 
@@ -54,7 +54,7 @@ public class RaptorClimbTreeAI extends EntityAIBase {
         if (this.active || (this.entity.ticksExisted - this.lastActive) < 1) {
             return false;
         }
-        BlockPos pos = new BlockPos(this.entity.posX, this.entity.getEntityBoundingBox().minY, this.entity.posZ);
+        BlockPos pos = new BlockPos(this.entity.getX(), this.entity.getEntityBoundingBox().minY, this.entity.getZ());
         Random rand = this.entity.getRNG();
         for (int i = 0; i < 20; ++i) {
             BlockPos target = pos.add(rand.nextInt(14) - 7, -5, rand.nextInt(14) - 7);
@@ -64,7 +64,7 @@ public class RaptorClimbTreeAI extends EntityAIBase {
                 if (state.getMaterial() == Material.LEAVES || state.getMaterial() == Material.WOOD) {
                     for (EnumFacing direction : EnumFacing.HORIZONTALS) {
                         BlockPos offsetTarget = target.offset(direction);
-                        if (!this.world.isSideSolid(offsetTarget, EnumFacing.DOWN)) {
+                        if (!this.world.isSideSolid(offsetTarget, Direction.DOWN)) {
                             boolean canTravel = true;
                             boolean woodFound = false;
                             int height = 0;
@@ -133,11 +133,11 @@ public class RaptorClimbTreeAI extends EntityAIBase {
                     for(int i = 0; i < 100; i++) {
                         double x = (random.nextFloat() - 0.5) * 45;
                         double z = (random.nextFloat() - 0.5) * 45;
-                        Vec3d vec = this.entity.getPositionVector().addVector(x, 0, z);
+                        Vec3d vec = this.entity.position().addVector(x, 0, z);
                         BlockPos position = new BlockPos(vec);
                         vec = vec.addVector(0.5D, -vec.y + world.getTopSolidOrLiquidBlock(position).getY() + 0.5D, 0.5D);
                         IBlockState targetState = this.entity.world.getBlockState(position);
-                        if(this.entity.getPositionVector().distanceTo(vec) > 20D && targetState.getBlock().isLeaves(targetState, world, position)) {
+                        if(this.entity.position().distanceTo(vec) > 20D && targetState.getBlock().isLeaves(targetState, world, position)) {
                     	    pos = vec;
                     	    break;
                         }                    
@@ -146,11 +146,11 @@ public class RaptorClimbTreeAI extends EntityAIBase {
                         for(int i = 0; i < 100; i++) {
                             double x = (random.nextFloat() - 0.5) * 45;
                             double z = (random.nextFloat() - 0.5) * 45;
-                            Vec3d vec = this.entity.getPositionVector().addVector(x, 0, z);
+                            Vec3d vec = this.entity.position().addVector(x, 0, z);
                             BlockPos position = new BlockPos(vec);
                             vec = vec.addVector(0.5D, -vec.y + world.getTopSolidOrLiquidBlock(position).getY() + 0.5D, 0.5D);
                             IBlockState targetState = this.entity.world.getBlockState(position);
-                            if(this.entity.getPositionVector().distanceTo(vec) > 20D && !targetState.getMaterial().isLiquid()) {
+                            if(this.entity.position().distanceTo(vec) > 20D && !targetState.getMaterial().isLiquid()) {
                                 pos = vec;
                                 break;
                             }
@@ -159,7 +159,7 @@ public class RaptorClimbTreeAI extends EntityAIBase {
                     if(pos != null) {
                         this.entity.setGlidingTo(pos);
 //                        this.world.setBlockState(new BlockPos(pos), Blocks.STONE.getDefaultState());
-                        this.entity.addVelocity((pos.x - this.entity.posX) * 0.02, 0.2F, (pos.z - this.entity.posZ) * 0.02);
+                        this.entity.addVelocity((pos.x - this.entity.getX()) * 0.02, 0.2F, (pos.z - this.entity.getZ()) * 0.02);
 
                         this.gliding = true;
                         this.entity.setAnimation(EntityAnimation.GLIDING.get());
@@ -170,7 +170,7 @@ public class RaptorClimbTreeAI extends EntityAIBase {
                 BlockPos testTrunk = targetTrunk;
                 boolean accepted = true;
                 do {
-                    if(world.isSideSolid(testTrunk.offset(approachSide).up(), EnumFacing.DOWN)) {
+                    if(world.isSideSolid(testTrunk.offset(approachSide).up(), Direction.DOWN)) {
                         accepted = false;
                     }
                     IBlockState state = world.getBlockState(testTrunk);
@@ -184,19 +184,19 @@ public class RaptorClimbTreeAI extends EntityAIBase {
                     this.entity.setAnimation(EntityAnimation.CLIMBING.get());
                     if (this.entity.collidedHorizontally || this.world.isSideSolid(currentTrunk, this.approachSide)) {
                         this.entity.motionY = 0.3;
-                        this.entity.setPosition(this.targetX, this.entity.posY, this.targetZ);
+                        this.entity.setPosition(this.targetX, this.entity.getY(), this.targetZ);
                         if (this.entity.getDistanceSqToCenter(currentTrunk) > 2.0) {
                             this.active = false;
                         }
                     }
                 } 
                 if (this.entity.collidedVertically && !this.gliding) {
-                    BlockPos top = new BlockPos(this.entity.posX, this.entity.getEntityBoundingBox().maxY + 0.1, this.entity.posZ);
+                    BlockPos top = new BlockPos(this.entity.getX(), this.entity.getEntityBoundingBox().maxY + 0.1, this.entity.getZ());
                     if (this.isBlockLeaves(top)) {
                         if (this.world.isAirBlock(top.up())) {
-                            this.entity.setPosition(this.targetX, MathHelper.ceil(this.entity.posY + 1) + 0.2, this.targetZ);
+                            this.entity.setPosition(this.targetX, MathHelper.ceil(this.entity.getY() + 1) + 0.2, this.targetZ);
                         } else {
-                            this.entity.setPosition(this.targetX, this.entity.posY + 0.2, this.targetZ);
+                            this.entity.setPosition(this.targetX, this.entity.getY() + 0.2, this.targetZ);
                         }
                     }
                 }
@@ -206,7 +206,7 @@ public class RaptorClimbTreeAI extends EntityAIBase {
             if (this.path.isFinished()) {
                 this.entity.setAnimation(EntityAnimation.START_CLIMBING.get());
                 this.reachedTarget = true;
-                Vec3d origin = this.entity.getPositionVector().addVector(0.0, this.entity.getEyeHeight(), 0.0);
+                Vec3d origin = this.entity.position().addVector(0.0, this.entity.getEyeHeight(), 0.0);
                 RayTraceResult traceResult = this.world.rayTraceBlocks(origin, new Vec3d(this.targetX, this.targetY, this.targetZ), false, true, false);
                 if (traceResult != null && traceResult.typeOfHit == RayTraceResult.Type.BLOCK) {
                     this.path = null;

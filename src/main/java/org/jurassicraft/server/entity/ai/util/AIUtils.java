@@ -1,12 +1,12 @@
 package org.jurassicraft.server.entity.ai.util;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockLiquid;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.EntityLiving;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.BlockLiquid;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.entity.EntityLiving;
+import net.minecraft.core.BlockPos;
+import net.minecraft.util.Mth;
+import net.minecraft.world.level.Level;
 
 import java.util.List;
 
@@ -135,7 +135,7 @@ public class AIUtils {
     }
     
     public static BlockPos getBottom(EntityLiving entity) {
-        return new BlockPos(entity.posX, getWaterDepth(entity, true), entity.posZ);
+        return new BlockPos(entity.getX(), getWaterDepth(entity, true), entity.getZ());
     }
 
 

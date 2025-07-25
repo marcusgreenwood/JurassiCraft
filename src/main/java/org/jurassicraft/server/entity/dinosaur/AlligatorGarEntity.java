@@ -5,7 +5,7 @@ import org.jurassicraft.server.entity.SwimmingDinosaurEntity;
 import net.ilexiconn.llibrary.server.animation.Animation;
 import net.minecraft.entity.passive.EntitySquid;
 import net.minecraft.util.SoundEvent;
-import net.minecraft.world.World;
+import net.minecraft.world.level.Level;
 
 import javax.vecmath.Vector3f;
 

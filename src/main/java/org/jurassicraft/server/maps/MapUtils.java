@@ -2,8 +2,8 @@ package org.jurassicraft.server.maps;
 
 import com.google.common.collect.Lists;
 import net.minecraft.init.Biomes;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import org.jurassicraft.server.world.structure.StructureUtils;
 

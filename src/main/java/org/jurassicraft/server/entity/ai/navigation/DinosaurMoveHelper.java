@@ -6,7 +6,7 @@ import net.minecraft.entity.ai.EntityMoveHelper;
 import net.minecraft.pathfinding.NodeProcessor;
 import net.minecraft.pathfinding.PathNavigate;
 import net.minecraft.pathfinding.PathNodeType;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.Mth;
 import org.jurassicraft.server.entity.DinosaurEntity;
 
 public class DinosaurMoveHelper extends EntityMoveHelper {
@@ -43,7 +43,7 @@ public class DinosaurMoveHelper extends EntityMoveHelper {
             if (navigator != null) {
                 NodeProcessor nodeProcessor = navigator.getNodeProcessor();
 
-                if (nodeProcessor != null && nodeProcessor.getPathNodeType(this.entity.world, MathHelper.floor(this.entity.posX + moveX), MathHelper.floor(this.entity.posY), MathHelper.floor(this.entity.posZ + moveZ)) != PathNodeType.WALKABLE) {
+                if (nodeProcessor != null && nodeProcessor.getPathNodeType(this.entity.world, MathHelper.floor(this.entity.getX() + moveX), MathHelper.floor(this.entity.getY()), MathHelper.floor(this.entity.getZ() + moveZ)) != PathNodeType.WALKABLE) {
                     this.moveForward = 0.9F;
                     this.moveStrafe = 0.0F;
                     moveSpeed = speedAttribute;
@@ -56,9 +56,9 @@ public class DinosaurMoveHelper extends EntityMoveHelper {
             this.action = EntityMoveHelper.Action.WAIT;
         } else if (this.action == EntityMoveHelper.Action.MOVE_TO) {
             this.action = EntityMoveHelper.Action.WAIT;
-            double deltaX = this.posX - this.entity.posX;
-            double deltaZ = this.posZ - this.entity.posZ;
-            double deltaY = this.posY - this.entity.posY;
+            double deltaX = this.getX() - this.entity.getX();
+            double deltaZ = this.getZ() - this.entity.getZ();
+            double deltaY = this.getY() - this.entity.getY();
             double delta = deltaX * deltaX + deltaY * deltaY + deltaZ * deltaZ;
 
             if (delta < 2.5E-07) {

@@ -3,9 +3,9 @@ package org.jurassicraft.client.particle;
 import net.minecraft.client.particle.IParticleFactory;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleSplash;
-import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraft.world.level.Level;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.DistOnly;
 
 public class WashingParticle extends Particle {
 
@@ -13,8 +13,8 @@ public class WashingParticle extends Particle {
 		super(worldIn, xCoordIn, yCoordIn, zCoordIn, xSpeedIn, ySpeedIn, zSpeedIn);
 		final int xSprinkle = ((zSpeedIn != 0) ? 1 : 0) * ((rotation == 0 || rotation == 3) ? 1 : -1);
 		final int zSprinkle = ((xSpeedIn != 0) ? 1 : 0) * ((rotation == 0 || rotation == 3) ? 1 : -1);
-		this.posX += (Math.random() * 0.2) * xSprinkle;
-		this.posZ += (Math.random() * 0.2) * zSprinkle;
+		this.getX() += (Math.random() * 0.2) * xSprinkle;
+		this.getZ() += (Math.random() * 0.2) * zSprinkle;
 		this.motionX = xSpeedIn + (Math.random() * 0.06) * xSprinkle;
 		this.motionY = ySpeedIn;
 		this.motionZ = zSpeedIn + (Math.random() * 0.06) * zSprinkle;
@@ -29,9 +29,9 @@ public class WashingParticle extends Particle {
 	}
 
 	public void onUpdate() {
-		this.prevPosX = this.posX;
-		this.prevPosY = this.posY;
-		this.prevPosZ = this.posZ;
+		this.prevPosX = this.getX();
+		this.prevPosY = this.getY();
+		this.prevPosZ = this.getZ();
 
 		if (this.particleAge++ >= this.particleMaxAge) {
 			this.setExpired();
@@ -44,7 +44,6 @@ public class WashingParticle extends Particle {
 		this.motionZ *= 0.9900000190734863D;
 	}
 
-	@SideOnly(Side.CLIENT)
 	public static class Factory implements IParticleFactory {
 		public Particle createParticle(int particleID, World worldIn, double xCoordIn, double yCoordIn, double zCoordIn, double xSpeedIn, double ySpeedIn, double zSpeedIn, int... parameters) {
 			return new WashingParticle(worldIn, xCoordIn, yCoordIn, zCoordIn, xSpeedIn, ySpeedIn, zSpeedIn, 0);

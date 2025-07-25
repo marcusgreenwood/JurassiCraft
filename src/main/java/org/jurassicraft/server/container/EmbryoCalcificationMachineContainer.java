@@ -1,6 +1,6 @@
 package org.jurassicraft.server.container;
 
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.IInventory;
@@ -38,7 +38,7 @@ public class EmbryoCalcificationMachineContainer extends MachineContainer {
     public void onContainerClosed(EntityPlayer player) {
         super.onContainerClosed(player);
 
-        if (!player.world.isRemote) {
+        if (!player.level().isClientSide) {
             this.calcificationMachine.closeInventory(player);
         }
     }

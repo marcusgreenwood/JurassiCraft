@@ -12,12 +12,12 @@ import org.jurassicraft.server.item.SyringeItem;
 
 import com.google.common.primitives.Ints;
 
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.Container;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.core.Direction;
 import net.minecraft.util.NonNullList;
 
 public class EmbryoCalcificationMachineBlockEntity extends MachineBaseBlockEntity {

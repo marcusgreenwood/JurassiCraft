@@ -1,7 +1,7 @@
 package org.jurassicraft.server.entity;
 
 import io.netty.buffer.ByteBuf;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundTag;
 
 import java.util.Random;
 

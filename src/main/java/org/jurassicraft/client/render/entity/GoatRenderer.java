@@ -4,9 +4,9 @@ import net.ilexiconn.llibrary.client.model.tabula.container.TabulaModelContainer
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.client.renderer.entity.RenderManager;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraft.resources.ResourceLocation;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.DistOnly;
 import org.jurassicraft.JurassiCraft;
 import org.jurassicraft.client.model.AnimatableModel;
 import org.jurassicraft.client.model.animation.entity.GoatAnimator;
@@ -18,7 +18,6 @@ import java.io.IOException;
 import java.util.EnumMap;
 import java.util.Locale;
 
-@SideOnly(Side.CLIENT)
 public class GoatRenderer extends RenderLiving<GoatEntity> {
     private static final EnumMap<GoatEntity.Variant, ResourceLocation> KID_TEXTURE = new EnumMap<>(GoatEntity.Variant.class);
     private static final EnumMap<GoatEntity.Variant, ResourceLocation> BILLY_TEXTURE = new EnumMap<>(GoatEntity.Variant.class);

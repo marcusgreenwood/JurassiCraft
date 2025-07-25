@@ -1,15 +1,15 @@
 package org.jurassicraft.server.block.entity;
 
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.ISidedInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.core.Direction;
 import net.minecraft.util.NonNullList;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.core.BlockPos;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
@@ -166,7 +166,7 @@ public class DNASequencerBlockEntity extends MachineBaseBlockEntity {
 	@Override
 	public void packetDataHandler(ByteBuf fields) {
 		if (FMLCommonHandler.instance().getSide().isClient()) {
-			for (int slot : this.getSlotsForFace(EnumFacing.UP)) {
+			for (int slot : this.getSlotsForFace(Direction.UP)) {
 				if (slot % 2 == 0) {
 					this.setInventorySlotContents(slot, ByteBufUtils.readItemStack(fields));
 				}
@@ -177,7 +177,7 @@ public class DNASequencerBlockEntity extends MachineBaseBlockEntity {
 	@Override
 	public void setInventorySlotContents(int index, ItemStack stack) {
 		boolean send = false;
-		if (!this.world.isRemote && index % 2 == 0 && this.slots.get(index).getItem() != stack.getItem()) {
+		if (!this.level().isClientSide && index % 2 == 0 && this.slots.get(index).getItem() != stack.getItem()) {
 			send = true;
 		}
 		super.setInventorySlotContents(index, stack);
@@ -188,7 +188,7 @@ public class DNASequencerBlockEntity extends MachineBaseBlockEntity {
 	
 	@Override
 	public NonNullList getSyncFields(NonNullList fields) {
-		for (int slot : this.getSlotsForFace(EnumFacing.UP)) {
+		for (int slot : this.getSlotsForFace(Direction.UP)) {
 			if (slot % 2 == 0) {
 				fields.add(this.slots.get(slot));
 			}

@@ -1,17 +1,17 @@
 package org.jurassicraft.server.block.tree;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockSlab;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.BlockSlab;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.BlockStateContainer;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.item.ItemBlock;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.entity.EntityLivingBase;
+import net.minecraft.world.item.ItemBlock;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.core.Direction;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
 import org.jurassicraft.server.api.SubBlocksBlock;
 import org.jurassicraft.server.block.BlockHandler;
 import org.jurassicraft.server.item.block.AncientSlabItemBlock;
@@ -45,7 +45,7 @@ public abstract class AncientSlabBlock extends BlockSlab implements SubBlocksBlo
     public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
         IBlockState state = super.getStateForPlacement(world, pos, facing, hitX, hitY, hitZ, meta, placer).withProperty(HALF, BlockSlab.EnumBlockHalf.BOTTOM);
         if (!this.isDouble()) {
-            if ((facing == EnumFacing.UP || (double) hitY <= 0.5D) && facing != EnumFacing.DOWN) {
+            if ((facing == Direction.UP || (double) hitY <= 0.5D) && facing != Direction.DOWN) {
                 return state;
             } else {
                 return state.withProperty(HALF, BlockSlab.EnumBlockHalf.TOP);

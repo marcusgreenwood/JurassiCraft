@@ -6,21 +6,21 @@ import java.util.Random;
 import org.jurassicraft.server.block.BlockHandler;
 import org.jurassicraft.server.block.FossilBlock;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockCrops;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.BlockCrops;
 import net.minecraft.block.SoundType;
-import net.minecraft.block.material.Material;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.world.level.material.MapColor;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.entity.ai.EntityAIMoveToBlock;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.InventoryBasic;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.SoundCategory;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.event.ForgeEventFactory;
 
 public class EntityAIResearchFossil extends EntityAIMoveToBlock {
@@ -55,7 +55,7 @@ public class EntityAIResearchFossil extends EntityAIMoveToBlock {
 	 */
 	public boolean shouldExecute() {
 
-		double distance = Math.hypot(Math.abs(this.villager.getPositionVector().z - this.getSpawnLocation().getZ()), Math.abs(this.villager.getPositionVector().x - this.getSpawnLocation().getX()));
+		double distance = Math.hypot(Math.abs(this.villager.position().z - this.getSpawnLocation().getZ()), Math.abs(this.villager.position().x - this.getSpawnLocation().getX()));
 		if (distance < 10) {
 
 			if (!ForgeEventFactory.getMobGriefingEvent(this.villager.world, this.villager)) {

@@ -2,8 +2,8 @@ package org.jurassicraft.server.entity.vehicle;
 
 import org.jurassicraft.server.item.ItemHandler;
 
-import net.minecraft.item.ItemStack;
-import net.minecraft.world.World;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 
 public class JeepWranglerEntity extends VehicleEntity {
     public JeepWranglerEntity(World world) {

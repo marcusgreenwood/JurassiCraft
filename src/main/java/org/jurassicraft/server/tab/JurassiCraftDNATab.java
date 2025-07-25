@@ -8,9 +8,9 @@ import org.jurassicraft.server.entity.EntityHandler;
 import org.jurassicraft.server.item.ItemHandler;
 
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraft.world.item.ItemStack;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.DistOnly;
 
 public class JurassiCraftDNATab extends CreativeTabs {
     private ItemStack[] stacks = null;
@@ -20,7 +20,6 @@ public class JurassiCraftDNATab extends CreativeTabs {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
     public ItemStack getIconItemStack() {
         if (this.stacks == null) {
             final List<Dinosaur> registeredDinosaurs = EntityHandler.getRegisteredDinosaurs();

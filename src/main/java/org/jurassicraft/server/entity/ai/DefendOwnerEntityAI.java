@@ -1,8 +1,8 @@
 package org.jurassicraft.server.entity.ai;
 
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.world.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAIBase;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.entity.player.Player;
 import org.jurassicraft.server.entity.DinosaurEntity;
 
 import java.util.UUID;
@@ -38,7 +38,7 @@ public class DefendOwnerEntityAI extends EntityAIBase {
 
     @Override
     public boolean shouldContinueExecuting() {
-        return !this.isDead(this.attacker) && this.entity.getOrder() == DinosaurEntity.Order.FOLLOW;
+        return !this.attacker.isRemoved() && this.entity.getOrder() == DinosaurEntity.Order.FOLLOW;
     }
 
     private boolean isDead(EntityLivingBase attacker) {

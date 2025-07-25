@@ -7,11 +7,11 @@ import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
 import net.minecraft.util.text.TextFormatting;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.DistOnly;
 import org.jurassicraft.JurassiCraft;
 import org.jurassicraft.server.item.JournalItem;
 import org.lwjgl.opengl.GL11;
@@ -19,7 +19,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
-@SideOnly(Side.CLIENT)
 public class JournalGui extends GuiScreen {
     private static final int SIZE_X = 256;
     private static final int SIZE_Y = 192;
@@ -229,7 +228,6 @@ public class JournalGui extends GuiScreen {
         }
     }
 
-    @SideOnly(Side.CLIENT)
     static class PageButton extends GuiButton {
         private final boolean isForward;
 

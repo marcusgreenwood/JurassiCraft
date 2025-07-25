@@ -1,6 +1,6 @@
 package org.jurassicraft.server.dinosaur;
 
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.biome.Biome;
 import net.minecraftforge.common.BiomeDictionary;
 import org.jurassicraft.JurassiCraft;

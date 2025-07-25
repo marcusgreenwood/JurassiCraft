@@ -5,9 +5,9 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraft.resources.ResourceLocation;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.DistOnly;
 import org.jurassicraft.JurassiCraft;
 import org.jurassicraft.server.block.entity.IncubatorBlockEntity;
 import org.jurassicraft.server.container.IncubatorContainer;
@@ -15,7 +15,6 @@ import org.jurassicraft.server.message.ChangeTemperatureMessage;
 
 import java.io.IOException;
 
-@SideOnly(Side.CLIENT)
 public class IncubatorGui extends GuiContainer {
     private static final ResourceLocation TEXTURE = new ResourceLocation("jurassicraft:textures/gui/incubator.png");
     private final InventoryPlayer playerInventory;

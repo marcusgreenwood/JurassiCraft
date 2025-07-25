@@ -1,9 +1,9 @@
 package org.jurassicraft.server.block.tree;
 
-import net.minecraft.block.BlockFence;
+import net.minecraft.world.level.block.BlockFence;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.MapColor;
-import net.minecraft.block.material.Material;
+import net.minecraft.world.level.material.MapColor;
 import org.jurassicraft.server.tab.TabHandler;
 
 import java.util.Locale;

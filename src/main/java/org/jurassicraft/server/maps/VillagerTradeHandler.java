@@ -1,12 +1,12 @@
 package org.jurassicraft.server.maps;
 
 import net.minecraft.init.Items;
-import net.minecraft.item.ItemMap;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.item.ItemMap;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.core.BlockPos;
 import net.minecraft.village.MerchantRecipe;
-import net.minecraft.world.World;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.storage.MapData;
 import net.minecraft.world.storage.MapDecoration;
 import net.minecraftforge.fml.common.FMLCommonHandler;

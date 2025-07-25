@@ -2,9 +2,9 @@ package org.jurassicraft.server.entity.ai.navigation;
 
 import net.minecraft.pathfinding.PathFinder;
 import net.minecraft.pathfinding.PathNavigateGround;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.World;
+import net.minecraft.util.Mth;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.level.Level;
 import org.jurassicraft.server.entity.DinosaurEntity;
 
 public class DinosaurPathNavigate extends PathNavigateGround {
@@ -36,9 +36,9 @@ public class DinosaurPathNavigate extends PathNavigateGround {
 
         Vec3d target = this.currentPath.getCurrentPos();
 
-        float deltaX = MathHelper.abs((float) (this.entity.posX - (target.x + 0.5)));
-        float deltaZ = MathHelper.abs((float) (this.entity.posZ - (target.z + 0.5)));
-        float deltaY = MathHelper.abs((float) (this.entity.posY - target.y));
+        float deltaX = MathHelper.abs((float) (this.entity.getX() - (target.x + 0.5)));
+        float deltaZ = MathHelper.abs((float) (this.entity.getZ() - (target.z + 0.5)));
+        float deltaY = MathHelper.abs((float) (this.entity.getY() - target.y));
 
         int width = MathHelper.ceil(this.entity.width);
         int height = MathHelper.ceil(this.entity.height);

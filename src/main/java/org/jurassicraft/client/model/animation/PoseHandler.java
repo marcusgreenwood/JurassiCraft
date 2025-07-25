@@ -4,11 +4,11 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import net.ilexiconn.llibrary.client.model.tools.AdvancedModelRenderer;
 import net.ilexiconn.llibrary.server.animation.Animation;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.entity.EntityLivingBase;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.fml.common.FMLCommonHandler;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.DistOnly;
 import org.jurassicraft.JurassiCraft;
 import org.jurassicraft.client.model.AnimatableModel;
 import org.jurassicraft.client.model.animation.dto.AnimatableRenderDefDTO;
@@ -182,7 +182,6 @@ public class PoseHandler<ENTITY extends EntityLivingBase & Animatable> {
 		return new ModelData(animations, poseCount);
 	}
 
-    @SideOnly(Side.CLIENT)
     private ModelData loadModelDataClient(final List<ResourceLocation> posedModelResources, final Map<Animation, float[][][]> animations, final Map<Animation, byte[]> poseCount) {
     	final PosedCuboid[][] posedCuboids = new PosedCuboid[posedModelResources.size()][];
         final AnimatableModel mainModel = JabelarAnimationHandler.loadModel(posedModelResources.get(0), this.metadata);
@@ -219,7 +218,6 @@ public class PoseHandler<ENTITY extends EntityLivingBase & Animatable> {
         return new ModelData(posedCuboids, animations, poseCount);
     }
 
-    @SideOnly(Side.CLIENT)
     public JabelarAnimationHandler<ENTITY> createAnimationHandler(final ENTITY entity, final AnimatableModel model, final GrowthStage growthStage, final boolean useInertialTweens) {
         ModelData growthModel = this.modelData.get(growthStage);
         
@@ -254,7 +252,6 @@ public class PoseHandler<ENTITY extends EntityLivingBase & Animatable> {
 
     private class ModelData {
     	
-        @SideOnly(Side.CLIENT)
         PosedCuboid[][] poses;
 
         Map<Animation, float[][][]> animations;
@@ -264,7 +261,6 @@ public class PoseHandler<ENTITY extends EntityLivingBase & Animatable> {
             this(null, null);
         }
 
-        @SideOnly(Side.CLIENT)
         public ModelData(PosedCuboid[][] cuboids, final Map<Animation, float[][][]> animations, final Map<Animation, byte[]> poseCount) {
             this(animations, poseCount);
 

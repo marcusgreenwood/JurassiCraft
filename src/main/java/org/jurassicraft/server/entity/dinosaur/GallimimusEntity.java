@@ -10,7 +10,7 @@ import org.jurassicraft.server.entity.ai.animations.PeckGroundAnimationAI;
 
 import net.ilexiconn.llibrary.server.animation.Animation;
 import net.minecraft.util.SoundEvent;
-import net.minecraft.world.World;
+import net.minecraft.world.level.Level;
 
 public class GallimimusEntity extends DinosaurEntity {
     public LegSolverBiped legSolver;

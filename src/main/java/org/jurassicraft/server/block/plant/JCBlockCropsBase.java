@@ -1,21 +1,21 @@
 package org.jurassicraft.server.block.plant;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockBush;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.BlockBush;
 import net.minecraft.block.IGrowable;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.block.state.BlockStateContainer;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.init.Blocks;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.core.Direction;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.core.BlockPos;
+import net.minecraft.util.Mth;
 import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.common.IPlantable;
 
 import java.util.ArrayList;
@@ -50,7 +50,7 @@ public abstract class JCBlockCropsBase extends BlockBush implements IGrowable {
                 float f1 = 0.0F;
                 IBlockState state = world.getBlockState(blockpos.add(i, 0, j));
 
-                if (state.getBlock().canSustainPlant(state, world, blockpos.add(i, 0, j), EnumFacing.UP, (IPlantable) block)) {
+                if (state.getBlock().canSustainPlant(state, world, blockpos.add(i, 0, j), Direction.UP, (IPlantable) block)) {
                     f1 = 1.0F;
 
                     if (state.getBlock().isFertile(world, blockpos.add(i, 0, j))) {
@@ -143,7 +143,7 @@ public abstract class JCBlockCropsBase extends BlockBush implements IGrowable {
 
     @Override
     public boolean canBlockStay(World world, BlockPos pos, IBlockState state) {
-        return (world.getLight(pos) >= 8 || world.canSeeSky(pos)) && world.getBlockState(pos.down()).getBlock().canSustainPlant(state, world, pos.down(), net.minecraft.util.EnumFacing.UP, this);
+        return (world.getLight(pos) >= 8 || world.canSeeSky(pos)) && world.getBlockState(pos.down()).getBlock().canSustainPlant(state, world, pos.down(), net.minecraft.core.Direction.UP, this);
     }
 
     @Override

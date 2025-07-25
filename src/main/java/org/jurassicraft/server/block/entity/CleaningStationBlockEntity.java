@@ -1,32 +1,32 @@
 package org.jurassicraft.server.block.entity;
 
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.client.Minecraft;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.inventory.ItemStackHelper;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntityLockable;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.core.Direction;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.NonNullList;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.Mth;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.DistOnly;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.wrapper.SidedInvWrapper;
@@ -69,7 +69,6 @@ public class CleaningStationBlockEntity extends TileEntityLockable implements IT
 	public float rotationAmount = 0;
 	private float prevCleaningRotation;
 
-	@SideOnly(Side.CLIENT)
 	public static boolean isCleaning(IInventory inventory) {
 		return inventory.getField(0) > 0;
 	}
@@ -114,7 +113,7 @@ public class CleaningStationBlockEntity extends TileEntityLockable implements IT
 	@Override
 	public void setInventorySlotContents(int index, ItemStack stack) {
 		boolean send = false;
-		if(!this.world.isRemote && index == 0 && ItemStack.EMPTY == stack)
+		if(!this.level().isClientSide && index == 0 && ItemStack.EMPTY == stack)
 			send = true;
 		
 		boolean flag = !stack.isEmpty() && stack.isItemEqual(this.slots.get(index)) && ItemStack.areItemStackTagsEqual(stack, this.slots.get(index));
@@ -281,7 +280,7 @@ public class CleaningStationBlockEntity extends TileEntityLockable implements IT
 			updateRotation();
 		}
 
-		if (this.world.isRemote && this.isCleaning) {
+		if (this.level().isClientSide && this.isCleaning) {
 			this.spawnClientWaterParticles();
 		}
 
@@ -290,7 +289,6 @@ public class CleaningStationBlockEntity extends TileEntityLockable implements IT
 		}
 	}
 
-	@SideOnly(Side.CLIENT)
 	private void spawnClientWaterParticles() {
 		IBlockState state = this.world.getBlockState(this.getPos());
 		EnumFacing value = state.getValue(OrientedBlock.FACING);
@@ -513,7 +511,6 @@ public class CleaningStationBlockEntity extends TileEntityLockable implements IT
 	}
 
 	@Override
-	@SideOnly(Side.CLIENT)
 	public void onDataPacket(NetworkManager networkManager, SPacketUpdateTileEntity packet) {
 		this.readFromNBT(packet.getNbtCompound());
 	}
@@ -536,7 +533,6 @@ public class CleaningStationBlockEntity extends TileEntityLockable implements IT
 		}
 	}
 	
-	@SideOnly(Side.CLIENT)
 	public void updateRotation() {
 		this.prevCleaningRotation = this.cleaningRotation;
 		if(!ClientProxy.MC.isGamePaused()) {
@@ -560,7 +556,6 @@ public class CleaningStationBlockEntity extends TileEntityLockable implements IT
 		}
 	}
 
-	@SideOnly(Side.CLIENT)
 	public float getRenderCleaningRotation(float particialTicks) {
 		return this.prevCleaningRotation + (this.cleaningRotation - this.prevCleaningRotation) * particialTicks;
 	}

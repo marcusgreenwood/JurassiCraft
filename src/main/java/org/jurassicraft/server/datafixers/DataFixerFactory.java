@@ -1,6 +1,6 @@
 package org.jurassicraft.server.datafixers;
 
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.datafix.IFixableData;
 
 import java.util.function.Function;

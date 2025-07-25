@@ -1,9 +1,9 @@
 package org.jurassicraft.server.item.vehicles;
 
 import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.world.World;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import org.jurassicraft.server.tab.TabHandler;
 
 import java.util.List;

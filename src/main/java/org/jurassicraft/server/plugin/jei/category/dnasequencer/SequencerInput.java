@@ -1,8 +1,8 @@
 package org.jurassicraft.server.plugin.jei.category.dnasequencer;
 
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemBlock;
+import net.minecraft.world.item.ItemStack;
 import org.jurassicraft.server.api.SequencableItem;
 
 public class SequencerInput {

@@ -1,7 +1,7 @@
 package org.jurassicraft.server.entity.ai.util;
 
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.Mth;
+import net.minecraft.world.phys.Vec3;
 
 public class MathUtils {
     /**

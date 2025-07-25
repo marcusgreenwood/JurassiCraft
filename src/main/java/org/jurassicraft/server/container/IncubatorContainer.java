@@ -1,11 +1,11 @@
 package org.jurassicraft.server.container;
 
-import net.minecraft.block.Block;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import org.jurassicraft.server.api.IncubatorEnvironmentItem;
 import org.jurassicraft.server.block.entity.IncubatorBlockEntity;
@@ -47,7 +47,7 @@ public class IncubatorContainer extends MachineContainer {
     public void onContainerClosed(EntityPlayer player) {
         super.onContainerClosed(player);
 
-        if (!player.world.isRemote) {
+        if (!player.level().isClientSide) {
             this.incubator.closeInventory(player);
         }
     }

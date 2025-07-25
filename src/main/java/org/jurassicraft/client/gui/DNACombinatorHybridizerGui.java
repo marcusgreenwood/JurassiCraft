@@ -4,15 +4,14 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraft.resources.ResourceLocation;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.DistOnly;
 import org.jurassicraft.JurassiCraft;
 import org.jurassicraft.server.block.entity.DNACombinatorHybridizerBlockEntity;
 import org.jurassicraft.server.container.DNACombinatorHybridizerContainer;
 import org.jurassicraft.server.message.SwitchHybridizerCombinatorMode;
 
-@SideOnly(Side.CLIENT)
 public class DNACombinatorHybridizerGui extends GuiContainer {
     private static final ResourceLocation hybridizerTexture = new ResourceLocation("jurassicraft:textures/gui/dna_hybridizer.png");
     private static final ResourceLocation combinatorTexture = new ResourceLocation("jurassicraft:textures/gui/dna_combinator.png");

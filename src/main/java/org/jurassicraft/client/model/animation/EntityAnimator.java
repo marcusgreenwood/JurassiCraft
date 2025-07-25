@@ -3,9 +3,9 @@ package org.jurassicraft.client.model.animation;
 import net.ilexiconn.llibrary.client.model.tabula.ITabulaModelAnimator;
 import net.ilexiconn.llibrary.client.model.tabula.TabulaModel;
 import net.ilexiconn.llibrary.client.model.tools.AdvancedModelRenderer;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraft.world.entity.EntityLivingBase;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.DistOnly;
 import org.jurassicraft.client.model.AnimatableModel;
 import org.jurassicraft.server.api.Animatable;
 import org.jurassicraft.server.entity.GrowthStage;
@@ -14,7 +14,6 @@ import java.util.EnumMap;
 import java.util.Map;
 import java.util.WeakHashMap;
 
-@SideOnly(Side.CLIENT)
 public abstract class EntityAnimator<ENTITY extends EntityLivingBase & Animatable> implements ITabulaModelAnimator<ENTITY> {
     protected EnumMap<GrowthStage, Map<ENTITY, JabelarAnimationHandler<ENTITY>>> animationHandlers = new EnumMap<>(GrowthStage.class);
 

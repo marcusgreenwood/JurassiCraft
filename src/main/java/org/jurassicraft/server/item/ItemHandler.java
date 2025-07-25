@@ -19,18 +19,18 @@ import org.jurassicraft.server.entity.EntityHandler;
 import org.jurassicraft.server.item.block.AncientDoorItem;
 import org.jurassicraft.server.tab.TabHandler;
 import org.jurassicraft.server.util.RegistryHandler;
-import net.minecraft.block.Block;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.PlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemFood;
-import net.minecraft.item.ItemSeedFood;
-import net.minecraft.item.ItemSeeds;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemFood;
+import net.minecraft.world.item.ItemSeedFood;
+import net.minecraft.world.item.ItemSeeds;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.play.server.SPacketChat;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.potion.PotionUtils;
@@ -87,7 +87,7 @@ public class ItemHandler {
                     return true;
                 }
             	}else {
-            		if(!interaction.getTarget().world.isRemote) {
+            		if(!interaction.getTarget().level().isClientSide) {
             			EntityPlayerMP player = (EntityPlayerMP) interaction.getPlayer();
             			TextComponentTranslation growthTranslation = new TextComponentTranslation("item.growth_serum.denied");
             			growthTranslation.getStyle().setColor(TextFormatting.RED);
@@ -127,7 +127,7 @@ public class ItemHandler {
     });
 
     public static final Item PREGNANCY_TEST = new EntityRightClickItem(interaction -> {
-        if(interaction.getTarget() instanceof DinosaurEntity && !interaction.getPlayer().world.isRemote) {
+        if(interaction.getTarget() instanceof DinosaurEntity && !interaction.getPlayer().level().isClientSide) {
             DinosaurEntity dino = ((DinosaurEntity)interaction.getTarget());
             interaction.getPlayer().sendStatusMessage(new TextComponentTranslation("dinosaur.pregnancytest." + (dino.isMale() ? "male" : dino.isPregnant() ? "pregnant" : "not_pregnant")), false);
             return true;

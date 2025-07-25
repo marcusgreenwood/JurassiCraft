@@ -1,8 +1,8 @@
 package org.jurassicraft.server.block.plant;
 
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.IBlockAccess;
 
 public class RaphaeliaBlock extends AncientPlantBlock {

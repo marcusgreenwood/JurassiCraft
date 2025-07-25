@@ -5,7 +5,7 @@ import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.passive.EntitySquid;
 import net.minecraft.util.SoundEvent;
-import net.minecraft.world.World;
+import net.minecraft.world.level.Level;
 import org.jurassicraft.server.entity.SwimmingDinosaurEntity;
 
 public class CoelacanthEntity extends SwimmingDinosaurEntity {

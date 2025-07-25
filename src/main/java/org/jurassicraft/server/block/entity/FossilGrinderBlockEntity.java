@@ -2,18 +2,18 @@ package org.jurassicraft.server.block.entity;
 
 import java.util.Random;
 
-import net.minecraft.item.Item;
+import net.minecraft.world.item.Item;
 import org.jurassicraft.JurassiCraft;
 import org.jurassicraft.server.api.GrindableItem;
 import org.jurassicraft.server.container.FossilGrinderContainer;
 
 import com.google.common.primitives.Ints;
 
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.core.Direction;
 import net.minecraft.util.NonNullList;
 import scala.actors.threadpool.Arrays;
 

@@ -1,11 +1,11 @@
 package org.jurassicraft.server.damage;
 
 import net.minecraft.client.resources.I18n;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityLivingBase;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.phys.Vec3;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentTranslation;
 
@@ -37,7 +37,7 @@ public class DinosaurDamageSource extends DamageSource {
 
     @Override
     public Vec3d getDamageLocation() {
-        return new Vec3d(this.entity.posX, this.entity.posY, this.entity.posZ);
+        return new Vec3d(this.entity.getX(), this.entity.getY(), this.entity.getZ());
     }
 
     @Override

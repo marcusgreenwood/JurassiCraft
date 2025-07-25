@@ -5,13 +5,12 @@ import net.ilexiconn.llibrary.client.model.tabula.TabulaModel;
 import net.ilexiconn.llibrary.client.model.tools.AdvancedModelRenderer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.EnumParticleTypes;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.DistOnly;
 import org.jurassicraft.server.entity.vehicle.HelicopterEntity;
 
 import java.util.Map;
 
-@SideOnly(Side.CLIENT)
 public class HelicopterAnimator implements ITabulaModelAnimator<HelicopterEntity> {
 
 	@Override

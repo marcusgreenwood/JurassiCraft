@@ -2,7 +2,7 @@ package org.jurassicraft.server.block.plant;
 
 import org.jurassicraft.server.item.ItemHandler;
 
-import net.minecraft.item.Item;
+import net.minecraft.world.item.Item;
 
 public class RhamnusSalifocifusBlock extends JCBlockCrops8 {
 	public RhamnusSalifocifusBlock() {

@@ -1,7 +1,7 @@
 package org.jurassicraft.server.item;
 
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 
 import org.apache.commons.lang3.tuple.Pair;
 import org.jurassicraft.server.api.BreedableBug;

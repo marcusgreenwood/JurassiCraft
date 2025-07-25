@@ -1,6 +1,6 @@
 package org.jurassicraft.server.plant;
 
-import net.minecraft.block.Block;
+import net.minecraft.world.level.block.Block;
 import org.jurassicraft.server.block.BlockHandler;
 
 public class SmallChainFernPlant extends Plant {

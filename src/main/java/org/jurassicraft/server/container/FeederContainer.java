@@ -1,6 +1,6 @@
 package org.jurassicraft.server.container;
 
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
 import org.jurassicraft.server.block.entity.FeederBlockEntity;

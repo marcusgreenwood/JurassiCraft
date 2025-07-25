@@ -1,24 +1,24 @@
 package org.jurassicraft.server.block.entity;
 
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.inventory.ItemStackHelper;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntityLockable;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.core.Direction;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.NonNullList;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fml.common.FMLCommonHandler;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.DistOnly;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.wrapper.SidedInvWrapper;
@@ -36,7 +36,6 @@ public abstract  class MachineBaseBlockEntity extends TileEntityLockable impleme
     protected int[] processTime = new int[this.getProcessCount()];
     protected int[] totalProcessTime = new int[this.getProcessCount()];
 
-    @SideOnly(Side.CLIENT)
     public static boolean isProcessing(IInventory inventory, int index) {
         return inventory.getField(index) > 0;
     }
@@ -224,7 +223,7 @@ public abstract  class MachineBaseBlockEntity extends TileEntityLockable impleme
                         }
                     }
                     this.totalProcessTime[process] = total;
-                    if (!this.world.isRemote)
+                    if (!this.level().isClientSide)
                     {
                     this.processItem(process);
                     this.onSlotUpdate();
@@ -247,7 +246,7 @@ public abstract  class MachineBaseBlockEntity extends TileEntityLockable impleme
                 dirty = true;
             }
 
-            if (dirty && !this.world.isRemote) {
+            if (dirty && !this.level().isClientSide) {
                 this.markDirty();
             }
         }
@@ -275,7 +274,7 @@ public abstract  class MachineBaseBlockEntity extends TileEntityLockable impleme
 
     @Override
     public int[] getSlotsForFace(EnumFacing side) {
-        return side == EnumFacing.DOWN ? this.getOutputs() : this.getInputs();
+        return side == Direction.DOWN ? this.getOutputs() : this.getInputs();
     }
 
     @Override
@@ -441,15 +440,15 @@ public abstract  class MachineBaseBlockEntity extends TileEntityLockable impleme
 		return null;
 	}
 
-    IItemHandler handler = new SidedInvWrapper(this, EnumFacing.UP);
-    IItemHandler handlerBottom = new SidedInvWrapper(this, EnumFacing.DOWN);
+    IItemHandler handler = new SidedInvWrapper(this, Direction.UP);
+    IItemHandler handlerBottom = new SidedInvWrapper(this, Direction.DOWN);
 
     @Override
     @Nullable
     public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing)
     {
         if (facing != null && capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
-            if (facing == EnumFacing.DOWN) {
+            if (facing == Direction.DOWN) {
                 return (T) handlerBottom;
             }
             else {

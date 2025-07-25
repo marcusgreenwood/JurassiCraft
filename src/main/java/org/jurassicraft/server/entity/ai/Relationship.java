@@ -1,8 +1,8 @@
 package org.jurassicraft.server.entity.ai;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityLivingBase;
+import net.minecraft.nbt.CompoundTag;
 import org.jurassicraft.server.dinosaur.Dinosaur;
 import org.jurassicraft.server.entity.DinosaurEntity;
 
@@ -39,7 +39,7 @@ public class Relationship {
             }
         }
         EntityLivingBase lastAttacker = owner.getAttackTarget();
-        if (lastAttacker != null && (lastAttacker.isDead || (lastAttacker instanceof DinosaurEntity && ((DinosaurEntity) lastAttacker).isCarcass()))) {
+        if (lastAttacker != null && (lastAttacker.isRemoved() || (lastAttacker instanceof DinosaurEntity && ((DinosaurEntity) lastAttacker).isCarcass()))) {
             EntityLivingBase lastAttackerKiller = lastAttacker.getRevengeTarget();
             if (lastAttackerKiller != null && lastAttackerKiller.getUniqueID().equals(this.entity)) {
                 this.score += 100;

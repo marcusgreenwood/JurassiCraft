@@ -3,14 +3,13 @@ package org.jurassicraft.client.gui;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.util.text.translation.I18n;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.DistOnly;
 import org.jurassicraft.server.entity.DinosaurEntity;
 import org.jurassicraft.server.util.LangUtils;
 
 import java.util.Locale;
 
-@SideOnly(Side.CLIENT)
 public class OrderDinosaurGui extends GuiScreen {
     private DinosaurEntity entity;
 

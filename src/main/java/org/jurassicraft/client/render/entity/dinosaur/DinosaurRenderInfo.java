@@ -5,10 +5,10 @@ import net.ilexiconn.llibrary.client.model.tabula.container.TabulaModelContainer
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.fml.client.registry.IRenderFactory;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.DistOnly;
 import org.jurassicraft.JurassiCraft;
 import org.jurassicraft.client.model.AnimatableModel;
 import org.jurassicraft.client.model.animation.EntityAnimator;
@@ -23,7 +23,6 @@ import java.util.EnumMap;
 import java.util.Locale;
 import java.util.Map;
 
-@SideOnly(Side.CLIENT)
 public class DinosaurRenderInfo implements IRenderFactory<DinosaurEntity> {
 	
     private static TabulaModel DEFAULT_EGG_MODEL;

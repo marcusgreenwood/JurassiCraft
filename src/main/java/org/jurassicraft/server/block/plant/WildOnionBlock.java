@@ -1,6 +1,6 @@
 package org.jurassicraft.server.block.plant;
 
-import net.minecraft.item.Item;
+import net.minecraft.world.item.Item;
 import org.jurassicraft.server.item.ItemHandler;
 
 public class WildOnionBlock extends JCBlockCrops7 {

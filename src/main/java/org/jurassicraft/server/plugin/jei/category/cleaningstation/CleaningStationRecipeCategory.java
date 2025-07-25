@@ -4,8 +4,8 @@ import java.awt.*;
 import java.util.List;
 
 import mezz.jei.api.recipe.IRecipeCategory;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.DistOnly;
 import org.jurassicraft.JurassiCraft;
 
 import mezz.jei.api.IGuiHelper;
@@ -20,8 +20,8 @@ import mezz.jei.api.recipe.IRecipeWrapper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.text.translation.I18n;
 import org.jurassicraft.server.plugin.jei.util.RecipeLayoutOutputSupplier;
 
