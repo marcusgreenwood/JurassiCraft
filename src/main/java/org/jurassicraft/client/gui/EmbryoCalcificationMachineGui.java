@@ -1,5 +1,24 @@
 package org.jurassicraft.client.gui;
 
+// TODO: Rewrite for modern GUI system
+// Temporarily commented out for 1.21 upgrade - old GUI APIs no longer exist
+
+// Placeholder class for 1.21 upgrade - will be rewritten with modern GUI
+public class EmbryoCalcificationMachineGui {
+    // TODO: Implement modern GUI for EmbryoCalcificationMachine using Screen/AbstractContainerScreen
+    
+    // Constructor placeholder
+    public EmbryoCalcificationMachineGui(Object playerInv, Object inventory) {
+        // TODO: Initialize modern GUI
+    }
+}
+
+/*
+// Original 1.12.2 implementation will be restored and rewritten for 1.21 later
+// This contained a GuiContainer-based GUI that needs to be modernized to Screen/AbstractContainerScreen
+
+package org.jurassicraft.client.gui;
+
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -32,8 +51,8 @@ public class EmbryoCalcificationMachineGui extends GuiContainer {
 
     @Override
     protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
-        String displayName = this.inventory.getDisplayName().getUnformattedText();
-        this.fontRenderer.drawString(displayName, this.xSize / 2 - this.fontRenderer.getStringWidth(displayName) / 2, 4, 4210752);
+        String s = this.inventory.getDisplayName().getUnformattedText();
+        this.fontRenderer.drawString(s, this.xSize / 2 - this.fontRenderer.getStringWidth(s) / 2, 6, 4210752);
         this.fontRenderer.drawString(this.playerInventory.getDisplayName().getUnformattedText(), 8, this.ySize - 96 + 2, 4210752);
     }
 
@@ -45,21 +64,17 @@ public class EmbryoCalcificationMachineGui extends GuiContainer {
         int l = (this.height - this.ySize) / 2;
         this.drawTexturedModalRect(k, l, 0, 0, this.xSize, this.ySize);
 
-        int progress = this.getProgress(24);
-        int progress1 = this.getProgress(9);
-        int progress2 = this.getProgress(20);
-        this.drawTexturedModalRect(k + 67, l + 31, 176, 14, progress + 1, 16);
-        // Syringe Top
-        this.drawTexturedModalRect(k + 38, l + 32, 177, 32, 9, progress1);
-        // Syringe Inside
-        this.drawTexturedModalRect(k + 38, l + 38, 197, 38, 9, progress2);
-        // Clean up
-        this.drawTexturedModalRect(k + 38, l + 32, 187, 32, 9, progress1 - 1);
-    }
+        if (this.inventory instanceof EmbryoCalcificationMachineBlockEntity) {
+            EmbryoCalcificationMachineBlockEntity machine = (EmbryoCalcificationMachineBlockEntity) this.inventory;
 
-    private int getProgress(int scale) {
-        int progress = this.inventory.getField(0);
-        int nax = this.inventory.getField(1);
-        return nax != 0 && progress != 0 ? progress * scale / nax : 0;
+            int progress = machine.getProgressScaled(24);
+
+            this.drawTexturedModalRect(k + 79, l + 34, 176, 14, progress + 1, 16);
+
+            int energyScaled = machine.getEnergyScaled(78);
+
+            this.drawTexturedModalRect(k + 15, l + 8 + 78 - energyScaled, 176, 78 - energyScaled, 16, energyScaled);
+        }
     }
 }
+*/

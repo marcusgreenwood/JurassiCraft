@@ -1,64 +1,25 @@
 package org.jurassicraft.client.event;
 
-import net.minecraft.client.model.ModelPlayer;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraftforge.event.entity.player.PlayerEvent;
+// TODO: Rewrite for modern event system
+// Temporarily commented out for 1.21 upgrade - old event APIs no longer exist
 
-public abstract class ModelPlayerRenderEvent extends PlayerEvent
-{
-    private ModelPlayer model;
-    private float partialTicks;
-
-    private ModelPlayerRenderEvent(EntityPlayer player, ModelPlayer model, float partialTicks)
-    {
-        super(player);
-        this.model = model;
-        this.partialTicks = partialTicks;
-    }
-
-    public ModelPlayer getModel()
-    {
-        return model;
-    }
-
-    public float getPartialTicks()
-    {
-        return partialTicks;
-    }
-
-    public static class Render extends ModelPlayerRenderEvent
-    {
-        private Render(EntityPlayer player, ModelPlayer modelPlayer, float partialTicks)
-        {
-            super(player, modelPlayer, partialTicks);
+// Placeholder class for 1.21 upgrade - will be rewritten with modern event handling
+public class ModelPlayerRenderEvent {
+    // TODO: Implement modern player model render event for NeoForge 1.21
+    
+    // Placeholder inner classes
+    public static class Render {
+        public static class Pre {
+            // TODO: Implement modern Pre event
         }
-
-        public static class Pre extends Render
-        {
-            public Pre(EntityPlayer player, ModelPlayer modelPlayer, float partialTicks)
-            {
-                super(player, modelPlayer, partialTicks);
-            }
-            
-            @Override
-            public boolean isCancelable()
-            {
-                return true;
-            }
-        }
-
-        public static class Post extends Render
-        {
-            public Post(EntityPlayer player, ModelPlayer modelPlayer, float partialTicks)
-            {
-                super(player, modelPlayer, partialTicks);
-            }
-
-            @Override
-            public boolean isCancelable()
-            {
-                return false;
-            }
+        
+        public static class Post {
+            // TODO: Implement modern Post event
         }
     }
 }
+
+/*
+// Original 1.12.2 implementation will be restored and rewritten for 1.21 later
+// This contained custom event handling for player model rendering that needs to be modernized
+*/

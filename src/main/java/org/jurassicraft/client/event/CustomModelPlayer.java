@@ -1,27 +1,19 @@
 package org.jurassicraft.client.event;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.model.ModelPlayer;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraftforge.common.MinecraftForge;
+// TODO: Rewrite for modern model system
+// Temporarily commented out for 1.21 upgrade - old model APIs no longer exist
 
-public class CustomModelPlayer extends ModelPlayer
-{
-	
-    public CustomModelPlayer(float modelSize, boolean slimArms)
-    {
-        super(modelSize, slimArms);
+// Placeholder class for 1.21 upgrade - will be rewritten with modern model system
+public class CustomModelPlayer {
+    // TODO: Implement modern custom player model for NeoForge 1.21
+    
+    // Constructor placeholder
+    public CustomModelPlayer(float modelSize, boolean smallArms) {
+        // TODO: Initialize modern player model
     }
-
-    @Override
-    public void render(Entity entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale)
-    {
-        if(!MinecraftForge.EVENT_BUS.post(new ModelPlayerRenderEvent.Render.Pre((EntityPlayer) entityIn, this, Minecraft.getMinecraft().getRenderPartialTicks())))
-        {
-            super.render(entityIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
-            MinecraftForge.EVENT_BUS.post(new ModelPlayerRenderEvent.Render.Post((EntityPlayer) entityIn, this, Minecraft.getMinecraft().getRenderPartialTicks()));
-        }
-    }
-
 }
+
+/*
+// Original 1.12.2 implementation will be restored and rewritten for 1.21 later
+// This contained custom player model logic that needs to be modernized for the new model system
+*/
