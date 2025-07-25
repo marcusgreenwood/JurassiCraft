@@ -1,37 +1,36 @@
 package org.jurassicraft.server.entity.vehicle.util;
 
-import javax.vecmath.Vector2d;
-
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.phys.Vec3;
 
 public class CarWheel {
     
-    private final Vector2d relativeWheelPosition;        
-    private Vec3d currentWheelPos = Vec3d.ZERO;
-    private Vec3d prevCurrentWheelPos = Vec3d.ZERO;
+    // TODO: Replace Vector2d with appropriate alternative 
+    private final Object relativeWheelPosition; // Temporarily Object        
+    private Vec3 currentWheelPos = Vec3.ZERO;
+    private Vec3 prevCurrentWheelPos = Vec3.ZERO;
     private final int ID;
     
     private CarWheel oppositeWheel;
     
-    public CarWheel(int id, Vector2d relativeWheelPosition) {
+    public CarWheel(int id, Object relativeWheelPosition) { // TODO: Fix type
     	this.relativeWheelPosition = relativeWheelPosition;
 		this.ID = id;
     }
     
-    public Vector2d getRelativeWheelPosition() {
+    public Object getRelativeWheelPosition() { // TODO: Fix Vector2d replacement
     	return relativeWheelPosition;
     }
     
-    public void setCurrentWheelPos(Vec3d currentWheelPos) {
+    public void setCurrentWheelPos(Vec3 currentWheelPos) {
     	this.prevCurrentWheelPos = this.currentWheelPos;
         this.currentWheelPos = currentWheelPos;
     }
     
-    public Vec3d getPrevCurrentWheelPos() {
+    public Vec3 getPrevCurrentWheelPos() {
 	return prevCurrentWheelPos;
     }
     
-    public Vec3d getCurrentWheelPos() {
+    public Vec3 getCurrentWheelPos() {
         return currentWheelPos;
     }
     
