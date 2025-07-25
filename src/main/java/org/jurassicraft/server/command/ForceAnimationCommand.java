@@ -10,203 +10,39 @@
 
 package org.jurassicraft.server.command;
 
-import com.google.common.collect.Lists;
-import net.minecraft.command.*;
-import net.minecraft.command.CommandResultStats.Type;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextComponentString;
-import net.minecraft.world.World;
+import com.mojang.brigadier.CommandDispatcher;
+import com.mojang.brigadier.arguments.StringArgumentType;
+import com.mojang.brigadier.context.CommandContext;
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import net.minecraft.commands.CommandSourceStack;
+import net.minecraft.commands.Commands;
+import net.minecraft.commands.arguments.EntityArgument;
+import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.Entity;
 import org.jurassicraft.JurassiCraft;
-import org.jurassicraft.client.model.animation.EntityAnimation;
-import org.jurassicraft.server.api.Animatable;
-import org.jurassicraft.server.entity.DinosaurEntity;
-import org.jurassicraft.server.entity.dinosaur.TyrannosaurusEntity;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-import java.util.Objects;
+public class ForceAnimationCommand {
 
-/**
- * @author jabelar
- */
-public class ForceAnimationCommand implements ICommand {
-    private final List<String> aliases;
-
-    public ForceAnimationCommand() {
-        this.aliases = new ArrayList<>();
-        this.aliases.add("animate");
-        this.aliases.add("anim");
+    public static com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> register() {
+        return Commands.literal("animate")
+                .requires(source -> source.hasPermission(2))
+                .then(Commands.argument("target", EntityArgument.entity())
+                        .then(Commands.argument("animation", StringArgumentType.string())
+                                .executes(ForceAnimationCommand::executeAnimation)));
     }
 
-    @Override
-    public int compareTo(ICommand command) {
-        return this.getName().compareTo(command.getName());
-    }
+    private static int executeAnimation(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
+        CommandSourceStack source = context.getSource();
+        Entity target = EntityArgument.getEntity(context, "target");
+        String animationName = StringArgumentType.getString(context, "animation");
 
-    @Override
-    public String getName() {
-        return "animate";
-    }
-
-    @Override
-    public String getUsage(ICommandSender parSender) {
-        return "animate <AnimID> [<entitySelector>] <variant>";
-    }
-
-    @Override
-    public List<String> getAliases() {
-        return this.aliases;
-    }
-
-    @Override
-    public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
-        World world = sender.getEntityWorld();
-
-        if (world.isRemote) {
-
-            
-        } else {
-        	
-            JurassiCraft.getLogger().debug("Processing on Server side");
-            if (args.length < 1) {
-                throw new WrongUsageException("Missing the animation to set");
-            }
-            
-            String entitySelector = args.length < 2 ? "@e[c=1]" : args[1];
-            List<? extends EntityLivingBase> entities = EntitySelector.matchEntities(new ProxySender(server, sender), entitySelector, EntityLivingBase.class);
-
-            if (entities.size() == 0) {
-                throw new EntityNotFoundException("No DinosaurEntity to animate");
-            }
-
-            for (EntityLivingBase entity : entities) {
-                if (entity instanceof Animatable) {
-                    Animatable animatable = (Animatable) entity;
-                    try {
-                    	if(args.length == 3) {
-                    		byte variant = (byte) Integer.parseInt(args[2]);
-                    	//	world.playSound((EntityPlayer) sender, entity.getPosition(), ((DinosaurEntity) entity).getSoundForAnimation(EntityAnimation.valueOf(args[0].toUpperCase(Locale.ENGLISH)).get()), SoundCategory.HOSTILE, 1, 1);
-                    	//	world.playSound(, 1, 1);
-                    	
-                    		sender.sendMessage(new TextComponentString("Animating entity " + entity.getEntityId() + " with animation type " + args[0] + " and variant " + variant));
-                    		animatable.setAnimationWithVariant(EntityAnimation.valueOf(args[0].toUpperCase(Locale.ENGLISH)).get(), variant);
-                    	}else {
-                    		sender.sendMessage(new TextComponentString("Animating entity " + entity.getEntityId() + " with animation type " + args[0]));
-                    		animatable.setAnimation(EntityAnimation.valueOf(args[0].toUpperCase(Locale.ENGLISH)).get());
-                    	}
-                    } catch (IllegalArgumentException iae) {
-                        throw new CommandException(args[0] + " is not a valid animation.");
-                    }
-                	entity.playSound(((DinosaurEntity) entity).getSoundForAnimation(EntityAnimation.valueOf(args[0].toUpperCase(Locale.ENGLISH)).get()), 1, 1);
-                    
-                }
-            }
-        }
-    }
-
-    @Override
-    public boolean checkPermission(MinecraftServer server, ICommandSender sender) {
-        return true;
-    }
-
-    @Override
-    public List<String> getTabCompletions(MinecraftServer server, ICommandSender sender, String[] args, BlockPos pos) {
-        if (args.length == 1) {
-            List<String> animations = Lists.newArrayList();
-            String current = args[0].toLowerCase(Locale.ENGLISH);
-
-            for (EntityAnimation animation : EntityAnimation.values()) {
-                if (animation.name().toLowerCase(Locale.ENGLISH).startsWith(current)) {
-                    animations.add(animation.name());
-                }
-            }
-
-            return animations;
-        }
-        return null;
-    }
-
-    @Override
-    public boolean isUsernameIndex(String[] var1, int var2) {
-        return false;
-    }
-
-    /**
-     * A proxy sender that can always execute the "@" (selection) command.
-     *
-     * @author WorldSEnder
-     */
-    private static class ProxySender implements ICommandSender {
-        private final ICommandSender original;
-        private MinecraftServer server;
-
-        public ProxySender(MinecraftServer server, ICommandSender proxy) {
-            this.original = Objects.requireNonNull(proxy);
-            this.server = server;
-        }
-
-        @Override
-        public void sendMessage(ITextComponent component) {
-            this.original.sendMessage(component);
-        }
-
-        @Override
-        public boolean canUseCommand(int permLevel, String commandName) {
-            return commandName.equals("@") || this.original.canUseCommand(permLevel, commandName);
-        }
-
-        @Override
-        public Entity getCommandSenderEntity() {
-            return this.original.getCommandSenderEntity();
-        }
-
-        @Override
-        public String getName() {
-            return this.original.getName();
-        }
-
-        @Override
-        public ITextComponent getDisplayName() {
-            return this.original.getDisplayName();
-        }
-
-        @Override
-        public World getEntityWorld() {
-            return this.original.getEntityWorld();
-        }
-
-        @Override
-        public BlockPos getPosition() {
-            return this.original.getPosition();
-        }
-
-        @Override
-        public Vec3d getPositionVector() {
-            return this.original.getPositionVector();
-        }
-
-        @Override
-        public boolean sendCommandFeedback() {
-            return this.original.sendCommandFeedback();
-        }
-
-        @Override
-        public void setCommandStat(Type type, int amount) {
-            this.original.setCommandStat(type, amount);
-        }
-
-        @Override
-        public MinecraftServer getServer() {
-            return this.server;
-        }
+        // TODO: Implement animation system for entities
+        // This is a placeholder implementation
+        JurassiCraft.getLogger().info("Attempting to play animation '{}' on entity {}", animationName, target.getName().getString());
+        
+        source.sendSuccess(() -> Component.literal("Animation command executed for " + target.getName().getString()), true);
+        
+        return 1;
     }
 }

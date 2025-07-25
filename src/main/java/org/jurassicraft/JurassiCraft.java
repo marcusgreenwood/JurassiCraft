@@ -1,64 +1,74 @@
 package org.jurassicraft;
 
-import net.ilexiconn.llibrary.server.network.NetworkWrapper;
-import net.ilexiconn.llibrary.server.update.UpdateHandler;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.Mod.Instance;
-import net.minecraftforge.fml.common.SidedProxy;
-import net.minecraftforge.fml.common.event.FMLInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
-import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.ModLoadingContext;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.config.ModConfig;
+import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
+import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.event.server.ServerStartingEvent;
+import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jurassicraft.server.command.ForceAnimationCommand;
 import org.jurassicraft.server.command.SpawnStructureCommand;
-import org.jurassicraft.server.message.*;
-import org.jurassicraft.server.proxy.ServerProxy;
 
-@Mod(modid = JurassiCraft.MODID, name = JurassiCraft.NAME, version = JurassiCraft.VERSION, dependencies = "required-after:llibrary@[" + JurassiCraft.LLIBRARY_VERSION + ",);required-after:forge@[14.23.4.2705,)")
+@Mod(JurassiCraft.MODID)
 public class JurassiCraft {
     public static final String MODID = "jurassicraft";
     public static final String NAME = "JurassiCraft";
-    public static final String VERSION = "2.1.23 ";
+    public static final String VERSION = "2.2.0";
 
-    public static final String LLIBRARY_VERSION = "1.7.15";
-    @SidedProxy(serverSide = "org.jurassicraft.server.proxy.ServerProxy", clientSide = "org.jurassicraft.client.proxy.ClientProxy")
-    public static ServerProxy PROXY;
-
-    @Instance(JurassiCraft.MODID)
-    public static JurassiCraft INSTANCE;
+    private static final Logger LOGGER = LogManager.getLogger();
 
     public static long timerTicks;
 
-    @NetworkWrapper({ PlacePaddockSignMessage.class, ChangeTemperatureMessage.class, SwitchHybridizerCombinatorMode.class, SetOrderMessage.class, OpenFieldGuideGuiMessage.class, UpdateVehicleControlMessage.class, BiPacketOrder.class, MicroraptorDismountMessage.class, FordExplorerChangeStateMessage.class, FordExplorerUpdatePositionStateMessage.class, DNASequenceTransferClicked.class, CarEntityPlayRecord.class, AttemptMoveToSeatMessage.class, TileEntityFieldsMessage.class, SpecialAnimationMessage.class})
-    public static SimpleNetworkWrapper NETWORK_WRAPPER;
+    public JurassiCraft(IEventBus modEventBus) {
+        // Register the commonSetup method for modloading
+        modEventBus.addListener(this::commonSetup);
 
-    private static Logger logger;
-    @Mod.EventHandler
-    public void onPreInit(FMLPreInitializationEvent event) {
-        this.logger = event.getModLog();
-        UpdateHandler.INSTANCE.registerUpdateChecker(this, "http://pastebin.com/raw/Rb96SNWb");
-        PROXY.onPreInit(event);
+        // Register ourselves for server and other game events we are interested in
+        NeoForge.EVENT_BUS.register(this);
+
+        // Register the item to a creative tab
+        // ModCreativeModeTabs.register(modEventBus);
+
+        // Register config
+        // ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, Config.SPEC);
     }
 
-    @Mod.EventHandler
-    public void onInit(FMLInitializationEvent event) {
-        PROXY.onInit(event);
+    private void commonSetup(final FMLCommonSetupEvent event) {
+        // Some common setup code
+        LOGGER.info("HELLO FROM COMMON SETUP");
+        LOGGER.info("DIRT BLOCK >> {}", net.minecraft.world.level.block.Blocks.DIRT.toString());
     }
 
-    @Mod.EventHandler
-    public void onPostInit(FMLPostInitializationEvent event) {
-        PROXY.onPostInit(event);
+    // You can use SubscribeEvent and let the Event Bus discover methods to call
+    @SubscribeEvent
+    public void onServerStarting(ServerStartingEvent event) {
+        // Do something when the server starts
+        LOGGER.info("HELLO from server starting");
+        
+        // Register commands
+        event.getServer().getCommands().getDispatcher().register(ForceAnimationCommand.register());
+        event.getServer().getCommands().getDispatcher().register(SpawnStructureCommand.register());
     }
 
-    @Mod.EventHandler
-    public void onServerStarting(FMLServerStartingEvent event) {
-        event.registerServerCommand(new ForceAnimationCommand());
-        event.registerServerCommand(new SpawnStructureCommand());
+    // You can use EventBusSubscriber to automatically register all static methods in the class annotated with @SubscribeEvent
+    @EventBusSubscriber(modid = MODID, bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
+    public static class ClientModEvents {
+        @SubscribeEvent
+        public static void onClientSetup(FMLClientSetupEvent event) {
+            // Some client setup code
+            LOGGER.info("HELLO FROM CLIENT SETUP");
+            LOGGER.info("MINECRAFT NAME >> {}", net.minecraft.client.Minecraft.getInstance().getUser().getName());
+        }
     }
 
     public static Logger getLogger() {
-        return logger;
+        return LOGGER;
     }
 }
