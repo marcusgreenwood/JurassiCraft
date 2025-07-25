@@ -1,19 +1,13 @@
 package org.jurassicraft.client.render.entity;
 
-import net.minecraft.client.renderer.entity.Render;
-import net.minecraft.client.renderer.entity.RenderManager;
-import net.minecraft.entity.Entity;
-import net.minecraft.util.ResourceLocation;
+// TODO: Rewrite for modern rendering system
+// Temporarily commented out for 1.21 upgrade - old rendering APIs no longer exist
 
-public class NullRenderer extends Render<Entity> {
-
-    public NullRenderer(RenderManager renderManager) {
-	super(renderManager);
-    }
-
-    @Override
-    protected ResourceLocation getEntityTexture(Entity entity) {
-	return null;
-    }
-
+// Placeholder class for 1.21 upgrade - will be rewritten with modern rendering
+public class NullRenderer {
+    // TODO: Implement modern entity renderer for Null entities
 }
+
+/*
+// Original 1.12.2 implementation - will be rewritten for 1.21
+*/

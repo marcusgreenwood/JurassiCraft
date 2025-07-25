@@ -1,5 +1,8 @@
 package org.jurassicraft.client.render.entity;
 
+// TODO: Rewrite for modern rendering system
+// Temporarily commented out for 1.21 upgrade - old rendering APIs no longer exist
+/*
 import java.util.stream.IntStream;
 
 import javax.annotation.Nullable;
@@ -31,6 +34,14 @@ import org.jurassicraft.server.tabula.TabulaModelHelper;
 
 @SideOnly(Side.CLIENT)
 public abstract class HelicopterRenderer<E extends HelicopterEntity> extends Render<E> {
+*/
+
+// Placeholder class for 1.21 upgrade - will be rewritten with modern rendering
+public abstract class HelicopterRenderer {
+    // TODO: Implement modern entity renderer for Helicopter
+}
+
+/*
 	private static final ResourceLocation[] DESTROY_STAGES = IntStream.range(0, 10).mapToObj(n -> new ResourceLocation(String.format("textures/blocks/destroy_stage_%d.png", n))).toArray(ResourceLocation[]::new);
 	private static ResourceLocation positionLights;
 	protected final String helicopterName;
@@ -138,4 +149,4 @@ public abstract class HelicopterRenderer<E extends HelicopterEntity> extends Ren
 	protected ResourceLocation getEntityTexture(E entity) {
 		return this.texture;
 	}
-}
+*/

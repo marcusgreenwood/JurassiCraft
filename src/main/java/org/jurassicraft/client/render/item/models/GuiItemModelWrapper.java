@@ -1,30 +1,14 @@
 package org.jurassicraft.client.render.item.models;
 
-import javax.vecmath.Matrix4f;
+// TODO: Rewrite for modern item model system
+// Temporarily commented out for 1.21 upgrade - old item model APIs no longer exist
 
-import com.google.common.collect.Lists;
-import org.apache.commons.lang3.tuple.Pair;
-
-import net.minecraft.client.renderer.block.model.IBakedModel;
-import net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformType;
-import net.minecraftforge.client.model.BakedModelWrapper;
-
-import java.util.List;
-
-public class GuiItemModelWrapper extends BakedModelWrapper<IBakedModel> {
-
-    private List<TransformType> transformTypes = Lists.newArrayList(TransformType.GUI, TransformType.FIXED, TransformType.NONE);
-
-    private final IBakedModel guiModel;
-    
-	public GuiItemModelWrapper(final IBakedModel originalModel, final IBakedModel guiModel) {
-		super(originalModel);
-		this.guiModel = guiModel;
-	}
-    
-    @Override
-    public Pair<? extends IBakedModel, Matrix4f> handlePerspective(final TransformType cameraTransformType) {
-        return transformTypes.contains(cameraTransformType) ? guiModel.handlePerspective(cameraTransformType) : super.handlePerspective(cameraTransformType);
-    }
-
+// Placeholder class for 1.21 upgrade - will be rewritten with modern item model system
+public class GuiItemModelWrapper {
+    // TODO: Implement modern item model wrapper for GUI rendering
 }
+
+/*
+// Original 1.12.2 implementation - will be rewritten for 1.21
+// This used old item model APIs that have been completely rewritten
+*/
