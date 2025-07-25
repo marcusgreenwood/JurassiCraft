@@ -1,44 +1,32 @@
 package org.jurassicraft.client.sound;
 
-import net.minecraft.client.audio.MovingSound;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.SoundEvent;
+// TODO: This entire sound system needs rewrite for 1.21
+// The old MovingSound and related APIs have changed significantly
+
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundSource;
 import java.util.function.Predicate;
-import org.jurassicraft.client.event.ClientEventHandler;
-import org.jurassicraft.client.proxy.ClientProxy;
 
-public class EntitySound<T extends Entity> extends MovingSound {
+// TODO: Reimplement this class with modern sound APIs
+public class EntitySound<T extends Entity> {
+    // Temporarily disabled - needs complete rewrite for modern sound system
+    /*
+    private final T trackedEntity;
+    private final Predicate<T> predicate;
 
-    protected final T entity;
-    protected final Predicate<T> predicate;
-
-    public EntitySound(T entity, SoundEvent soundEvent, SoundCategory soundCategory, Predicate<T> predicate) {
-        super(soundEvent, soundCategory);
-        this.entity = entity;
-        this.predicate = predicate;
+    public EntitySound(T entity, SoundEvent soundEvent, SoundSource soundCategory, Predicate<T> predicate) {
+        // TODO: Implement with new sound APIs
     }
 
-    public EntitySound(T entity, SoundEvent soundEvent, SoundCategory soundCategory) {
-        this(entity, soundEvent, soundCategory, t -> true);
+    public EntitySound(T entity, SoundEvent soundEvent, SoundSource soundCategory) {
+        this(entity, soundEvent, soundCategory, entity1 -> true);
     }
 
     @Override
-    public void update() {
-        if (this.entity.isDead || !predicate.test(this.entity)) {
-            this.donePlaying = true;
-        } else {
-        	 EntityPlayer player = ClientProxy.MC.player;
-             this.xPosF = (float) (entity.posX + (player.posX - entity.posX) / 2);
-             this.yPosF = (float) (entity.posY + (player.posY - entity.posY) / 2);
-             this.zPosF = (float) (entity.posZ + (player.posZ - entity.posZ) / 2);
-        }
+    public void tick() {
+        // TODO: Implement sound positioning and lifecycle
     }
-
-    public void setFinished() {
-        this.donePlaying = true;
-    }
-
-
+    */
 }

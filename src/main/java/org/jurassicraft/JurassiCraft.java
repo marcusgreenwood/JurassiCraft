@@ -1,5 +1,6 @@
 package org.jurassicraft;
 
+import net.minecraft.world.entity.EntityType;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -15,6 +16,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jurassicraft.server.command.ForceAnimationCommand;
 import org.jurassicraft.server.command.SpawnStructureCommand;
+import org.jurassicraft.server.entity.vehicle.VehicleEntity;
 
 @Mod(JurassiCraft.MODID)
 public class JurassiCraft {
@@ -23,6 +25,9 @@ public class JurassiCraft {
     public static final String VERSION = "2.2.0";
 
     private static final Logger LOGGER = LogManager.getLogger();
+    
+    // TODO: Properly register this entity type in a deferred register
+    public static final EntityType<VehicleEntity> VEHICLE_ENTITY_TYPE = null;
 
     public static long timerTicks;
 

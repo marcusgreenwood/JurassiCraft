@@ -4,18 +4,18 @@ import java.util.List;
 
 import org.jurassicraft.server.entity.vehicle.VehicleEntity;
 
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.phys.Vec3;
 
 public class WheelParticleData {
     private int age;
     
-    private final Vec3d position;
-    private final Vec3d oppositePosition;
+    private final Vec3 position;
+    private final Vec3 oppositePosition;
     private final int maxAge = 200;
     private final long worldTime;
     private boolean shouldRender = true;
     
-    public WheelParticleData(Vec3d position, Vec3d oppositePosition, long worldTime) {
+    public WheelParticleData(Vec3 position, Vec3 oppositePosition, long worldTime) {
         this.position = position;
         this.oppositePosition = oppositePosition;
         this.worldTime = worldTime;
@@ -30,7 +30,7 @@ public class WheelParticleData {
 	return shouldRender;
     }
     
-    public Vec3d getOppositePosition() {
+    public Vec3 getOppositePosition() {
 	return oppositePosition;
     }
     
@@ -44,7 +44,7 @@ public class WheelParticleData {
         }
     }
     
-    public Vec3d getPosition() {
+    public Vec3 getPosition() {
         return position;
     }
     

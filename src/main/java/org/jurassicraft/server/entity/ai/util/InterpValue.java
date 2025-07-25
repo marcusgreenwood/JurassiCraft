@@ -1,111 +1,97 @@
 package org.jurassicraft.server.entity.ai.util;
 
-import com.google.common.collect.Lists;
-import net.minecraft.entity.Entity;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.common.util.INBTSerializable;
-import net.minecraftforge.fml.common.FMLCommonHandler;
-import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.gameevent.TickEvent;
-import net.minecraftforge.fml.common.gameevent.TickEvent.ClientTickEvent;
-import net.minecraftforge.fml.common.gameevent.TickEvent.ServerTickEvent;
-import net.minecraftforge.fml.relauncher.Side;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.nbt.CompoundTag;
+import net.neoforged.neoforge.common.util.INBTSerializable;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.neoforge.event.tick.LevelTickEvent;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 import org.jurassicraft.JurassiCraft;
 
-import java.util.List;
-import java.util.function.Supplier;
-
-@EventBusSubscriber(modid=JurassiCraft.MODID)
-public class InterpValue implements INBTSerializable<NBTTagCompound> {
-
-    private static final List<InterpValue> INSTANCES = Lists.newArrayList();
-    private static final List<InterpValue> MARKED_REMOVE = Lists.newArrayList();
-    private final Supplier<Boolean> supplier;
-    private double speed;
-    private double target;
+// TODO: This class needs complete rewrite for NeoForge event system
+public class InterpValue implements INBTSerializable<CompoundTag> {
     private double current;
-    private double previousCurrent;
-    private boolean initilized;
+    private double target;
+    private final double speed;
+    private final Entity parent;
+    private static final List<InterpValue> CLIENT_VALUES = new CopyOnWriteArrayList<>();
+    private static final List<InterpValue> SERVER_VALUES = new CopyOnWriteArrayList<>();
 
     public InterpValue(Entity entity, double speed) {
-        this(entity::isEntityAlive, speed);
-    }
-
-    public InterpValue(Supplier<Boolean> supplier, double speed) {
+        this.parent = entity;
         this.speed = speed;
-        this.supplier = supplier;
-        INSTANCES.add(this);
-    }
-
-    public void setTarget(double target) {
-        if(!initilized) {
-            initilized = true;
-            reset(target);
-        } else {
-            this.target = target;
+        if (entity != null) {
+            if (entity.level().isClientSide) {
+                CLIENT_VALUES.add(this);
+            } else {
+                SERVER_VALUES.add(this);
+            }
         }
     }
 
-    public void reset(double target) {
-	    this.previousCurrent = target;
+    public void setTarget(double target) {
+        this.target = target;
+    }
+
+    public double getCurrent() {
+        return current;
+    }
+
+    public double getTarget() {
+        return target;
+    }
+
+    public double getSpeed() {
+        return speed;
+    }
+
+    public void setCurrent(double current) {
+        this.current = current;
+    }
+
+    public void setCurrentTarget(double target) {
         this.current = target;
         this.target = target;
     }
 
-    private void tickInterp() {
-        if(!supplier.get()) {
-            MARKED_REMOVE.add(this);
-            return;
-        }
-        this.previousCurrent = current;
-        if(Math.abs(current - target) <= speed) {
+    public boolean isDead() {
+        return parent == null || !parent.isAlive();
+    }
+
+    public void update() {
+        if (Math.abs(current - target) < 0.001) {
             current = target;
-        } else if(current < target) {
-            current += speed;
         } else {
-            current -= speed;
+            if (current < target) {
+                current += Math.min(target - current, speed);
+            } else {
+                current -= Math.min(current - target, speed);
+            }
         }
-    }
-
-    public double getValueForRendering(float partialTicks) {
-        return previousCurrent + (current - previousCurrent) * partialTicks;
-    }
-
-    public double getCurrent() {
-	return current;
-    }
-
-    public void setSpeed(double speed) {
-        this.speed = speed;
     }
 
     @Override
-    public NBTTagCompound serializeNBT() {
-        NBTTagCompound tag = new NBTTagCompound();
-        tag.setDouble("target", target);
-        tag.setDouble("current", current);
+    public CompoundTag serializeNBT() {
+        CompoundTag tag = new CompoundTag();
+        tag.putDouble("current", current);
+        tag.putDouble("target", target);
         return tag;
     }
 
     @Override
-    public void deserializeNBT(NBTTagCompound nbt) {
-        this.target = nbt.getDouble("target");
-        this.current = nbt.getDouble("current");
-        this.previousCurrent = current;
+    public void deserializeNBT(CompoundTag nbt) {
+        current = nbt.getDouble("current");
+        target = nbt.getDouble("target");
     }
 
+    // TODO: Fix event handling for NeoForge
+    /*
     @SubscribeEvent
-    public static void onTick(TickEvent event) {
-        Side side = FMLCommonHandler.instance().getSide();
-        if((event instanceof ClientTickEvent && side.isClient()) || (event instanceof ServerTickEvent && side.isServer())) {
-            synchronized (INSTANCES) {
-            	synchronized (MARKED_REMOVE) {
-            		INSTANCES.forEach(InterpValue::tickInterp);
-                	MARKED_REMOVE.forEach(INSTANCES::remove);
-                	MARKED_REMOVE.clear();
-				}
-            }
-        }
+    public static void onTick(LevelTickEvent event) {
+        // This needs to be rewritten for the new event system
     }
+    */
 }
