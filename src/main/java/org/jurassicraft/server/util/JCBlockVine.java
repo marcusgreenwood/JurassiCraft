@@ -4,18 +4,18 @@ import org.jurassicraft.JurassiCraft;
 import org.jurassicraft.server.block.BlockHandler;
 import org.jurassicraft.server.event.ServerEventHandler;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockShulkerBox;
-import net.minecraft.block.BlockVine;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.BlockShulkerBox;
+import net.minecraft.world.level.block.BlockVine;
 import net.minecraft.block.SoundType;
-import net.minecraft.block.material.Material;
+import net.minecraft.world.level.material.MapColor;
 import net.minecraft.block.state.BlockFaceShape;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.core.Direction;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
 
 public class JCBlockVine extends BlockVine {
 
@@ -35,7 +35,7 @@ public class JCBlockVine extends BlockVine {
 	public boolean canAttachTo(World p_193395_1_, BlockPos p_193395_2_, EnumFacing p_193395_3_)
     {
         Block block = p_193395_1_.getBlockState(p_193395_2_.up()).getBlock();
-        return this.isAcceptableNeighbor(p_193395_1_, p_193395_2_.offset(p_193395_3_.getOpposite()), p_193395_3_) && (block == Blocks.AIR || block == Blocks.VINE || this.isAcceptableNeighbor(p_193395_1_, p_193395_2_.up(), EnumFacing.UP));
+        return this.isAcceptableNeighbor(p_193395_1_, p_193395_2_.offset(p_193395_3_.getOpposite()), p_193395_3_) && (block == Blocks.AIR || block == Blocks.VINE || this.isAcceptableNeighbor(p_193395_1_, p_193395_2_.up(), Direction.UP));
     }
 	
 	private boolean isAcceptableNeighbor(World p_193396_1_, BlockPos p_193396_2_, EnumFacing p_193396_3_)

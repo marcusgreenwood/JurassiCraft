@@ -2,17 +2,17 @@ package org.jurassicraft.server.item;
 
 import org.jurassicraft.server.util.LangUtils;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.common.EnumPlantType;
 import net.minecraftforge.common.IPlantable;
 
@@ -31,7 +31,7 @@ public class GracilariaItem extends Item implements IPlantable {
         // NOTE:  Pos is the block we are placing ON
 
         // Based on ItemSeeds.
-        if (side != EnumFacing.UP || !player.canPlayerEdit(pos.offset(side), side, stack)) {
+        if (side != Direction.UP || !player.canPlayerEdit(pos.offset(side), side, stack)) {
             return EnumActionResult.PASS;
         } else if (this.seaweedBlock.canPlaceBlockAt(world, pos.up())) {
             world.setBlockState(pos.up(), this.seaweedBlock.getDefaultState());

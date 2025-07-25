@@ -1,12 +1,12 @@
 package org.jurassicraft.client.render.block;
 
 import net.ilexiconn.llibrary.client.model.tabula.TabulaModel;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.core.BlockPos;
 import org.jurassicraft.JurassiCraft;
 import org.jurassicraft.client.proxy.ClientProxy;
 import org.jurassicraft.server.block.BlockHandler;

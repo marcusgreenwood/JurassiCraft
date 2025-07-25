@@ -6,7 +6,7 @@ import org.jurassicraft.server.entity.DinosaurEntity;
 import org.jurassicraft.server.entity.LegSolverBiped;
 import org.jurassicraft.server.entity.LegSolverQuadruped;
 import net.ilexiconn.llibrary.client.model.tools.AdvancedModelRenderer;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.Mth;
 
 public final class LegArticulator {
     private LegArticulator() {}

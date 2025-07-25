@@ -14,22 +14,22 @@ import org.jurassicraft.server.item.ItemHandler;
 import org.jurassicraft.server.item.block.EncasedFossilItemBlock;
 import org.jurassicraft.server.tab.TabHandler;
 
-import net.minecraft.block.Block;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.block.SoundType;
-import net.minecraft.block.material.Material;
+import net.minecraft.world.level.material.MapColor;
 import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.block.state.BlockStateContainer;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemBlock;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.NonNullList;
 import net.minecraft.world.Explosion;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.DistOnly;
 
 public class EncasedFossilBlock extends Block implements SubBlocksBlock, CleanableItem {
     public static final PropertyInteger VARIANT = PropertyInteger.create("variant", 0, 15);
@@ -74,7 +74,6 @@ public class EncasedFossilBlock extends Block implements SubBlocksBlock, Cleanab
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
     public void getSubBlocks(CreativeTabs tab, NonNullList<ItemStack> list) {
         Map<Integer, Dinosaur> dinosaurs = EntityHandler.getDinosaurs();
 
@@ -107,7 +106,6 @@ public class EncasedFossilBlock extends Block implements SubBlocksBlock, Cleanab
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
     public BlockRenderLayer getBlockLayer() {
         return BlockRenderLayer.SOLID;
     }

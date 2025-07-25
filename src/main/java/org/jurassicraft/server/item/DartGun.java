@@ -1,15 +1,15 @@
 package org.jurassicraft.server.item;
 
 import com.google.common.collect.Lists;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.Slot;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.stats.StatList;
 import net.minecraft.util.*;
-import net.minecraft.world.World;
+import net.minecraft.world.level.Level;
 import org.jurassicraft.server.entity.TranquilizerDartEntity;
 import org.jurassicraft.server.tab.TabHandler;
 
@@ -54,7 +54,7 @@ public class DartGun extends Item {
         }
         
         if(event != null) {
-            worldIn.playSound(null, playerIn.posX, playerIn.posY, playerIn.posZ, event, SoundCategory.NEUTRAL, 0.5F, 0.4F / (itemRand.nextFloat() * 0.4F + 0.8F));
+            worldIn.playSound(null, playerIn.getX(), playerIn.getY(), playerIn.getZ(), event, SoundCategory.NEUTRAL, 0.5F, 0.4F / (itemRand.nextFloat() * 0.4F + 0.8F));
         }
 
 

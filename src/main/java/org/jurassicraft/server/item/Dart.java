@@ -4,8 +4,8 @@ import java.util.function.BiConsumer;
 
 import org.jurassicraft.server.entity.DinosaurEntity;
 
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import org.jurassicraft.server.tab.TabHandler;
 
 public class Dart extends Item {

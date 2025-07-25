@@ -1,12 +1,12 @@
 package org.jurassicraft.server.world.structure;
 
-import net.minecraft.block.material.Material;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.world.level.material.MapColor;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.Mirror;
 import net.minecraft.util.Rotation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.gen.feature.WorldGenerator;
 import net.minecraft.world.storage.MapDecoration;

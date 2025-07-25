@@ -1,12 +1,12 @@
 package org.jurassicraft.server.entity.ai.metabolism;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.entity.ai.EntityAIBase;
-import net.minecraft.item.Item;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.World;
+import net.minecraft.world.item.Item;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.level.Level;
 
 import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.SynchronousQueue;
@@ -43,7 +43,7 @@ public class GrazeEntityAI extends EntityAIBase {
 
 	@Override
 	public boolean shouldExecute() {
-		if (!(this.dinosaur.isDead || this.dinosaur.isCarcass() || !GameRuleHandler.DINO_METABOLISM.getBoolean(this.dinosaur.world)) && this.dinosaur.getMetabolism().isHungry()) {
+		if (!(this.dinosaur.isRemoved() || this.dinosaur.isCarcass() || !GameRuleHandler.DINO_METABOLISM.getBoolean(this.dinosaur.world)) && this.dinosaur.getMetabolism().isHungry()) {
 			if (!this.dinosaur.getMetabolism().isStarving() && feederExists()) {
 				return false;
 			}
@@ -54,7 +54,7 @@ public class GrazeEntityAI extends EntityAIBase {
 			BlockPos head = new BlockPos(headPos.x, headPos.y, headPos.z);
 
 			// world the animal currently inhabits
-			this.world = this.dinosaur.world;
+			this.level() = this.dinosaur.world;
 
 			MetabolismContainer metabolism = this.dinosaur.getMetabolism();
 

@@ -5,18 +5,18 @@ import org.jurassicraft.client.event.ClientEventHandler;
 import org.jurassicraft.client.proxy.ClientProxy;
 import org.jurassicraft.server.item.Dart;
 import io.netty.buffer.ByteBuf;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityLivingBase;
 import net.minecraft.entity.projectile.EntityThrowable;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.world.World;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.DistOnly;
 
 public class TranquilizerDartEntity extends EntityThrowable implements IEntityAdditionalSpawnData {
 
@@ -39,9 +39,8 @@ public class TranquilizerDartEntity extends EntityThrowable implements IEntityAd
 	super.onUpdate();
     }
     
-    @SideOnly(Side.CLIENT)
     private void spawnParticles() {
-    	ClientProxy.MC.effectRenderer.spawnEffectParticle(EnumParticleTypes.CLOUD.getParticleID(), this.posX + this.motionX / 4.0D, this.posY + this.motionY / 4.0D, this.posZ + this.motionZ / 4.0D, 
+    	ClientProxy.MC.effectRenderer.spawnEffectParticle(EnumParticleTypes.CLOUD.getParticleID(), this.getX() + this.motionX / 4.0D, this.getY() + this.motionY / 4.0D, this.getZ() + this.motionZ / 4.0D, 
     	    -this.motionX / 20.0D, 
     	    -this.motionY / 20.0D + 0.2D, 
     	    -this.motionZ / 20.0D);
@@ -60,9 +59,9 @@ public class TranquilizerDartEntity extends EntityThrowable implements IEntityAd
 					JurassiCraft.getLogger().error("Expected Dart Item, got {} ", item.getRegistryName());
 				}
 			}
-			if (!this.world.isRemote) {
+			if (!this.level().isClientSide) {
 				this.world.setEntityState(this, (byte) 3);
-				this.setDead();
+				this.discard();
 			}
 		}
 	}

@@ -1,10 +1,10 @@
 package org.jurassicraft.server.entity.ai;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.common.util.Constants;
 import org.jurassicraft.server.entity.DinosaurEntity;
 import org.jurassicraft.server.entity.GrowthStage;
@@ -44,18 +44,18 @@ public class Family {
         Set<DinosaurEntity> members = new HashSet<>();
         for (UUID parent : this.parents) {
             DinosaurEntity parentEntity = this.get(world, parent);
-            if (parentEntity == null || parentEntity.isDead || parentEntity.isCarcass()) {
+            if (parentEntity == null || parentEntity.isRemoved() || parentEntity.isCarcass()) {
                 remove.add(parent);
             } else {
-                centerX += parentEntity.posX;
-                centerZ += parentEntity.posZ;
+                centerX += parentEntity.getX();
+                centerZ += parentEntity.getZ();
                 members.add(parentEntity);
                 parentEntity.family = this;
             }
         }
         for (UUID child : this.children) {
             DinosaurEntity childEntity = this.get(world, child);
-            if (childEntity == null || childEntity.isDead || childEntity.isCarcass() || childEntity.getAgePercentage() > 50) {
+            if (childEntity == null || childEntity.isRemoved() || childEntity.isCarcass() || childEntity.getAgePercentage() > 50) {
                 remove.add(child);
             } else {
                 members.add(childEntity);
@@ -80,7 +80,7 @@ public class Family {
             centerX = (this.home.getX() / 2) + (centerX / 2);
             centerZ = (this.home.getZ() / 2) + (centerZ / 2);
         }
-        double centerDistance = entity.getDistanceSq(centerX, entity.posY, centerZ);
+        double centerDistance = entity.getDistanceSq(centerX, entity.getY(), centerZ);
         Random random = entity.getRNG();
         if (random.nextDouble() * centerDistance > 128) {
             for (DinosaurEntity member : members) {

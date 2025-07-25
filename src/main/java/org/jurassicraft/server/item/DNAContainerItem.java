@@ -1,9 +1,9 @@
 package org.jurassicraft.server.item;
 
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
 import org.jurassicraft.server.genetics.GeneticsHelper;
 
 public class DNAContainerItem extends Item {

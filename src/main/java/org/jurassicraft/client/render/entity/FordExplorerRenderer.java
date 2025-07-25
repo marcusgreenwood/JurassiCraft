@@ -14,11 +14,10 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraft.resources.ResourceLocation;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.DistOnly;
 
-@SideOnly(Side.CLIENT)
 public class FordExplorerRenderer extends CarRenderer<FordExplorerEntity> {
 
     public FordExplorerRenderer(RenderManager manager) {

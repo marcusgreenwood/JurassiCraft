@@ -13,19 +13,19 @@ import org.jurassicraft.server.entity.vehicle.VehicleEntity;
 import org.jurassicraft.server.tab.TabHandler;
 import org.jurassicraft.server.util.LangUtils;
 
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.item.EnumDyeColor;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
+import net.minecraft.core.Direction;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.util.NonNullList;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.fml.common.FMLCommonHandler;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.DistOnly;
 
 import static org.jurassicraft.server.item.ItemHandler.VEHICLE_ITEM;
 
@@ -46,14 +46,13 @@ public final class VehicleItem extends Item {
 		// Caching the localized files, is that needed? Don't uncomment as changing the
 		// language at the runtime would break the cache
 		/*
-		 * if(FMLCommonHandler.instance().getSide() == Side.CLIENT) { for (int i = 0; i
+		 * if(FMLCommonHandler.instance().getSide() == Dist.CLIENT) { for (int i = 0; i
 		 * < variants.length; i++) { localized[i] = LangUtils.translate("item." +
 		 * variants[i] + ".name"); } }
 		 */
 	}
 
 	@Override
-	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack stack, World world, List<String> tooltip, ITooltipFlag tooltipFlag) {
 		super.addInformation(stack, world, tooltip, tooltipFlag);
 		int meta = stack.getMetadata();
@@ -61,7 +60,6 @@ public final class VehicleItem extends Item {
 	}
 
 	@Override
-	@SideOnly(Side.CLIENT)
 	public String getUnlocalizedName(ItemStack stack) {
 		int meta = stack.getMetadata();
 		return LangUtils.translate("item." + variants[meta]);

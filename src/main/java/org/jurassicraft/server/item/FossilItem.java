@@ -10,12 +10,12 @@ import java.util.Random;
 import javax.vecmath.Vector2d;
 import com.google.common.collect.Lists;
 import net.minecraft.advancements.CriteriaTriggers;
-import net.minecraft.block.Block;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.block.SoundType;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.Entity;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.level.Level;
 import org.apache.commons.lang3.tuple.Pair;
 import org.jurassicraft.client.event.ClientEventHandler;
 import org.jurassicraft.client.proxy.ClientProxy;
@@ -31,27 +31,27 @@ import org.jurassicraft.server.entity.dinosaur.TyrannosaurusEntity;
 import org.jurassicraft.server.plant.PlantHandler;
 import org.jurassicraft.server.tab.TabHandler;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.player.PlayerMP;
 import net.minecraft.init.Items;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemBlock;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
+import net.minecraft.core.Direction;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.SoundCategory;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.core.BlockPos;
 import net.minecraft.util.math.Rotations;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.phys.Vec3;
 import net.minecraft.util.text.ChatType;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.DistOnly;
 import org.jurassicraft.server.util.LangUtils;
 
 public class FossilItem extends Item implements GrindableItem {
@@ -103,7 +103,6 @@ public class FossilItem extends Item implements GrindableItem {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
     public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> subtypes) {
         List<Dinosaur> dinosaurs = new ArrayList<>(EntityHandler.getRegisteredDinosaurs());
 
@@ -168,7 +167,7 @@ public class FossilItem extends Item implements GrindableItem {
     	
     	if (worldBlock.isReplaceable(world, pos))
         {
-            side = EnumFacing.UP;
+            side = Direction.UP;
             pos = pos.down();
         }
     	worldBlock = world.getBlockState(pos).getBlock();
@@ -185,9 +184,9 @@ public class FossilItem extends Item implements GrindableItem {
 
         ItemStack stack = player.getHeldItem(hand);
         Block block = BlockHandler.SKULL_DISPLAY;
-        if (!player.world.isRemote && player.canPlayerEdit(pos, side, stack) && world.mayPlace(block, pos, false, side, (Entity)null) && ((FossilItem) stack.getItem()).getBoneType().equals("skull") && ((FossilItem) stack.getItem()).getDinosaur(stack).getClass() == TyrannosaurusDinosaur.class) {
+        if (!player.level().isClientSide && player.canPlayerEdit(pos, side, stack) && world.mayPlace(block, pos, false, side, (Entity)null) && ((FossilItem) stack.getItem()).getBoneType().equals("skull") && ((FossilItem) stack.getItem()).getDinosaur(stack).getClass() == TyrannosaurusDinosaur.class) {
         	
-        	if (side == EnumFacing.DOWN)
+        	if (side == Direction.DOWN)
             {
                 return EnumActionResult.FAIL;
             }
@@ -214,7 +213,7 @@ public class FossilItem extends Item implements GrindableItem {
                 	tile.setModel(stack.getItemDamage(), !this.isFresh(), getHasStand(stack));
                 	EnumFacing.Axis axis = side.getAxis();
                 	if (axis == EnumFacing.Axis.Y) {
-                		tile.setAngle(angleToPlayer(pos, new Vector2d(player.posX, player.posZ)));
+                		tile.setAngle(angleToPlayer(pos, new Vector2d(player.getX(), player.getZ())));
                 	}else if(axis == EnumFacing.Axis.X) {
                 		tile.setAngle((short) side.getHorizontalAngle());
                 	}else if(axis == EnumFacing.Axis.Z) {

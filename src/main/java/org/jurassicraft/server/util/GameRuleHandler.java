@@ -1,7 +1,7 @@
 package org.jurassicraft.server.util;
 
 import net.minecraft.world.GameRules;
-import net.minecraft.world.World;
+import net.minecraft.world.level.Level;
 
 public enum GameRuleHandler {
     DINO_METABOLISM("dinoMetabolism", true),

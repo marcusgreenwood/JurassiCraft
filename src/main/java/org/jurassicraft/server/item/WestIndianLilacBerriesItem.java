@@ -1,11 +1,11 @@
 package org.jurassicraft.server.item;
 
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.init.MobEffects;
-import net.minecraft.item.ItemFood;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemFood;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
-import net.minecraft.world.World;
+import net.minecraft.world.level.Level;
 import org.jurassicraft.server.tab.TabHandler;
 
 public class WestIndianLilacBerriesItem extends ItemFood {

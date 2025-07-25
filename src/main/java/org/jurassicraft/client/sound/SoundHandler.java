@@ -2,11 +2,11 @@ package org.jurassicraft.client.sound;
 
 import com.google.common.collect.Lists;
 import net.minecraft.client.audio.Sound;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraftforge.event.RegistryEvent;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.neoforged.fml.common.Mod;
+import net.neoforged.bus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.registries.IForgeRegistry;
 import org.jurassicraft.JurassiCraft;

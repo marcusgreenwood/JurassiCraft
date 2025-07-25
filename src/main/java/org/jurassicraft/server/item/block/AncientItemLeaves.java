@@ -1,8 +1,8 @@
 package org.jurassicraft.server.item.block;
 
-import net.minecraft.block.BlockLeaves;
-import net.minecraft.item.ItemLeaves;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.level.block.BlockLeaves;
+import net.minecraft.world.item.ItemLeaves;
+import net.minecraft.world.item.ItemStack;
 
 public class AncientItemLeaves extends ItemLeaves {
 

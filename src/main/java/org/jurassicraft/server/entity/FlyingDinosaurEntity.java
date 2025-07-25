@@ -1,13 +1,13 @@
 package org.jurassicraft.server.entity;
 
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.MoverType;
+import net.minecraft.world.entity.EntityLivingBase;
+import net.minecraft.world.entity.MoverType;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.ai.EntityMoveHelper;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.World;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.core.BlockPos;
+import net.minecraft.util.Mth;
+import net.minecraft.world.level.Level;
 
 import java.util.Random;
 
@@ -42,7 +42,7 @@ public abstract class FlyingDinosaurEntity extends DinosaurEntity {
             float friction = 0.91F;
 
             if (this.onGround) {
-                friction = this.world.getBlockState(new BlockPos(MathHelper.floor(this.posX), MathHelper.floor(this.getEntityBoundingBox().minY) - 1, MathHelper.floor(this.posZ))).getBlock().slipperiness * 0.91F;
+                friction = this.world.getBlockState(new BlockPos(MathHelper.floor(this.getX()), MathHelper.floor(this.getEntityBoundingBox().minY) - 1, MathHelper.floor(this.getZ()))).getBlock().slipperiness * 0.91F;
             }
 
             float f3 = 0.16277136F / (friction * friction * friction);
@@ -50,7 +50,7 @@ public abstract class FlyingDinosaurEntity extends DinosaurEntity {
             friction = 0.91F;
 
             if (this.onGround) {
-                friction = this.world.getBlockState(new BlockPos(MathHelper.floor(this.posX), MathHelper.floor(this.getEntityBoundingBox().minY) - 1, MathHelper.floor(this.posZ))).getBlock().slipperiness * 0.91F;
+                friction = this.world.getBlockState(new BlockPos(MathHelper.floor(this.getX()), MathHelper.floor(this.getEntityBoundingBox().minY) - 1, MathHelper.floor(this.getZ()))).getBlock().slipperiness * 0.91F;
             }
 
             this.move(MoverType.SELF, this.motionX, this.motionY, this.motionZ);
@@ -60,8 +60,8 @@ public abstract class FlyingDinosaurEntity extends DinosaurEntity {
         }
 
         this.prevLimbSwingAmount = this.limbSwingAmount;
-        double moveX = this.posX - this.prevPosX;
-        double moveZ = this.posZ - this.prevPosZ;
+        double moveX = this.getX() - this.prevPosX;
+        double moveZ = this.getZ() - this.prevPosZ;
         float dist = MathHelper.sqrt(moveX * moveX + moveZ * moveZ) * 4.0F;
 
         if (dist > 1.0F) {
@@ -91,9 +91,9 @@ public abstract class FlyingDinosaurEntity extends DinosaurEntity {
             if (!moveHelper.isUpdating()) {
                 return true;
             } else {
-                double moveX = moveHelper.getX() - this.dino.posX;
-                double moveY = moveHelper.getY() - this.dino.posY;
-                double moveZ = moveHelper.getZ() - this.dino.posZ;
+                double moveX = moveHelper.getX() - this.dino.getX();
+                double moveY = moveHelper.getY() - this.dino.getY();
+                double moveZ = moveHelper.getZ() - this.dino.getZ();
                 double distance = moveX * moveX + moveY * moveY + moveZ * moveZ;
                 return distance < 1.0D || distance > 3600.0D;
             }
@@ -107,9 +107,9 @@ public abstract class FlyingDinosaurEntity extends DinosaurEntity {
         @Override
         public void startExecuting() {
             Random random = this.dino.getRNG();
-            double destinationX = this.dino.posX + (double) ((random.nextFloat() * 2.0F - 1.0F) * 16.0F);
-            double destinationY = this.dino.posY + (double) ((random.nextFloat() * 2.0F - 1.0F) * 16.0F);
-            double destinationZ = this.dino.posZ + (double) ((random.nextFloat() * 2.0F - 1.0F) * 16.0F);
+            double destinationX = this.dino.getX() + (double) ((random.nextFloat() * 2.0F - 1.0F) * 16.0F);
+            double destinationY = this.dino.getY() + (double) ((random.nextFloat() * 2.0F - 1.0F) * 16.0F);
+            double destinationZ = this.dino.getZ() + (double) ((random.nextFloat() * 2.0F - 1.0F) * 16.0F);
             this.dino.getMoveHelper().setMoveTo(destinationX, destinationY, destinationZ, 1.0D);
         }
     }
@@ -125,16 +125,16 @@ public abstract class FlyingDinosaurEntity extends DinosaurEntity {
         @Override
         public void onUpdateMoveHelper() {
             if (this.action == EntityMoveHelper.Action.MOVE_TO) {
-                double distanceX = this.posX - this.parentEntity.posX;
-                double distanceY = this.posY - this.parentEntity.posY;
-                double distanceZ = this.posZ - this.parentEntity.posZ;
+                double distanceX = this.getX() - this.parentEntity.getX();
+                double distanceY = this.getY() - this.parentEntity.getY();
+                double distanceZ = this.getZ() - this.parentEntity.getZ();
                 double distance = distanceX * distanceX + distanceY * distanceY + distanceZ * distanceZ;
 
                 if (this.timer-- <= 0) {
                     this.timer += this.parentEntity.getRNG().nextInt(5) + 2;
                     distance = (double) MathHelper.sqrt(distance);
 
-                    if (this.isNotColliding(this.posX, this.posY, this.posZ, distance)) {
+                    if (this.isNotColliding(this.getX(), this.getY(), this.getZ(), distance)) {
                         this.parentEntity.motionX += distanceX / distance * 0.1D;
                         this.parentEntity.motionY += distanceY / distance * 0.1D;
                         this.parentEntity.motionZ += distanceZ / distance * 0.1D;
@@ -146,9 +146,9 @@ public abstract class FlyingDinosaurEntity extends DinosaurEntity {
         }
 
         private boolean isNotColliding(double x, double y, double z, double distance) {
-            double d0 = (x - this.parentEntity.posX) / distance;
-            double d1 = (y - this.parentEntity.posY) / distance;
-            double d2 = (z - this.parentEntity.posZ) / distance;
+            double d0 = (x - this.parentEntity.getX()) / distance;
+            double d1 = (y - this.parentEntity.getY()) / distance;
+            double d2 = (z - this.parentEntity.getZ()) / distance;
             AxisAlignedBB bounds = this.parentEntity.getEntityBoundingBox();
 
             for (int i = 1; (double) i < distance; ++i) {
@@ -184,8 +184,8 @@ public abstract class FlyingDinosaurEntity extends DinosaurEntity {
                 double maxDistance = 64.0D;
 
                 if (attackTarget.getDistanceSq(this.dino) < maxDistance * maxDistance) {
-                    double diffX = attackTarget.posX - this.dino.posX;
-                    double diffZ = attackTarget.posZ - this.dino.posZ;
+                    double diffX = attackTarget.getX() - this.dino.getX();
+                    double diffZ = attackTarget.getZ() - this.dino.getZ();
                     this.dino.renderYawOffset = this.dino.rotationYaw = -((float) Math.atan2(diffX, diffZ)) * 180.0F / (float) Math.PI;
                 }
             }

@@ -10,13 +10,13 @@ import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
 import net.minecraft.client.renderer.texture.ITextureObject;
 import net.minecraft.client.renderer.texture.TextureUtil;
-import net.minecraft.entity.Entity;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.entity.monster.EntityCreeper;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.core.BlockPos;
+import net.minecraft.util.Mth;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.DistOnly;
 import org.jurassicraft.client.event.ClientEventHandler;
 import org.jurassicraft.client.proxy.ClientProxy;
 import org.jurassicraft.client.render.entity.dinosaur.DinosaurRenderInfo;
@@ -28,7 +28,6 @@ import org.jurassicraft.server.entity.OverlayType;
 import java.awt.Color;
 import java.util.Random;
 
-@SideOnly(Side.CLIENT)
 public class DinosaurRenderer extends RenderLiving<DinosaurEntity> {
 	
     public final Dinosaur dinosaur;
@@ -99,7 +98,6 @@ public class DinosaurRenderer extends RenderLiving<DinosaurEntity> {
         GlStateManager.rotate(180.0F - p_77043_3_, 0.0F, 1.0F, 0.0F);
     }
 
-    @SideOnly(Side.CLIENT)
     public static class LayerOverlay implements LayerRenderer<DinosaurEntity> {
         private final DinosaurRenderer renderer;
         private final OverlayType[] type;

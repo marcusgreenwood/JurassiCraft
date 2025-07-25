@@ -1,9 +1,9 @@
 package org.jurassicraft.server.entity.ai.util;
 
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.Entity;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
 
 /**
  * Copyright 2016 Timeless Mod Team.
@@ -29,7 +29,7 @@ public class BlockBreaker {
      * @param minSeconds The minimum amount of seconds to break.
      */
     public BlockBreaker(Entity entity, double digSpeed, BlockPos pos, double minSeconds) {
-        this.world = entity.getEntityWorld();
+        this.level() = entity.getEntityWorld();
         this.entityID = entity.getEntityId();
         this.pos = pos;
         this.totalProgress = (int) Math.max(breakSeconds(this.world, digSpeed, pos), minSeconds) * 20;

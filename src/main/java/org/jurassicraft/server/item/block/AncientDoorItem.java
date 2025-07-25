@@ -1,7 +1,7 @@
 package org.jurassicraft.server.item.block;
 
-import net.minecraft.block.Block;
-import net.minecraft.item.ItemDoor;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.item.ItemDoor;
 import org.jurassicraft.server.tab.TabHandler;
 
 public class AncientDoorItem extends ItemDoor {

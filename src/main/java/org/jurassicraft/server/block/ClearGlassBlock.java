@@ -1,18 +1,18 @@
 package org.jurassicraft.server.block;
 
-import net.minecraft.block.BlockGlass;
+import net.minecraft.world.level.block.BlockGlass;
 import net.minecraft.block.SoundType;
-import net.minecraft.block.material.Material;
+import net.minecraft.world.level.material.MapColor;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.util.BlockRenderLayer;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.IBlockAccess;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.DistOnly;
 import org.jurassicraft.server.tab.TabHandler;
 
 public class ClearGlassBlock extends BlockGlass {
@@ -51,12 +51,10 @@ public class ClearGlassBlock extends BlockGlass {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
     public BlockRenderLayer getBlockLayer() {
         return BlockRenderLayer.TRANSLUCENT;
     }
     
-    @SideOnly(Side.CLIENT)
     @Override
     public boolean shouldSideBeRendered(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing side) {
         return world.getBlockState(pos.offset(side.getOpposite())) != world.getBlockState(pos) && super.shouldSideBeRendered(state, world, pos, side);

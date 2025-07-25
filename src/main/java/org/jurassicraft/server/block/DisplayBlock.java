@@ -1,26 +1,26 @@
 package org.jurassicraft.server.block;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockContainer;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.BlockContainer;
 import net.minecraft.block.SoundType;
-import net.minecraft.block.material.Material;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.level.material.MapColor;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.init.Blocks;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.core.Direction;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.core.BlockPos;
+import net.minecraft.util.Mth;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraft.world.level.Level;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.DistOnly;
 import org.jurassicraft.server.block.entity.DisplayBlockEntity;
 import org.jurassicraft.server.dinosaur.Dinosaur;
 import org.jurassicraft.server.dinosaur.DinosaurMetadata;
@@ -112,7 +112,6 @@ public class DisplayBlock extends BlockContainer {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
     public BlockRenderLayer getBlockLayer() {
         return BlockRenderLayer.CUTOUT_MIPPED;
     }
@@ -128,7 +127,6 @@ public class DisplayBlock extends BlockContainer {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
     public boolean shouldSideBeRendered(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing side) {
         return true;
     }

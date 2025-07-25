@@ -4,14 +4,13 @@ import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.DistOnly;
 import org.jurassicraft.server.container.SkeletonAssemblyContainer;
 
-@SideOnly(Side.CLIENT)
 public class SkeletonAssemblyGui extends GuiContainer {
     private static final ResourceLocation CRAFTING_TABLE_GUI_TEXTURES = new ResourceLocation("jurassicraft:textures/gui/skeleton_assembler.png");
 

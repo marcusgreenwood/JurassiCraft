@@ -1,14 +1,14 @@
 package org.jurassicraft.server.entity;
 
 import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.world.World;
+import net.minecraft.world.level.Level;
 
 import java.util.Random;
 
@@ -108,7 +108,7 @@ public class InventoryDinosaur implements IInventory {
 
     @Override
     public boolean isUsableByPlayer(EntityPlayer player) {
-        return !this.entity.isDead && player.getDistance(this.entity) <= 64.0D;
+        return !this.entity.isRemoved() && player.getDistance(this.entity) <= 64.0D;
     }
 
     @Override
@@ -170,7 +170,7 @@ public class InventoryDinosaur implements IInventory {
 				float offsetX = rand.nextFloat() * 0.8F + 0.1F;
 				float offsetY = rand.nextFloat() * 0.8F + 0.1F;
 				float offsetZ = rand.nextFloat() * 0.8F + 0.1F;
-				EntityItem itemEntity = new EntityItem(world, this.entity.posX + offsetX, this.entity.posY + offsetY, this.entity.posZ + offsetZ, new ItemStack(itemstack.getItem(), itemstack.getCount(), itemstack.getItemDamage()));
+				EntityItem itemEntity = new EntityItem(world, this.entity.getX() + offsetX, this.entity.getY() + offsetY, this.entity.getZ() + offsetZ, new ItemStack(itemstack.getItem(), itemstack.getCount(), itemstack.getItemDamage()));
 				float multiplier = 0.05F;
 				itemEntity.motionX = (float) rand.nextGaussian() * multiplier;
 				itemEntity.motionY = (float) rand.nextGaussian() * multiplier + 0.2F;

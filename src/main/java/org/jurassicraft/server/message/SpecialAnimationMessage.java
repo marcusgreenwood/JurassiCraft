@@ -7,11 +7,11 @@ import io.netty.buffer.ByteBuf;
 import net.ilexiconn.llibrary.server.animation.IAnimatedEntity;
 import net.ilexiconn.llibrary.server.network.AbstractMessage;
 import net.minecraft.client.Minecraft;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.DistOnly;
 
 public class SpecialAnimationMessage extends AbstractMessage<SpecialAnimationMessage> {
     private int entityID;
@@ -28,7 +28,6 @@ public class SpecialAnimationMessage extends AbstractMessage<SpecialAnimationMes
     }
 
 	@Override
-	@SideOnly(Side.CLIENT)
 	public void onClientReceived(Minecraft client, SpecialAnimationMessage message, EntityPlayer player, MessageContext messageContext) {
 		Animatable entity = (Animatable) player.world.getEntityByID(message.entityID);
 		if (entity != null) {

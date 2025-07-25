@@ -1,6 +1,6 @@
 package org.jurassicraft.server.plant;
 
-import net.minecraft.block.Block;
+import net.minecraft.world.level.block.Block;
 import org.jurassicraft.server.food.FoodHelper;
 
 public abstract class Plant implements Comparable<Plant> {

@@ -1,12 +1,12 @@
 package org.jurassicraft.server.entity.ai;
 
-import net.minecraft.block.material.Material;
+import net.minecraft.world.level.material.MapColor;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.pathfinding.Path;
 import net.minecraft.pathfinding.PathPoint;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
 import org.jurassicraft.server.entity.DinosaurEntity;
 import org.jurassicraft.server.entity.ai.util.AIUtils;
 
@@ -34,8 +34,8 @@ public class SleepEntityAI extends EntityAIBase {
 
             int range = 8;
 
-            int posX = (int) this.dinosaur.posX;
-            int posZ = (int) this.dinosaur.posZ;
+            int posX = (int) this.dinosaur.getX();
+            int posZ = (int) this.dinosaur.getZ();
 
             for (int x = posX - range; x < posX + range; x++) {
                 for (int z = posZ - range; z < posZ + range; z++) {

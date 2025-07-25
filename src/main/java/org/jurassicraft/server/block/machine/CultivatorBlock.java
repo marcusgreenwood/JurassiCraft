@@ -6,26 +6,26 @@ import org.jurassicraft.server.block.BlockHandler;
 import org.jurassicraft.server.block.entity.CultivatorBlockEntity;
 import org.jurassicraft.server.item.block.CultivateItemBlock;
 
-import net.minecraft.block.BlockContainer;
+import net.minecraft.world.level.block.BlockContainer;
 import net.minecraft.block.material.MapColor;
-import net.minecraft.block.material.Material;
+import net.minecraft.world.level.material.MapColor;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.EnumDyeColor;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemBlock;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.NonNullList;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.DistOnly;
 
 public class CultivatorBlock extends BlockContainer implements SubBlocksBlock {
     public static final PropertyEnum<EnumDyeColor> COLOR = PropertyEnum.create("color", EnumDyeColor.class);
@@ -57,7 +57,6 @@ public class CultivatorBlock extends BlockContainer implements SubBlocksBlock {
         }
     }
     
-    @SideOnly(Side.CLIENT)
     @Override
     public void getSubBlocks(CreativeTabs tab, NonNullList<ItemStack> subtypes) {
         EnumDyeColor[] colors = EnumDyeColor.values();
@@ -99,7 +98,6 @@ public class CultivatorBlock extends BlockContainer implements SubBlocksBlock {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
     public BlockRenderLayer getBlockLayer() {
         return BlockRenderLayer.TRANSLUCENT;
     }

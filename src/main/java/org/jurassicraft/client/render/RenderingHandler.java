@@ -4,8 +4,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import javax.annotation.Nullable;
-import net.minecraft.item.ItemBlock;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.item.ItemBlock;
+import net.minecraft.core.BlockPos;
 import org.jurassicraft.JurassiCraft;
 import org.jurassicraft.client.model.MultipartStateMap;
 import org.jurassicraft.client.model.animation.EntityAnimator;
@@ -47,10 +47,10 @@ import org.jurassicraft.server.plant.Plant;
 import org.jurassicraft.server.plant.PlantHandler;
 import com.google.common.collect.Maps;
 import net.ilexiconn.llibrary.client.model.tabula.TabulaModelHandler;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockDoor;
-import net.minecraft.block.BlockFenceGate;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.BlockDoor;
+import net.minecraft.world.level.block.BlockFenceGate;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.EntityRenderer;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
@@ -59,7 +59,7 @@ import net.minecraft.client.renderer.color.BlockColors;
 import net.minecraft.client.renderer.color.IBlockColor;
 import net.minecraft.client.renderer.color.ItemColors;
 import net.minecraft.item.EnumDyeColor;
-import net.minecraft.item.Item;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.ColorizerFoliage;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.biome.BiomeColorHelper;
@@ -67,16 +67,15 @@ import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.neoforged.fml.common.Mod;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.DistOnly;
 
 import static org.jurassicraft.server.item.ItemHandler.*;
 import static org.jurassicraft.server.block.BlockHandler.*;
 
-@SideOnly(Side.CLIENT)
-@Mod.EventBusSubscriber(modid=JurassiCraft.MODID, value = Side.CLIENT)
+@Mod.EventBusSubscriber(modid=JurassiCraft.MODID, value = Dist.CLIENT)
 public enum RenderingHandler {
     INSTANCE;
 	private final Minecraft mc = Minecraft.getMinecraft();
@@ -85,7 +84,6 @@ public enum RenderingHandler {
 
     //TODO: CLEAN THIS UP OMG PLZ
     @SubscribeEvent
-    @SideOnly(Side.CLIENT)
     public static void onModelEvent(final ModelRegistryEvent event)
     {
         for (EnumDyeColor color : EnumDyeColor.values()) {

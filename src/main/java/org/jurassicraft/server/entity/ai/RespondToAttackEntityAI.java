@@ -1,9 +1,9 @@
 package org.jurassicraft.server.entity.ai;
 
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.world.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAIBase;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.phys.Vec3;
 import net.minecraft.util.math.Vec3i;
 import org.jurassicraft.server.entity.DinosaurEntity;
 
@@ -20,7 +20,7 @@ public class RespondToAttackEntityAI extends EntityAIBase {
     public boolean shouldExecute() {
         this.attacker = this.dinosaur.getAttackTarget();
         if(this.attacker != null) {
-            return this.dinosaur.canEntityBeSeen(this.attacker) && !this.attacker.isDead && !(this.attacker instanceof DinosaurEntity && ((DinosaurEntity) this.attacker).isCarcass()) && !(this.attacker instanceof EntityPlayer && ((EntityPlayer) this.attacker).capabilities.isCreativeMode);
+            return this.dinosaur.canEntityBeSeen(this.attacker) && !this.attacker.isRemoved() && !(this.attacker instanceof DinosaurEntity && ((DinosaurEntity) this.attacker).isCarcass()) && !(this.attacker instanceof EntityPlayer && ((EntityPlayer) this.attacker).capabilities.isCreativeMode);
         }
         return false;
     }

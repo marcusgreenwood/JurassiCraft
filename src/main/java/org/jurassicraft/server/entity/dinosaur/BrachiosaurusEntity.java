@@ -2,7 +2,7 @@ package org.jurassicraft.server.entity.dinosaur;
 
 import net.ilexiconn.llibrary.server.animation.Animation;
 import net.minecraft.util.SoundEvent;
-import net.minecraft.world.World;
+import net.minecraft.world.level.Level;
 import org.jurassicraft.client.model.animation.EntityAnimation;
 import org.jurassicraft.client.sound.SoundHandler;
 import org.jurassicraft.server.entity.DinosaurEntity;
@@ -27,7 +27,7 @@ public class BrachiosaurusEntity extends DinosaurEntity {
     public void onUpdate() {
         super.onUpdate();
         if (this.onGround && !this.isInWater()) {
-            if (this.moveForward > 0 && (this.posX - this.prevPosX > 0 || this.posZ - this.prevPosZ > 0) && this.stepCount <= 0) {
+            if (this.moveForward > 0 && (this.getX() - this.prevPosX > 0 || this.getZ() - this.prevPosZ > 0) && this.stepCount <= 0) {
                 this.playSound(SoundHandler.STOMP, (float) this.interpolate(0.1F, 1.0F), this.getSoundPitch());
                 this.stepCount = 65;
             }

@@ -15,17 +15,17 @@ import org.jurassicraft.server.plugin.waila.IWailaProvider;
 import com.google.common.primitives.Ints;
 import io.netty.buffer.ByteBuf;
 import mcp.mobius.waila.api.SpecialChars;
-import net.minecraft.block.Block;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.ISidedInventory;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.Direction;
 import net.minecraft.util.NonNullList;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.core.BlockPos;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
@@ -89,7 +89,7 @@ public class IncubatorBlockEntity extends MachineBaseBlockEntity implements Temp
 
     @Override
     protected void processItem(int process) {
-        if (this.canProcess(process) && !this.world.isRemote) {
+        if (this.canProcess(process) && !this.level().isClientSide) {
             ItemStack egg = this.slots.get(process);
 
             ItemStack incubatedEgg = new ItemStack(ItemHandler.HATCHED_EGG, 1, egg.getItemDamage());
@@ -303,7 +303,7 @@ public class IncubatorBlockEntity extends MachineBaseBlockEntity implements Temp
 	@Override
 	public void setInventorySlotContents(int index, ItemStack stack) {
 		boolean send = false;
-		if (!this.world.isRemote && index >= 0 && index <= 4 && this.slots.get(index).getItem() != stack.getItem()) {
+		if (!this.level().isClientSide && index >= 0 && index <= 4 && this.slots.get(index).getItem() != stack.getItem()) {
 			send = true;
 		}
 		super.setInventorySlotContents(index, stack);

@@ -4,17 +4,16 @@ import net.minecraft.client.renderer.*;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.core.Direction;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.core.BlockPos;
+import net.minecraft.util.Mth;
 import net.minecraftforge.fml.client.registry.IRenderFactory;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.DistOnly;
 import org.jurassicraft.server.entity.item.AttractionSignEntity;
 import org.lwjgl.opengl.GL11;
 
-@SideOnly(Side.CLIENT)
 public class AttractionSignRenderer implements IRenderFactory<AttractionSignEntity> {
     @Override
     public Render<? super AttractionSignEntity> createRenderFor(RenderManager manager) {
@@ -146,20 +145,20 @@ public class AttractionSignRenderer implements IRenderFactory<AttractionSignEnti
         }
 
         private void setLightmap(AttractionSignEntity sign, float xzOffset, float yOffset) {
-            int posX = MathHelper.floor(sign.posX);
-            int posY = MathHelper.floor(sign.posY + (yOffset / 16.0F));
-            int posZ = MathHelper.floor(sign.posZ);
+            int posX = MathHelper.floor(sign.getX());
+            int posY = MathHelper.floor(sign.getY() + (yOffset / 16.0F));
+            int posZ = MathHelper.floor(sign.getZ());
 
             EnumFacing direction = sign.facingDirection;
 
             if (direction == EnumFacing.NORTH) {
-                posX = MathHelper.floor(sign.posX + (xzOffset / 16.0F));
+                posX = MathHelper.floor(sign.getX() + (xzOffset / 16.0F));
             } else if (direction == EnumFacing.WEST) {
-                posZ = MathHelper.floor(sign.posZ - (xzOffset / 16.0F));
+                posZ = MathHelper.floor(sign.getZ() - (xzOffset / 16.0F));
             } else if (direction == EnumFacing.SOUTH) {
-                posX = MathHelper.floor(sign.posX - (xzOffset / 16.0F));
+                posX = MathHelper.floor(sign.getX() - (xzOffset / 16.0F));
             } else if (direction == EnumFacing.EAST) {
-                posZ = MathHelper.floor(sign.posZ + (xzOffset / 16.0F));
+                posZ = MathHelper.floor(sign.getZ() + (xzOffset / 16.0F));
             }
 
             int combinedLight = this.renderManager.world.getCombinedLight(new BlockPos(posX, posY, posZ), 0);

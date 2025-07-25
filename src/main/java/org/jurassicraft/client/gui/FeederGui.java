@@ -4,13 +4,12 @@ import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraft.resources.ResourceLocation;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.DistOnly;
 import org.jurassicraft.server.block.entity.FeederBlockEntity;
 import org.jurassicraft.server.container.FeederContainer;
 
-@SideOnly(Side.CLIENT)
 public class FeederGui extends GuiContainer {
     private static final ResourceLocation TEXTURE = new ResourceLocation("jurassicraft:textures/gui/feeder.png");
     private final InventoryPlayer playerInventory;

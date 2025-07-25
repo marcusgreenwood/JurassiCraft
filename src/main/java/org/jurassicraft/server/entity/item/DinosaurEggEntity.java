@@ -1,14 +1,14 @@
 package org.jurassicraft.server.entity.item;
 
 import io.netty.buffer.ByteBuf;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityList;
-import net.minecraft.entity.MoverType;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumHand;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityList;
+import net.minecraft.world.entity.MoverType;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 import org.jurassicraft.server.dinosaur.Dinosaur;
 import org.jurassicraft.server.entity.DinosaurEntity;
@@ -50,9 +50,9 @@ public class DinosaurEggEntity extends Entity implements IEntityAdditionalSpawnD
             }
         }
 
-        if (!this.world.isRemote) {
+        if (!this.level().isClientSide) {
             if (this.entity == null) {
-                this.setDead();
+                this.discard();
             }
 
             this.hatchTime--;
@@ -89,14 +89,14 @@ public class DinosaurEggEntity extends Entity implements IEntityAdditionalSpawnD
 
     @Override
     public boolean processInitialInteract(EntityPlayer player, EnumHand hand) {
-        if (this.entity != null && !this.world.isRemote) {
+        if (this.entity != null && !this.level().isClientSide) {
             ItemStack eggStack = new ItemStack(ItemHandler.EGG, 1, EntityHandler.getDinosaurId(this.entity.getDinosaur()));
             NBTTagCompound nbt = new NBTTagCompound();
             nbt.setInteger("DNAQuality", this.entity.getDNAQuality());
             nbt.setString("Genetics", this.entity.getGenetics());
             eggStack.setTagCompound(nbt);
             this.entityDropItem(eggStack, 0.1F);
-            this.setDead();
+            this.discard();
         }
 
         return true;
@@ -106,11 +106,11 @@ public class DinosaurEggEntity extends Entity implements IEntityAdditionalSpawnD
         if(dinosaur != null) {
             try {
             	DinosaurEntity entity = this.dinosaur.construct(this.world);
-                entity.setPosition(this.posX, this.posY, this.posZ);
+                entity.setPosition(this.getX(), this.getY(), this.getZ());
                 entity.setAge(0);
                 this.world.spawnEntity(entity);
                 entity.playLivingSound();
-                this.setDead();
+                this.discard();
                 for (Entity loadedEntity : this.world.loadedEntityList) {
                     if (loadedEntity instanceof DinosaurEntity && loadedEntity.getUniqueID().equals(this.parent)) {
                         DinosaurEntity parent = (DinosaurEntity) loadedEntity;

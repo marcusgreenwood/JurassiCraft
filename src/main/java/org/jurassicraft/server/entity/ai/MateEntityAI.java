@@ -21,9 +21,9 @@ public class MateEntityAI extends EntityAIBase {
         // {
         // World world = dinosaur.world;
         //
-        // double posX = dinosaur.posX;
-        // double posY = dinosaur.posY;
-        // double posZ = dinosaur.posZ;
+        // double posX = dinosaur.getX();
+        // double posY = dinosaur.getY();
+        // double posZ = dinosaur.getZ();
         //
         // List<DinosaurEntity> entities = world.getEntitiesWithinAABB(dinosaur.getClass(), AxisAlignedBB.fromBounds(posX - 16, posY - 16, posZ - 16, posX + 16, posY + 16, posZ + 16));
         //
@@ -56,6 +56,6 @@ public class MateEntityAI extends EntityAIBase {
      */
     @Override
     public boolean shouldContinueExecuting() {
-        return this.dinosaur != null && !this.dinosaur.getNavigator().noPath() && this.mate != null && !this.mate.isDead;
+        return this.dinosaur != null && !this.dinosaur.getNavigator().noPath() && this.mate != null && !this.mate.isRemoved();
     }
 }

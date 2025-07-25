@@ -3,15 +3,14 @@ package org.jurassicraft.server.plugin.jei.category.bugcrate;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.IRecipeWrapper;
 import net.minecraft.client.Minecraft;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraft.world.item.ItemStack;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.DistOnly;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import org.jurassicraft.server.item.BugItem;
 
-@SideOnly(Side.CLIENT)
 public class BugCrateRecipeWrapper implements IRecipeWrapper {
     private final BugCrateInput input;
     private final ItemStack secondInput;

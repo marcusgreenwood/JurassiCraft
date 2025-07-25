@@ -1,7 +1,7 @@
 package org.jurassicraft.server.entity;
 
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.DamageSource;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.damagesource.DamageSource;
 import org.jurassicraft.client.model.animation.EntityAnimation;
 import org.jurassicraft.server.util.GameRuleHandler;
 
@@ -30,7 +30,7 @@ public class MetabolismContainer {
     }
 
     public void update() {
-        if (!this.dinosaur.isDead && !this.dinosaur.isCarcass() && GameRuleHandler.DINO_METABOLISM.getBoolean(this.dinosaur.world)) {
+        if (!this.dinosaur.isRemoved() && !this.dinosaur.isCarcass() && GameRuleHandler.DINO_METABOLISM.getBoolean(this.dinosaur.world)) {
             this.decreaseEnergy(1);
             this.decreaseWater(1);
 

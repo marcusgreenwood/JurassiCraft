@@ -2,7 +2,7 @@ package org.jurassicraft.server.tab;
 
 import org.jurassicraft.server.item.ItemHandler;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 
 public class JurassiCraftVehiclesTab extends CreativeTabs {
 

@@ -1,15 +1,15 @@
 package org.jurassicraft.server.block.tree;
 
 import com.google.common.collect.Lists;
-import net.minecraft.block.BlockLog;
+import net.minecraft.world.level.block.BlockLog;
 import net.minecraft.block.SoundType;
-import net.minecraft.block.material.Material;
+import net.minecraft.world.level.material.MapColor;
 import net.minecraft.block.state.BlockStateContainer;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.init.Items;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
 import org.apache.commons.lang3.tuple.Pair;
 import org.jurassicraft.server.api.GrindableItem;
 import org.jurassicraft.server.item.ItemHandler;

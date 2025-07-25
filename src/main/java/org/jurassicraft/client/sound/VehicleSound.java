@@ -3,11 +3,10 @@ package org.jurassicraft.client.sound;
 import net.minecraft.client.audio.MovingSound;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.DistOnly;
 import org.jurassicraft.server.entity.vehicle.VehicleEntity;
 
-@SideOnly(Side.CLIENT)
 public class VehicleSound extends EntitySound<VehicleEntity> {
     public VehicleSound(VehicleEntity entity, SoundEvent vehicleMove) {
         super(entity, vehicleMove, SoundCategory.NEUTRAL);

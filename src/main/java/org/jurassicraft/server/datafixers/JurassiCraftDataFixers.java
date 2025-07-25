@@ -2,8 +2,8 @@ package org.jurassicraft.server.datafixers;
 
 import com.google.common.collect.Lists;
 
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.datafix.FixTypes;
 import net.minecraftforge.common.util.ModFixs;
 import net.minecraftforge.fml.common.FMLCommonHandler;

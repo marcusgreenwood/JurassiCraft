@@ -1,9 +1,9 @@
 package org.jurassicraft.server.plugin.jei.category.moss;
 
-import net.minecraft.block.Block;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemBlock;
+import net.minecraft.world.item.ItemStack;
 import org.jurassicraft.server.api.JurassicIngredientItem;
 
 public interface PeatItem extends JurassicIngredientItem {

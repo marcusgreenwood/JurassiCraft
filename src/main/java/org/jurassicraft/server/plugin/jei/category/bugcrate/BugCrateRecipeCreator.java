@@ -12,7 +12,7 @@ import org.jurassicraft.server.food.FoodHelper.FoodKey;
 import org.jurassicraft.server.item.BugItem;
 import com.google.common.collect.Lists;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 
 public class BugCrateRecipeCreator {
 

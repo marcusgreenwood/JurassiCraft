@@ -1,10 +1,10 @@
 package org.jurassicraft.server.container.slot;
 
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.inventory.SlotCrafting;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 
 public class SkeletonCraftingSlot extends SlotCrafting {
     private final InventoryCrafting craftMatrix;

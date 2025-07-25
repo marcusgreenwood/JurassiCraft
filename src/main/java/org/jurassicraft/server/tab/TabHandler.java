@@ -1,8 +1,8 @@
 package org.jurassicraft.server.tab;
 
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 
 import org.jurassicraft.server.block.BlockHandler;
 import org.jurassicraft.server.item.ItemHandler;

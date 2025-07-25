@@ -1,10 +1,10 @@
 package org.jurassicraft.server.entity.ai;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAIBase;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.phys.AABB;
 import org.jurassicraft.JurassiCraft;
 import org.jurassicraft.server.conf.JurassiCraftConfig;
 import org.jurassicraft.server.entity.DinosaurEntity;
@@ -68,7 +68,7 @@ public class SelectTargetEntityAI extends EntityAIBase {
         }
 
         Entity target = this.entity.getAttackTarget();
-        if (target != null && !target.isDead && this.entity.getEntitySenses().canSee(target) ) {
+        if (target != null && !target.isRemoved() && this.entity.getEntitySenses().canSee(target) ) {
             return false;
         }
 

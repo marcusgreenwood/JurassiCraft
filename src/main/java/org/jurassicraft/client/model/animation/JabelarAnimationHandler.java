@@ -2,10 +2,10 @@ package org.jurassicraft.client.model.animation;
 
 import net.ilexiconn.llibrary.client.model.tools.AdvancedModelRenderer;
 import net.ilexiconn.llibrary.server.animation.Animation;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraft.world.entity.EntityLivingBase;
+import net.minecraft.resources.ResourceLocation;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.DistOnly;
 import org.jurassicraft.JurassiCraft;
 import org.jurassicraft.client.model.AnimatableModel;
 import org.jurassicraft.server.api.Animatable;
@@ -19,7 +19,6 @@ import java.util.Map.Entry;
  * @author jabelar
  *         This class handles per-entity animations.
  */
-@SideOnly(Side.CLIENT)
 public class JabelarAnimationHandler<ENTITY extends EntityLivingBase & Animatable> {
 
     private final AnimationPass DEFAULT_PASS;

@@ -1,8 +1,8 @@
 package org.jurassicraft.server.entity;
 
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.EntityLivingBase;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.biome.Biome;
 import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent;

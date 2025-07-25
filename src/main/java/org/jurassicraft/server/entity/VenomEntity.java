@@ -1,12 +1,12 @@
 package org.jurassicraft.server.entity;
 
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.world.entity.EntityLivingBase;
 import net.minecraft.entity.projectile.EntityThrowable;
 import net.minecraft.init.MobEffects;
 import net.minecraft.potion.PotionEffect;
-import net.minecraft.util.DamageSource;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.world.World;
+import net.minecraft.world.level.Level;
 import org.jurassicraft.client.proxy.ClientProxy;
 import org.jurassicraft.server.entity.dinosaur.DilophosaurusEntity;
 
@@ -41,8 +41,8 @@ public class VenomEntity extends EntityThrowable {
                 entityHit.addPotionEffect(new PotionEffect(MobEffects.BLINDNESS, 300, 1, false, false));
                 entityHit.addPotionEffect(new PotionEffect(MobEffects.NAUSEA, 300, 1, false, false));
 
-                if (!this.world.isRemote) {
-                    this.setDead();
+                if (!this.level().isClientSide) {
+                    this.discard();
                 }
             }
         }

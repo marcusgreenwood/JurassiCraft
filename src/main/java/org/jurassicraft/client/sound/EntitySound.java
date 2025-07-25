@@ -1,8 +1,8 @@
 package org.jurassicraft.client.sound;
 
 import net.minecraft.client.audio.MovingSound;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import java.util.function.Predicate;
@@ -26,13 +26,13 @@ public class EntitySound<T extends Entity> extends MovingSound {
 
     @Override
     public void update() {
-        if (this.entity.isDead || !predicate.test(this.entity)) {
+        if (this.entity.isRemoved() || !predicate.test(this.entity)) {
             this.donePlaying = true;
         } else {
         	 EntityPlayer player = ClientProxy.MC.player;
-             this.xPosF = (float) (entity.posX + (player.posX - entity.posX) / 2);
-             this.yPosF = (float) (entity.posY + (player.posY - entity.posY) / 2);
-             this.zPosF = (float) (entity.posZ + (player.posZ - entity.posZ) / 2);
+             this.xPosF = (float) (entity.getX() + (player.getX() - entity.getX()) / 2);
+             this.yPosF = (float) (entity.getY() + (player.getY() - entity.getY()) / 2);
+             this.zPosF = (float) (entity.getZ() + (player.getZ() - entity.getZ()) / 2);
         }
     }
 

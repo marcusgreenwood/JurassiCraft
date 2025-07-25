@@ -4,11 +4,11 @@ import org.jurassicraft.JurassiCraft;
 import org.jurassicraft.server.item.DinosaurSpawnEggItem;
 import org.jurassicraft.server.item.ItemHandler;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.NonNullList;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.DistOnly;
 
 public class JurassiCraftEggsTab extends CreativeTabs {
 
@@ -19,7 +19,6 @@ public class JurassiCraftEggsTab extends CreativeTabs {
     }
     
     @Override
-    @SideOnly(Side.CLIENT)
     public ItemStack getIconItemStack() {
         if (this.stacks == null) {
         	DinosaurSpawnEggItem item = ItemHandler.SPAWN_EGG;

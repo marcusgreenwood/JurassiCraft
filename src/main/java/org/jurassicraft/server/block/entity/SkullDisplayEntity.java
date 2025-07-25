@@ -1,20 +1,20 @@
 package org.jurassicraft.server.block.entity;
 
 import net.ilexiconn.llibrary.client.model.tabula.TabulaModel;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityList;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityList;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NBTUtil;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.core.Direction;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.StringUtils;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.level.Level;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.DistOnly;
 
 import java.util.UUID;
 
@@ -44,8 +44,7 @@ public class SkullDisplayEntity extends TileEntity {
         this.markDirty();
     }
 	
-	@SideOnly(Side.CLIENT)
-    public short getAngle()
+	public short getAngle()
     {
         return this.angle;
     }
@@ -94,7 +93,6 @@ public class SkullDisplayEntity extends TileEntity {
 	}
 
 	@Override
-	@SideOnly(Side.CLIENT)
 	public void onDataPacket(NetworkManager networkManager, SPacketUpdateTileEntity packet) {
 		this.readFromNBT(packet.getNbtCompound());
 	}

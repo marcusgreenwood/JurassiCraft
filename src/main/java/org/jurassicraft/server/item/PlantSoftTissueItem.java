@@ -2,12 +2,12 @@ package org.jurassicraft.server.item;
 
 import com.google.common.collect.Lists;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.NonNullList;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.DistOnly;
 import org.apache.commons.lang3.tuple.Pair;
 import org.jurassicraft.server.api.SequencableItem;
 import org.jurassicraft.server.genetics.PlantDNA;
@@ -47,7 +47,6 @@ public class PlantSoftTissueItem extends Item implements SequencableItem {
         return plant;
     }
 
-    @SideOnly(Side.CLIENT)
     @Override
     public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> subtypes) {
         List<Plant> plants = new LinkedList<>(PlantHandler.getPrehistoricPlantsAndTrees());

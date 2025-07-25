@@ -2,19 +2,19 @@ package org.jurassicraft.server.entity.vehicle;
 
 
 import com.google.common.collect.Lists;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.MoverType;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.MoverType;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.World;
-import net.minecraft.world.WorldServer;
+import net.minecraft.core.Direction;
+import net.minecraft.core.BlockPos;
+import net.minecraft.util.Mth;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelServer;
 import org.jurassicraft.JurassiCraft;
 import org.jurassicraft.server.block.TourRailBlock;
 import org.jurassicraft.server.entity.ai.util.InterpValue;
@@ -107,7 +107,7 @@ public class FordExplorerEntity extends VehicleEntity {
 			this.setSize(3.0F, 2.5F);
 //			this.stepHeight = 1.5F;
 		}
-		this.setPosition(this.posX, this.posY, this.posZ); //Make sure that the car is in the right position. Can cause issues when changing size of car
+		this.setPosition(this.getX(), this.getY(), this.getZ()); //Make sure that the car is in the right position. Can cause issues when changing size of car
 		super.onUpdate();
 		if(onRails) {
 			minecart.onUpdate();
@@ -149,7 +149,7 @@ public class FordExplorerEntity extends VehicleEntity {
                 if (this.getPassengers().isEmpty() || !(this.getPassengers().get(0) instanceof EntityPlayer)) {
                     this.setControlState((byte) 0);
                 }
-                if(this.world.isRemote) {
+                if(this.level().isClientSide) {
                     this.handleControl(); //+Z-X
                 }
             }

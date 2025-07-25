@@ -4,8 +4,8 @@ import com.google.common.collect.Lists;
 import net.ilexiconn.llibrary.client.model.tabula.ITabulaModelAnimator;
 import net.ilexiconn.llibrary.client.model.tabula.TabulaModel;
 import net.ilexiconn.llibrary.client.model.tools.AdvancedModelRenderer;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.phys.Vec3;
 import org.jurassicraft.client.proxy.ClientProxy;
 import org.jurassicraft.server.entity.ai.util.InterpValue;
 import org.jurassicraft.server.entity.vehicle.VehicleEntity;
@@ -30,7 +30,7 @@ public class CarAnimator implements ITabulaModelAnimator<VehicleEntity> {
 				VehicleEntity.Seat seat = door.getSeat(entity);
 				VehicleEntity.Seat closestSeat = seat;
 				EntityPlayer player = ClientProxy.MC.player;
-				Vec3d playerPos = player.getPositionVector();
+				Vec3d playerPos = player.position();
 				for (Door door1 : this.doorList) {
 					if (door1.getSeat(entity).getPos().distanceTo(playerPos) <= closestSeat.getPos().distanceTo(playerPos)) {
 						closestSeat = door1.getSeat(entity);

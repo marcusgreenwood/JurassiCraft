@@ -5,28 +5,28 @@ import org.jurassicraft.server.block.entity.FeederBlockEntity;
 import org.jurassicraft.server.proxy.ServerProxy;
 import org.jurassicraft.server.tab.TabHandler;
 
-import net.minecraft.block.BlockContainer;
+import net.minecraft.world.level.block.BlockContainer;
 import net.minecraft.block.SoundType;
-import net.minecraft.block.material.Material;
+import net.minecraft.world.level.material.MapColor;
 import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockStateContainer;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.entity.EntityLivingBase;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryHelper;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumBlockRenderType;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraft.world.level.Level;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.DistOnly;
 
 public class FeederBlock extends BlockContainer {
     public static final PropertyDirection FACING = PropertyDirection.create("facing");
@@ -37,7 +37,7 @@ public class FeederBlock extends BlockContainer {
         this.setHardness(2.0F);
         this.setSoundType(SoundType.METAL);
         this.setCreativeTab(TabHandler.BLOCKS);
-        this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.UP));
+        this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, Direction.UP));
     }
 
     @Override
@@ -127,7 +127,6 @@ public class FeederBlock extends BlockContainer {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
     public BlockRenderLayer getBlockLayer() {
         return BlockRenderLayer.CUTOUT;
     }
@@ -143,7 +142,6 @@ public class FeederBlock extends BlockContainer {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
     public boolean shouldSideBeRendered(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing side) {
         return true;
     }

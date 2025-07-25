@@ -13,10 +13,10 @@ import net.ilexiconn.llibrary.LLibrary;
 import net.ilexiconn.llibrary.server.animation.Animation;
 import net.ilexiconn.llibrary.server.animation.IAnimatedEntity;
 import net.ilexiconn.llibrary.server.network.AnimationMessage;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.world.WorldServer;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.player.PlayerMP;
+import net.minecraft.world.level.LevelServer;
 
 public enum EntityAnimation {
 	

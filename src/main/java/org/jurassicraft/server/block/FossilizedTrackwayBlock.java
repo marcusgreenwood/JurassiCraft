@@ -6,25 +6,25 @@ import org.jurassicraft.server.api.SubBlocksBlock;
 import org.jurassicraft.server.item.block.FossilizedTrackwayItemBlock;
 import org.jurassicraft.server.tab.TabHandler;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockHorizontal;
-import net.minecraft.block.material.Material;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.BlockHorizontal;
+import net.minecraft.world.level.material.MapColor;
 import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.world.entity.EntityLivingBase;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemBlock;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.core.Direction;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.NonNullList;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.DistOnly;
 
 public class FossilizedTrackwayBlock extends Block implements SubBlocksBlock {
     public static final PropertyEnum<TrackwayType> VARIANT = PropertyEnum.create("variant", TrackwayType.class);
@@ -80,7 +80,6 @@ public class FossilizedTrackwayBlock extends Block implements SubBlocksBlock {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
     public void getSubBlocks(CreativeTabs tab, NonNullList<ItemStack> list) {
         for (TrackwayType type : TrackwayType.values()) {
             if(this.getCreativeTabToDisplayOn().equals(TabHandler.FOSSILS))

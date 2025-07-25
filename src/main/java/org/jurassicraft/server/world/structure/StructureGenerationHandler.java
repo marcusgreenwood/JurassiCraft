@@ -2,8 +2,8 @@ package org.jurassicraft.server.world.structure;
 
 import com.google.common.collect.Lists;
 import net.minecraft.init.Biomes;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.IChunkGenerator;

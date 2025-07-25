@@ -4,16 +4,15 @@ import com.google.common.collect.Lists;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.IRecipeWrapper;
 import net.minecraft.client.Minecraft;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraft.world.item.ItemStack;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.DistOnly;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 import org.jurassicraft.server.item.ItemHandler;
 
-@SideOnly(Side.CLIENT)
 public class DNAExtractorRecipeWrapper implements IRecipeWrapper {
     private final ExtractorInput input;
 

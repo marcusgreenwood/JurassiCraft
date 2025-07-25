@@ -1,11 +1,11 @@
 package org.jurassicraft.client.render.block;
 
 import net.ilexiconn.llibrary.client.model.tabula.TabulaModel;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.core.Direction;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.math.RayTraceResult;
 import java.util.Random;
 import org.jurassicraft.JurassiCraft;

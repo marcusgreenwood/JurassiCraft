@@ -2,7 +2,7 @@ package org.jurassicraft.server.entity.vehicle.util;
 
 import javax.vecmath.Vector2d;
 
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.phys.Vec3;
 
 public class CarWheel {
     

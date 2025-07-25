@@ -1,8 +1,8 @@
 package org.jurassicraft.server.entity.ai;
 
-import net.minecraft.entity.EntityBodyHelper;
-import net.minecraft.entity.EntityLiving;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.entity.EntityBodyHelper;
+import net.minecraft.world.entity.EntityLiving;
+import net.minecraft.util.Mth;
 import org.jurassicraft.server.entity.DinosaurEntity;
 
 /**
@@ -30,11 +30,11 @@ public class SmartBodyHelper extends EntityBodyHelper {
 
     @Override
     public void updateRenderAngles() {
-        if (!this.entity.isDead && !(this.entity instanceof DinosaurEntity && ((DinosaurEntity) this.entity).isCarcass())) {
+        if (!this.entity.isRemoved() && !(this.entity instanceof DinosaurEntity && ((DinosaurEntity) this.entity).isCarcass())) {
             System.arraycopy(this.histPosX, 0, this.histPosX, 1, this.histPosX.length - 1);
             System.arraycopy(this.histPosZ, 0, this.histPosZ, 1, this.histPosZ.length - 1);
-            this.histPosX[0] = this.entity.posX;
-            this.histPosZ[0] = this.entity.posZ;
+            this.histPosX[0] = this.entity.getX();
+            this.histPosZ[0] = this.entity.getZ();
             double dx = this.delta(this.histPosX);
             double dz = this.delta(this.histPosZ);
             double distSq = dx * dx + dz * dz;

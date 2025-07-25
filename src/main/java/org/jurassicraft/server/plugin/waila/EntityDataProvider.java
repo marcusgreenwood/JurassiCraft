@@ -8,7 +8,7 @@ import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaEntityAccessor;
 import mcp.mobius.waila.api.IWailaEntityProvider;
 import mcp.mobius.waila.api.IWailaRegistrar;
-import net.minecraft.entity.Entity;
+import net.minecraft.world.entity.Entity;
 
 public class EntityDataProvider implements IWailaEntityProvider {
 	

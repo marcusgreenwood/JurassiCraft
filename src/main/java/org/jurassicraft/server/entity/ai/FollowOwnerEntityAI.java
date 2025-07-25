@@ -1,7 +1,7 @@
 package org.jurassicraft.server.entity.ai;
 
 import net.minecraft.entity.ai.EntityAIBase;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.pathfinding.PathNodeType;
 import org.jurassicraft.server.entity.DinosaurEntity;
 

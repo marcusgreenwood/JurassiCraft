@@ -1,7 +1,7 @@
 package org.jurassicraft.server.plugin.jei.category.embroyonicmachine;
 
-import net.minecraft.item.Item;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.world.item.Item;
+import net.minecraft.nbt.CompoundTag;
 import org.jurassicraft.server.dinosaur.Dinosaur;
 import org.jurassicraft.server.entity.EntityHandler;
 import org.jurassicraft.server.genetics.DinoDNA;

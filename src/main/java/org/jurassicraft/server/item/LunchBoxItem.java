@@ -2,7 +2,7 @@ package org.jurassicraft.server.item;
 
 import org.jurassicraft.server.tab.TabHandler;
 
-import net.minecraft.item.Item;
+import net.minecraft.world.item.Item;
 
 public class LunchBoxItem extends Item {
     public LunchBoxItem() {

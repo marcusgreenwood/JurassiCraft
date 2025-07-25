@@ -1,9 +1,9 @@
 package org.jurassicraft.server.plugin.jei.category.dnasynthesizer;
 
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemBlock;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
 import org.jurassicraft.server.api.GrindableItem;
 import org.jurassicraft.server.api.SynthesizableItem;
 import org.jurassicraft.server.dinosaur.Dinosaur;

@@ -1,11 +1,11 @@
 package org.jurassicraft.server.item;
 
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumHand;
+import net.minecraft.world.entity.EntityLivingBase;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.player.PlayerMP;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.InteractionHand;
 import org.jurassicraft.JurassiCraft;
 import org.jurassicraft.server.entity.DinosaurEntity;
 import org.jurassicraft.server.message.OpenFieldGuideGuiMessage;
@@ -20,7 +20,7 @@ public class FieldGuideItem extends Item {
     @Override
     public boolean itemInteractionForEntity(ItemStack stack, EntityPlayer player, EntityLivingBase target, EnumHand hand) {
         if (target instanceof DinosaurEntity) {
-            if (!player.world.isRemote) {
+            if (!player.level().isClientSide) {
                 JurassiCraft.NETWORK_WRAPPER.sendTo(new OpenFieldGuideGuiMessage((DinosaurEntity) target), (EntityPlayerMP) player);
             }
             return true;

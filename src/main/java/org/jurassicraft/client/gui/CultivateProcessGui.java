@@ -4,15 +4,14 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraft.resources.ResourceLocation;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.DistOnly;
 import org.jurassicraft.JurassiCraft;
 import org.jurassicraft.server.block.entity.CultivatorBlockEntity;
 import org.jurassicraft.server.container.CultivateContainer;
 import org.jurassicraft.server.dinosaur.Dinosaur;
 
-@SideOnly(Side.CLIENT)
 public class CultivateProcessGui extends GuiScreen {
     private CultivatorBlockEntity cultivator;
     private CultivateContainer container;

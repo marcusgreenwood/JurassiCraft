@@ -1,7 +1,7 @@
 package org.jurassicraft.server.entity.ai;
 
 import net.minecraft.entity.ai.EntityAIBase;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.core.BlockPos;
 import org.jurassicraft.server.block.BlockHandler;
 import org.jurassicraft.server.entity.DinosaurEntity;
 import org.jurassicraft.server.entity.ai.util.AIUtils;

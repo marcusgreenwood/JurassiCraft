@@ -7,10 +7,9 @@ import net.ilexiconn.llibrary.client.model.tabula.TabulaModel;
 import net.ilexiconn.llibrary.client.model.tabula.container.TabulaCubeContainer;
 import net.ilexiconn.llibrary.client.model.tabula.container.TabulaCubeGroupContainer;
 import net.ilexiconn.llibrary.client.model.tabula.container.TabulaModelContainer;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.DistOnly;
 
-@SideOnly(Side.CLIENT)
 public class FixedTabulaModel extends TabulaModel {
 	
 	private final AnimalMetadata animal;

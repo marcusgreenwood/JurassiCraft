@@ -1,6 +1,6 @@
 package org.jurassicraft.server.plant;
 
-import net.minecraft.block.Block;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.init.MobEffects;
 import net.minecraft.potion.PotionEffect;
 import org.jurassicraft.server.block.BlockHandler;

@@ -1,6 +1,6 @@
 package org.jurassicraft.server.entity.ai;
 
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.world.entity.EntityLivingBase;
 import org.jurassicraft.server.entity.DinosaurEntity;
 
 public class LeapingMeleeEntityAI extends DinosaurAttackMeleeEntityAI {

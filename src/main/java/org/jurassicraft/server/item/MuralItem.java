@@ -1,13 +1,13 @@
 package org.jurassicraft.server.item;
 
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.core.Direction;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
 import org.jurassicraft.server.entity.item.MuralEntity;
 import org.jurassicraft.server.tab.TabHandler;
 
@@ -19,7 +19,7 @@ public class MuralItem extends Item {
     @Override
     public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
     	ItemStack stack = player.getHeldItem(hand);
-        if (side != EnumFacing.DOWN && side != EnumFacing.UP) {
+        if (side != Direction.DOWN && side != Direction.UP) {
             BlockPos offset = pos.offset(side);
 
             if (player.canPlayerEdit(offset, side, stack)) {

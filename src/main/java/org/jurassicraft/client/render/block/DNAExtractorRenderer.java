@@ -1,12 +1,12 @@
 package org.jurassicraft.client.render.block;
 
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderItem;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.core.Direction;
 import org.jurassicraft.client.proxy.ClientProxy;
 import org.jurassicraft.server.block.BlockHandler;
 import org.jurassicraft.server.block.OrientedBlock;

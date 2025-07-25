@@ -2,16 +2,16 @@ package org.jurassicraft.server.item;
 
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.init.Items;
-import net.minecraft.item.ItemFood;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.world.item.ItemFood;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.text.TextFormatting;
-import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraft.world.level.Level;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.DistOnly;
 
 import org.apache.commons.lang3.tuple.Pair;
 import org.jurassicraft.server.api.ExtractableItem;
@@ -53,7 +53,6 @@ public class DinosaurMeatItem extends ItemFood implements ExtractableItem {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
     public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> subtypes) {
         List<Dinosaur> dinosaurs = new LinkedList<>(EntityHandler.getDinosaurs().values());
 

@@ -1,6 +1,6 @@
 package org.jurassicraft.server.damage;
 
-import net.minecraft.util.DamageSource;
+import net.minecraft.world.damagesource.DamageSource;
 
 public class DamageSources {
     public static final DamageSource SHOCK = new ShockDamageSource();

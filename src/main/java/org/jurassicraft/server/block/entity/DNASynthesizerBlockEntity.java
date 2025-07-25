@@ -1,10 +1,10 @@
 package org.jurassicraft.server.block.entity;
 
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.core.Direction;
 import net.minecraft.util.NonNullList;
 import org.jurassicraft.JurassiCraft;
 import org.jurassicraft.server.api.GrindableItem;

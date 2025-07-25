@@ -1,10 +1,10 @@
 package org.jurassicraft.client.render.block;
 
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.world.World;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import org.jurassicraft.client.proxy.ClientProxy;
 import org.jurassicraft.client.render.RenderingHandler;
 import org.jurassicraft.client.render.entity.dinosaur.DinosaurRenderInfo;

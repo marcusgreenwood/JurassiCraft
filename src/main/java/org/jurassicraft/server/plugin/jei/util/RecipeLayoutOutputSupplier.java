@@ -1,7 +1,7 @@
 package org.jurassicraft.server.plugin.jei.util;
 
 import mezz.jei.api.gui.IRecipeLayout;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 
 import java.util.function.Supplier;
 import java.util.stream.Collectors;

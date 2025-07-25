@@ -1,7 +1,7 @@
 package org.jurassicraft.server.block.tree;
 
-import net.minecraft.block.BlockFenceGate;
-import net.minecraft.block.BlockPlanks;
+import net.minecraft.world.level.block.BlockFenceGate;
+import net.minecraft.world.level.block.BlockPlanks;
 import net.minecraft.block.SoundType;
 import org.jurassicraft.server.tab.TabHandler;
 

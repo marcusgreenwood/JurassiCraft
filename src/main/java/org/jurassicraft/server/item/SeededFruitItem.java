@@ -1,10 +1,10 @@
 package org.jurassicraft.server.item;
 
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemFood;
-import net.minecraft.item.ItemStack;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemFood;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 
 public class SeededFruitItem extends ItemFood {
     private Item seed;

@@ -1,20 +1,20 @@
 package org.jurassicraft.server.block.plant;
 
-import net.minecraft.block.BlockDoublePlant;
+import net.minecraft.world.level.block.BlockDoublePlant;
 import net.minecraft.block.IGrowable;
-import net.minecraft.block.material.Material;
+import net.minecraft.world.level.material.MapColor;
 import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.block.state.BlockStateContainer;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.core.Direction;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.core.BlockPos;
+import net.minecraft.util.Mth;
 import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.common.util.FakePlayer;
 import org.jurassicraft.server.item.ItemHandler;
 
@@ -111,7 +111,7 @@ public class WestIndianLilacBlock extends DoublePlantBlock implements IGrowable{
             worldIn.setBlockState(pos.up(), newState.withProperty(HALF, BlockHalf.UPPER));
 
             ItemStack itemDrop = new ItemStack(ItemHandler.WEST_INDIAN_LILAC_BERRIES);
-            EntityItem entityitem = new EntityItem(worldIn, playerIn.posX, playerIn.posY - 1.0D, playerIn.posZ, itemDrop);
+            EntityItem entityitem = new EntityItem(worldIn, playerIn.getX(), playerIn.getY() - 1.0D, playerIn.getZ(), itemDrop);
 
             worldIn.spawnEntity(entityitem);
 

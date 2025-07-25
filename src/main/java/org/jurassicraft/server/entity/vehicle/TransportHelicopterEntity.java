@@ -7,11 +7,11 @@ import org.jurassicraft.client.render.overlay.HelicopterHUDRenderer.HudElementSt
 import org.jurassicraft.client.render.overlay.HelicopterHUDRenderer.HudElementTachometer;
 import org.jurassicraft.server.item.ItemHandler;
 
-import net.minecraft.block.BlockEventData;
+import net.minecraft.world.level.block.BlockEventData;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.event.world.BlockEvent;
 
 public class TransportHelicopterEntity extends HelicopterEntity {
@@ -20,7 +20,7 @@ public class TransportHelicopterEntity extends HelicopterEntity {
 		// super(worldIn, 5, 3.5f, 8, 3992, 300, 6838, 5);
 		super(worldIn, 2, 3.5f, 5, 3992, 300, 6838, 5);
 
-		if (this.world.isRemote) {
+		if (this.level().isClientSide) {
 			this.addHudOverlayElement(HudElementAltimeter.class);
 			this.addHudOverlayElement(HudElementArtificialHorizon.class);
 			this.addHudOverlayElement(HudElementTachometer.class);

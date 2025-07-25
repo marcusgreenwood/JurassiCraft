@@ -1,9 +1,9 @@
 package org.jurassicraft.server.entity.ai;
 
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.world.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.init.MobEffects;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.Mth;
 import org.jurassicraft.client.model.animation.EntityAnimation;
 import org.jurassicraft.client.sound.SoundHandler;
 import org.jurassicraft.server.entity.DinosaurEntity;
@@ -41,7 +41,7 @@ public class DilophosaurusSpitEntityAI extends EntityAIBase {
     public boolean shouldExecute() {
         EntityLivingBase target = this.dilophosaurus.getAttackTarget();
 
-        if (target != null && !(target.isDead || (target instanceof DinosaurEntity && ((DinosaurEntity) target).isCarcass())) && !(target.getHealth() < target.getMaxHealth() * 0.9F && target.isPotionActive(MobEffects.BLINDNESS))) {
+        if (target != null && !(target.isRemoved() || (target instanceof DinosaurEntity && ((DinosaurEntity) target).isCarcass())) && !(target.getHealth() < target.getMaxHealth() * 0.9F && target.isPotionActive(MobEffects.BLINDNESS))) {
             this.target = target;
 
             return true;
@@ -65,7 +65,7 @@ public class DilophosaurusSpitEntityAI extends EntityAIBase {
 
     @Override
     public void updateTask() {
-        double distance = this.dilophosaurus.getDistanceSq(this.target.posX, this.target.getEntityBoundingBox().minY, this.target.posZ);
+        double distance = this.dilophosaurus.getDistanceSq(this.target.getX(), this.target.getEntityBoundingBox().minY, this.target.getZ());
         boolean canSee = this.dilophosaurus.getEntitySenses().canSee(this.target);
 
         if (canSee) {

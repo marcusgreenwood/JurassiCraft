@@ -1,9 +1,9 @@
 package org.jurassicraft.server.plugin.jei.category.bugcrate;
 
 import org.jurassicraft.server.api.BreedableBug;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemBlock;
+import net.minecraft.world.item.ItemStack;
 
 public class BugCrateInput {
     public final ItemStack stack;

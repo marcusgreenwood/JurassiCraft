@@ -1,12 +1,11 @@
 package org.jurassicraft.server.block.entity;
 
 import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.DistOnly;
 
 public class ElectricFenceBaseBlockEntity extends TileEntity {
     @Override
-    @SideOnly(Side.CLIENT)
     public double getMaxRenderDistanceSquared() {
         return 16384.0;
     }

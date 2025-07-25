@@ -1,13 +1,13 @@
 package org.jurassicraft.server.item;
 
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemFood;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemFood;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.util.NonNullList;
-import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraft.world.level.Level;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.DistOnly;
 import org.jurassicraft.server.dinosaur.Dinosaur;
 import org.jurassicraft.server.entity.EntityHandler;
 import org.jurassicraft.server.tab.TabHandler;
@@ -43,7 +43,6 @@ public class DinosaurSteakItem extends ItemFood {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
     public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> subtypes) {
         List<Dinosaur> dinosaurs = new LinkedList<>(EntityHandler.getDinosaurs().values());
 

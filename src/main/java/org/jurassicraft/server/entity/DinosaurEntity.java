@@ -4,17 +4,17 @@ import com.google.common.collect.Lists;
 import io.netty.buffer.ByteBuf;
 import mcp.MethodsReturnNonnullByDefault;
 import net.ilexiconn.llibrary.server.animation.Animation;
-import net.minecraft.block.material.Material;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.world.level.material.MapColor;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityBodyHelper;
-import net.minecraft.entity.EntityCreature;
-import net.minecraft.entity.EntityList;
-import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityBodyHelper;
+import net.minecraft.world.entity.EntityCreature;
+import net.minecraft.world.entity.EntityList;
+import net.minecraft.world.entity.EntityLiving;
+import net.minecraft.world.entity.EntityLivingBase;
 import net.minecraft.entity.IEntityLivingData;
-import net.minecraft.entity.MoverType;
+import net.minecraft.world.entity.MoverType;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.ai.EntityAILookIdle;
@@ -23,37 +23,37 @@ import net.minecraft.entity.ai.EntityAITasks;
 import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.ai.EntityLookHelper;
 import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraft.network.datasync.DataParameter;
-import net.minecraft.network.datasync.DataSerializers;
-import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.pathfinding.Path;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.EnumHand;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.SoundEvent;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.core.BlockPos;
+import net.minecraft.util.Mth;
 import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.phys.Vec3;
 import net.minecraft.util.text.ChatType;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.DifficultyInstance;
-import net.minecraft.world.World;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.DistOnly;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jurassicraft.JurassiCraft;
@@ -171,7 +171,6 @@ public abstract class DinosaurEntity extends EntityCreature implements IEntityAd
     
     private int attackCooldown;
 
-    @SideOnly(Side.CLIENT)
     public FixedChainBuffer tailBuffer;
 
     public Herd herd;
@@ -230,7 +229,7 @@ public abstract class DinosaurEntity extends EntityCreature implements IEntityAd
         this.navigator = new DinosaurPathNavigate(this, this.world);
         ((DinosaurPathNavigate) this.navigator).setCanSwim(true);
         this.lookHelper = new DinosaurLookHelper(this);
-        this.legSolver = this.world == null || !this.world.isRemote ? null : this.createLegSolver();
+        this.legSolver = this.level() == null || !this.level().isClientSide ? null : this.createLegSolver();
 
         this.metabolism = new MetabolismContainer(this);
         this.inventory = new InventoryDinosaur(this);
@@ -340,7 +339,7 @@ public abstract class DinosaurEntity extends EntityCreature implements IEntityAd
     }
 
     private boolean hasPredators() {
-        for (EntityLiving predator : this.world.getEntitiesWithinAABB(EntityLiving.class, new AxisAlignedBB(this.posX - 10F, this.posY - 5F, this.posZ - 10F, this.posX + 10F, this.posY + 5F, this.posZ + 10F), e -> e != DinosaurEntity.this)) {
+        for (EntityLiving predator : this.world.getEntitiesWithinAABB(EntityLiving.class, new AxisAlignedBB(this.getX() - 10F, this.getY() - 5F, this.getZ() - 10F, this.getX() + 10F, this.getY() + 5F, this.getZ() + 10F), e -> e != DinosaurEntity.this)) {
             boolean hasDinosaurPredator = false;
 
             if (predator instanceof DinosaurEntity) {
@@ -451,12 +450,12 @@ public abstract class DinosaurEntity extends EntityCreature implements IEntityAd
 
                 return super.attackEntityFrom(damageSource, amount);
             } else {
-                if (this.getAnimation() == EntityAnimation.RESTING.get() && !this.world.isRemote) {
+                if (this.getAnimation() == EntityAnimation.RESTING.get() && !this.level().isClientSide) {
                     this.setAnimation(EntityAnimation.IDLE.get());
                     this.isSittingNaturally = false;
                 }
 
-                if (!this.world.isRemote) {
+                if (!this.level().isClientSide) {
                 	if (!((float)this.hurtResistantTime > (float)this.maxHurtResistantTime / 2.0F))
                 		this.setAnimation(EntityAnimation.INJURED.get());
                 }
@@ -471,7 +470,7 @@ public abstract class DinosaurEntity extends EntityCreature implements IEntityAd
 
                 return super.attackEntityFrom(damageSource, amount);
             }
-        } else if (!this.world.isRemote) {
+        } else if (!this.level().isClientSide) {
         
         	if(!(((float)this.hurtResistantTime > (float)this.maxHurtResistantTime / 2.0F))) {
         	
@@ -482,7 +481,7 @@ public abstract class DinosaurEntity extends EntityCreature implements IEntityAd
 
         			if (this.carcassHealth <= 0) {
         				this.onDeath(damageSource);
-        				this.setDead();
+        				this.discard();
         			}
 
         			this.carcassHealth--;
@@ -546,7 +545,7 @@ public abstract class DinosaurEntity extends EntityCreature implements IEntityAd
         if (stack.getCount() != 0 && stack.getItem() != null) {
             Random rand = new Random();
 
-            EntityItem item = new EntityItem(this.world, this.posX + ((rand.nextFloat() * this.width) - this.width / 2), this.posY + (double) offsetY, this.posZ + ((rand.nextFloat() * this.width) - this.width / 2), stack);
+            EntityItem item = new EntityItem(this.world, this.getX() + ((rand.nextFloat() * this.width) - this.width / 2), this.getY() + (double) offsetY, this.getZ() + ((rand.nextFloat() * this.width) - this.width / 2), stack);
             item.setDefaultPickupDelay();
 
             if (this.captureDrops) {
@@ -677,7 +676,6 @@ public abstract class DinosaurEntity extends EntityCreature implements IEntityAd
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
     public boolean isInRangeToRenderDist(double distance) {
         return true;
     }
@@ -731,7 +729,7 @@ public abstract class DinosaurEntity extends EntityCreature implements IEntityAd
             newAnimation = EntityAnimation.DYING.get();
         }
         Animation oldAnimation = this.animation;
-        if(!this.world.isRemote) {
+        if(!this.level().isClientSide) {
         	this.addVariant(newAnimation, (byte) variant);
     	}
         
@@ -747,7 +745,7 @@ public abstract class DinosaurEntity extends EntityCreature implements IEntityAd
     @Override
     public void onLivingUpdate() {
         super.onLivingUpdate();
-		if (!this.world.isRemote && this instanceof TyrannosaurusEntity) {
+		if (!this.level().isClientSide && this instanceof TyrannosaurusEntity) {
 			if (this.moveTicks > 0) {
 				this.moveTicks--;
 				this.motionX = 0;
@@ -775,11 +773,11 @@ public abstract class DinosaurEntity extends EntityCreature implements IEntityAd
         }
         
         DinosaurMetadata metadata = this.getMetadata();
-        if(!this.world.isRemote && metadata.getDiet().canEat(this, FoodType.MEAT) && this.getMetabolism().isHungry()) {
+        if(!this.level().isClientSide && metadata.getDiet().canEat(this, FoodType.MEAT) && this.getMetabolism().isHungry()) {
             world.getEntitiesWithinAABB(EntityLivingBase.class, this.getEntityBoundingBox().grow(10, 10, 10), this::canEatEntity).stream().findAny().ifPresent(this::setAttackTarget);
         }
         
-        if (!this.isMale() && !this.world.isRemote) {
+        if (!this.isMale() && !this.level().isClientSide) {
             if (this.isPregnant()) {
                 if (--this.pregnantTime <= 0) {
                     this.navigator.clearPath();
@@ -802,7 +800,7 @@ public abstract class DinosaurEntity extends EntityCreature implements IEntityAd
                     } else {
                         entity = new DinosaurEggEntity(this.world, child, this);
                     }
-                    entity.setPosition(this.posX + (this.rand.nextFloat() - 0.5F), this.posY + 0.5F, this.posZ + (this.rand.nextFloat() - 0.5F));
+                    entity.setPosition(this.getX() + (this.rand.nextFloat() - 0.5F), this.getY() + 0.5F, this.getZ() + (this.rand.nextFloat() - 0.5F));
                     this.world.spawnEntity(entity);
                 }
             }
@@ -812,7 +810,7 @@ public abstract class DinosaurEntity extends EntityCreature implements IEntityAd
             if (this.ticksExisted % 10 == 0) {
                 this.getNavigator().tryMoveToEntityLiving(this.breeding, 1.0);
             }
-            boolean dead = this.breeding.isDead || this.breeding.isCarcass();
+            boolean dead = this.breeding.isRemoved() || this.breeding.isCarcass();
             if (dead || this.getEntityBoundingBox().intersects(this.breeding.getEntityBoundingBox().expand(3, 3, 3))) {
                 if (!dead) {
                 	this.breedCooldown = metadata.getBreedCooldown();
@@ -854,7 +852,7 @@ public abstract class DinosaurEntity extends EntityCreature implements IEntityAd
 
         if (this.isClimbing()) {
             this.prevLimbSwingAmount = this.limbSwingAmount;
-            double deltaY = (this.posY - this.prevPosY) * 4.0F;
+            double deltaY = (this.getY() - this.prevPosY) * 4.0F;
             if (deltaY > 1.0F) {
                 deltaY = 1.0F;
             }
@@ -869,7 +867,7 @@ public abstract class DinosaurEntity extends EntityCreature implements IEntityAd
 
             this.updateGrowth();
 
-            if (!this.world.isRemote) {
+            if (!this.level().isClientSide) {
                 if (this.metabolism.isHungry()) {
                     List<EntityItem> entitiesWithinAABB = this.world.getEntitiesWithinAABB(EntityItem.class, this.getEntityBoundingBox().expand(1.0, 1.0, 1.0));
                     for (EntityItem itemEntity : entitiesWithinAABB) {
@@ -880,7 +878,7 @@ public abstract class DinosaurEntity extends EntityCreature implements IEntityAd
                             if (itemEntity.getItem().getCount() > 1) {
                                 itemEntity.getItem().shrink(1);
                             } else {
-                                itemEntity.setDead();
+                                itemEntity.discard();
                             }
 
                             this.getMetabolism().eat(FoodHelper.getHealAmount(item));
@@ -929,7 +927,7 @@ public abstract class DinosaurEntity extends EntityCreature implements IEntityAd
                 this.herd = new Herd(this);
             }
 
-            if (!this.world.isRemote) {
+            if (!this.level().isClientSide) {
                 if (this.order == Order.WANDER) {
                     if (this.herd.state == Herd.State.IDLE && this.getAttackTarget() == null && !this.metabolism.isThirsty() && !this.metabolism.isHungry() && this.getNavigator().noPath()) {
                         if (!this.isSleeping && this.onGround && !this.isInWater() && this.getAnimation() == EntityAnimation.IDLE.get() && this.rand.nextInt(800) == 0) {
@@ -1012,12 +1010,12 @@ public abstract class DinosaurEntity extends EntityCreature implements IEntityAd
         if (this.isServerWorld()) {
             this.lookHelper.onUpdateLook();
         }
-        if(!this.world.isRemote && this.ticksExisted % 20 == 0)
+        if(!this.level().isClientSide && this.ticksExisted % 20 == 0)
         	this.dataManager.set(WATCHER_WAS_FED, false);
     }
 
     private void updateGrowth() {
-        if (!this.isDead && this.ticksExisted % 8 == 0 && !this.world.isRemote) {
+        if (!this.isRemoved() && this.ticksExisted % 8 == 0 && !this.level().isClientSide) {
             if (GameRuleHandler.DINO_GROWTH.getBoolean(this.world)) {
                 this.dinosaurAge += Math.min(this.growthSpeedOffset, 960) + 1;
                 this.metabolism.decreaseEnergy((int) ((Math.min(this.growthSpeedOffset, 960) + 1) * 0.1));
@@ -1036,8 +1034,8 @@ public abstract class DinosaurEntity extends EntityCreature implements IEntityAd
     @Override
     public void onUpdate() {
         super.onUpdate();
-        if(this.world.isRemote && this.dataManager.get(WATCHER_WAS_FED)) {
-        	this.world.spawnParticle(EnumParticleTypes.VILLAGER_HAPPY, this.posX + (double)(this.rand.nextFloat() * this.width * 2.0F) - (double)this.width, this.posY + 0.5D + (double)(this.rand.nextFloat() * this.height), this.posZ + (double)(this.rand.nextFloat() * this.width * 2.0F) - (double)this.width, 0.0D, 0.0D, 0.0D);
+        if(this.level().isClientSide && this.dataManager.get(WATCHER_WAS_FED)) {
+        	this.world.spawnParticle(EnumParticleTypes.VILLAGER_HAPPY, this.getX() + (double)(this.rand.nextFloat() * this.width * 2.0F) - (double)this.width, this.getY() + 0.5D + (double)(this.rand.nextFloat() * this.height), this.getZ() + (double)(this.rand.nextFloat() * this.width * 2.0F) - (double)this.width, 0.0D, 0.0D, 0.0D);
         }
         if(this.ticksUntilDeath > 0) {
             if(--this.ticksUntilDeath == 0) {
@@ -1051,7 +1049,7 @@ public abstract class DinosaurEntity extends EntityCreature implements IEntityAd
             this.attackCooldown--;
         }
 
-        if (!this.world.isRemote) {
+        if (!this.level().isClientSide) {
             if (this.animation == EntityAnimation.LEAP.get()) {
                 if (this.motionY < 0) {
                     this.setAnimation(EntityAnimation.LEAP_LAND.get());
@@ -1078,7 +1076,7 @@ public abstract class DinosaurEntity extends EntityCreature implements IEntityAd
             }
         }
        
-        if (!this.world.isRemote) {
+        if (!this.level().isClientSide) {
         	this.dataManager.set(WATCHER_WAS_MOVED, this.wasMoved);
             this.dataManager.set(WATCHER_AGE, this.dinosaurAge);
             this.dataManager.set(WATCHER_IS_SLEEPING, this.isSleeping);
@@ -1124,7 +1122,7 @@ public abstract class DinosaurEntity extends EntityCreature implements IEntityAd
             this.setAnimation(EntityAnimation.IDLE.get());
         }
 
-        if (!this.world.isRemote) {
+        if (!this.level().isClientSide) {
             if (this.isCarcass) {
                 if (this.getAnimation() != EntityAnimation.DYING.get()) {
                     this.setAnimation(EntityAnimation.DYING.get());
@@ -1141,7 +1139,7 @@ public abstract class DinosaurEntity extends EntityCreature implements IEntityAd
                         }
                     }
 
-                    if (!this.shouldSleep() && !this.world.isRemote && tranquilizerTicks-- <= 0) {
+                    if (!this.shouldSleep() && !this.level().isClientSide && tranquilizerTicks-- <= 0) {
                         this.isSleeping = false;
                         this.tranquilizerTicks = 0;
                     }
@@ -1154,7 +1152,7 @@ public abstract class DinosaurEntity extends EntityCreature implements IEntityAd
                         if (this.getAnimation() != EntityAnimation.RESTING.get()) {
                             this.setAnimation(EntityAnimation.RESTING.get());
                         }
-                    } else if (!this.isSittingNaturally && this.getAnimation() == EntityAnimation.RESTING.get() && !this.world.isRemote) {
+                    } else if (!this.isSittingNaturally && this.getAnimation() == EntityAnimation.RESTING.get() && !this.level().isClientSide) {
                         this.setAnimation(EntityAnimation.IDLE.get());
                     }
                 }
@@ -1232,7 +1230,7 @@ public abstract class DinosaurEntity extends EntityCreature implements IEntityAd
 
     public void setAge(int age) {
         this.dinosaurAge = age;
-        if (!this.world.isRemote) {
+        if (!this.level().isClientSide) {
             this.dataManager.set(WATCHER_AGE, this.dinosaurAge);
         }
     }
@@ -1268,13 +1266,13 @@ public abstract class DinosaurEntity extends EntityCreature implements IEntityAd
     }
 
     public void setCarcass(boolean carcass) {
-    	if(!this.world.isRemote && carcass != this.isCarcass && !this.wasMoved) {
+    	if(!this.level().isClientSide && carcass != this.isCarcass && !this.wasMoved) {
     		this.moveTicks = 18;
     	}
         this.isCarcass = carcass;
 
         boolean carcassAllowed = JurassiCraftConfig.ENTITIES.allowCarcass;
-        if (!this.world.isRemote) {
+        if (!this.level().isClientSide) {
             this.dataManager.set(WATCHER_IS_CARCASS, this.isCarcass);
         }
         if (carcass && carcassAllowed) {
@@ -1292,26 +1290,26 @@ public abstract class DinosaurEntity extends EntityCreature implements IEntityAd
     @Override
     public boolean processInteract(EntityPlayer player, EnumHand hand) {
     	ItemStack stack = player.getHeldItem(hand);
-        if (player.isSneaking() && hand == EnumHand.MAIN_HAND) {
+        if (player.isSneaking() && hand == InteractionHand.MAIN_HAND) {
             if (this.isOwner(player)) {
                 if (this.getAgePercentage() > 75) {
                     player.displayGUIChest(this.inventory);
                 } else {
-                    if (this.world.isRemote) {
+                    if (this.level().isClientSide) {
                     	TextComponentString denied = new TextComponentString(LangUtils.translate("message.too_young.name"));
                     	denied.getStyle().setColor(TextFormatting.RED);
                     	ClientProxy.MC.ingameGUI.addChatMessage(ChatType.GAME_INFO, denied);
                     }
                 }
             } else {
-                if (this.world.isRemote) {
+                if (this.level().isClientSide) {
                 	TextComponentString denied = new TextComponentString(LangUtils.translate("message.not_owned.name"));
                 	denied.getStyle().setColor(TextFormatting.RED);
                 	ClientProxy.MC.ingameGUI.addChatMessage(ChatType.GAME_INFO, denied);
                 }
             }
         } else {
-            if (stack.isEmpty() && hand == EnumHand.MAIN_HAND && this.world.isRemote) {
+            if (stack.isEmpty() && hand == InteractionHand.MAIN_HAND && this.level().isClientSide) {
                 if (this.isOwner(player)) {
                 	JurassiCraft.NETWORK_WRAPPER.sendToServer(new BiPacketOrder(this));
                 } else {
@@ -1320,7 +1318,7 @@ public abstract class DinosaurEntity extends EntityCreature implements IEntityAd
                 	ClientProxy.MC.ingameGUI.addChatMessage(ChatType.GAME_INFO, denied);
                 }
             } else if (!stack.isEmpty()&& (this.metabolism.isThirsty() || this.metabolism.isHungry())) {
-                if (!this.world.isRemote) {
+                if (!this.level().isClientSide) {
                     Item item = stack.getItem();
                     boolean fed = false;
                     if (item == Items.POTIONITEM) {
@@ -1414,7 +1412,7 @@ public abstract class DinosaurEntity extends EntityCreature implements IEntityAd
 
         Animation oldAnimation = this.animation;
         byte variant = 0;
-        if(!this.world.isRemote) {
+        if(!this.level().isClientSide) {
         	if(EntityAnimation.getAnimation(newAnimation).getVariants(this.getEntityClass()) == 1) {
         		variant = (byte) Math.round(Math.random());
         	}else {
@@ -1454,7 +1452,7 @@ public abstract class DinosaurEntity extends EntityCreature implements IEntityAd
     }
 
     public boolean isAlive() {
-        return !this.isCarcass && !this.isDead;
+        return !this.isCarcass && !this.isRemoved();
     }
 
     @Override
@@ -1708,7 +1706,7 @@ public abstract class DinosaurEntity extends EntityCreature implements IEntityAd
 
     public void setSleeping(boolean sleeping) {
         this.isSleeping = sleeping;
-        if (!this.world.isRemote) {
+        if (!this.level().isClientSide) {
             this.dataManager.set(WATCHER_IS_SLEEPING, this.isSleeping);
         }
     }
@@ -1739,7 +1737,7 @@ public abstract class DinosaurEntity extends EntityCreature implements IEntityAd
                 this.dinosaur.getIdentifier() +
                 ", id=" + this.getEntityId() +
                 ", remote=" + this.getEntityWorld().isRemote +
-                ", isDead=" + this.isDead +
+                ", isDead=" + this.isRemoved() +
                 ", isCarcass=" + this.isCarcass +
                 ", isSleeping=" + this.isSleeping +
                 ", stayAwakeTime=" + this.stayAwakeTime +
@@ -1791,7 +1789,7 @@ public abstract class DinosaurEntity extends EntityCreature implements IEntityAd
         double headY = (((24 - headPos[1]) * 0.0625F) - metadata.getOffsetY()) * scale;
         double headZ = ((headPos[2] * 0.0625F) - metadata.getOffsetZ()) * scale;
 
-        return new Vec3d(this.posX + headX, this.posY + (headY), this.posZ + headZ);
+        return new Vec3d(this.getX() + headX, this.getY() + (headY), this.getZ() + headZ);
     }
 
     public boolean areEyelidsClosed() {
@@ -1858,13 +1856,13 @@ public abstract class DinosaurEntity extends EntityCreature implements IEntityAd
                 AxisAlignedBB newBounds = new AxisAlignedBB(bounds.minX, bounds.minY, bounds.minZ, bounds.minX + this.width, bounds.minY + this.height, bounds.minZ + this.width);
                 if (!this.world.collidesWithAnyBlock(newBounds)) {
                     this.setEntityBoundingBox(newBounds);
-                    if (this.width > prevWidth && !this.firstUpdate && !this.world.isRemote) {
+                    if (this.width > prevWidth && !this.firstUpdate && !this.level().isClientSide) {
                         this.move(MoverType.SELF, prevWidth - this.width, 0.0F, prevWidth - this.width);
                     }
                 }
             } else {
                 float halfWidth = this.width / 2.0F;
-                this.setEntityBoundingBox(new AxisAlignedBB(this.posX - halfWidth, this.posY, this.posZ - halfWidth, this.posX + halfWidth, this.posY + this.height, this.posZ + halfWidth));
+                this.setEntityBoundingBox(new AxisAlignedBB(this.getX() - halfWidth, this.getY(), this.getZ() - halfWidth, this.getX() + halfWidth, this.getY() + this.height, this.getZ() + halfWidth));
             }
         }
     }
@@ -1899,7 +1897,7 @@ public abstract class DinosaurEntity extends EntityCreature implements IEntityAd
 
     public void setOrder(Order order) {
 
-        if (this.world.isRemote) {
+        if (this.level().isClientSide) {
             if (this.owner != null) {
                 EntityPlayer player = this.world.getPlayerEntityByUUID(this.owner);
 
@@ -1952,7 +1950,7 @@ public abstract class DinosaurEntity extends EntityCreature implements IEntityAd
     }
 
     public void respondToAttack(EntityLivingBase attacker) {
-        if (attacker != null && !attacker.isDead && !(attacker instanceof EntityPlayer && ((EntityPlayer) attacker).capabilities.isCreativeMode)) {
+        if (attacker != null && !attacker.isRemoved() && !(attacker instanceof EntityPlayer && ((EntityPlayer) attacker).capabilities.isCreativeMode)) {
             List<EntityLivingBase> enemies = new LinkedList<>();
 
             if (attacker instanceof DinosaurEntity) {
@@ -2031,8 +2029,8 @@ public abstract class DinosaurEntity extends EntityCreature implements IEntityAd
 
     @Override
     public boolean isMoving() {
-        float deltaX = (float) (this.posX - this.prevPosX);
-        float deltaZ = (float) (this.posZ - this.prevPosZ);
+        float deltaX = (float) (this.getX() - this.prevPosX);
+        float deltaZ = (float) (this.getZ() - this.prevPosZ);
         return deltaX * deltaX + deltaZ * deltaZ > 0.001F;
     }
 

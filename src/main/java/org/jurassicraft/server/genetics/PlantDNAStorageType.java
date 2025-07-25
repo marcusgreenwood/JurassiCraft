@@ -1,7 +1,7 @@
 package org.jurassicraft.server.genetics;
 
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
 import org.jurassicraft.server.item.ItemHandler;
 
 import java.util.List;

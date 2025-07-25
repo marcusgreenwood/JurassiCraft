@@ -1,23 +1,23 @@
 package org.jurassicraft.server.event;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockDirt;
-import net.minecraft.block.BlockGrass;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.Entity;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.BlockDirt;
+import net.minecraft.world.level.block.BlockGrass;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.entity.passive.EntityVillager;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.World;
-import net.minecraft.world.WorldServer;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.core.Direction;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.core.BlockPos;
+import net.minecraft.util.Mth;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelServer;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.BiomeDecorator;
 import net.minecraft.world.biome.BiomeSwamp;
@@ -33,7 +33,7 @@ import net.minecraftforge.event.terraingen.DecorateBiomeEvent;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.neoforged.bus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import org.jurassicraft.JurassiCraft;
@@ -264,7 +264,7 @@ public class ServerEventHandler {
 			if (villager.getProfessionForge().equals(VillagerHandler.PALEONTOLOGIST)) {
 				villager.tasks.addTask(6, new EntityAIResearchFossil(villager, 0.4));
 			}
-			villager.setHeldItem(EnumHand.MAIN_HAND, new ItemStack(Items.IRON_SHOVEL));
+			villager.setHeldItem(InteractionHand.MAIN_HAND, new ItemStack(Items.IRON_SHOVEL));
 		}
 	}
 }

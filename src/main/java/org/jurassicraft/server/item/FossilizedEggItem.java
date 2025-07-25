@@ -3,12 +3,12 @@ package org.jurassicraft.server.item;
 import com.google.common.collect.Lists;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Items;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.NonNullList;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.DistOnly;
 import org.apache.commons.lang3.tuple.Pair;
 import org.jurassicraft.server.api.GrindableItem;
 import org.jurassicraft.server.block.NestFossilBlock;
@@ -32,7 +32,6 @@ public class FossilizedEggItem extends Item implements GrindableItem {
 //    }
 
     @Override
-    @SideOnly(Side.CLIENT)
     public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> subItems) {
         if(this.isInCreativeTab(tab))
         for (NestFossilBlock.Variant variant : NestFossilBlock.Variant.values()) {

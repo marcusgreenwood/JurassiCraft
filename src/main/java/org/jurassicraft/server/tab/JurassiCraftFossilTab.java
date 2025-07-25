@@ -9,7 +9,7 @@ import org.jurassicraft.server.item.FossilItem;
 import org.jurassicraft.server.item.ItemHandler;
 
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 
 public class JurassiCraftFossilTab extends CreativeTabs {
     private int[] metas;

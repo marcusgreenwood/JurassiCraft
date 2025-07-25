@@ -2,9 +2,9 @@ package org.jurassicraft.server.item;
 
 import com.google.common.collect.Lists;
 import net.minecraft.init.Items;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
 import org.apache.commons.lang3.tuple.Pair;
 import org.jurassicraft.server.api.GrindableItem;
 import org.jurassicraft.server.block.tree.TreeType;

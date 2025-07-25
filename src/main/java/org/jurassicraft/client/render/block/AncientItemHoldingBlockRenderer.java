@@ -4,7 +4,7 @@ import org.jurassicraft.client.proxy.ClientProxy;
 import org.jurassicraft.server.block.BlockHandler;
 import org.jurassicraft.server.block.OrientedBlock;
 import org.jurassicraft.server.block.entity.AncientItemHoldingBlockEntity;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.RenderItem;
@@ -15,10 +15,10 @@ import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.world.World;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.core.Direction;
+import net.minecraft.world.level.Level;
 
 public class AncientItemHoldingBlockRenderer extends TileEntitySpecialRenderer<AncientItemHoldingBlockEntity> {
 

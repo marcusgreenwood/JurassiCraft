@@ -3,8 +3,8 @@ package org.jurassicraft.server.entity.ai.metabolism;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.pathfinding.Path;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
 
 import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.SynchronousQueue;
@@ -74,7 +74,7 @@ public class FeederEntityAI extends EntityAIBase {
 		try {
 			this.dinosaur.getNavigator().setPath(this.path, 1.0);
 
-			if (!this.dinosaur.world.isRemote && (this.dinosaur.getDistance(this.feederPosition.getX(), this.feederPosition.getY(), this.feederPosition.getZ()) <= this.dinosaur.width * this.dinosaur.width || this.path.isFinished())) {
+			if (!this.dinosaur.level().isClientSide && (this.dinosaur.getDistance(this.feederPosition.getX(), this.feederPosition.getY(), this.feederPosition.getZ()) <= this.dinosaur.width * this.dinosaur.width || this.path.isFinished())) {
 				TileEntity tile = this.dinosaur.world.getTileEntity(this.feederPosition);
 				if (tile instanceof FeederBlockEntity) {
 					FeederBlockEntity feeder = (FeederBlockEntity) tile;

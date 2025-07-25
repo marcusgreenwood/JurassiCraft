@@ -1,16 +1,16 @@
 package org.jurassicraft.server.block;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockRotatedPillar;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.BlockRotatedPillar;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.MapColor;
-import net.minecraft.block.material.Material;
-import net.minecraft.entity.Entity;
-import net.minecraft.item.Item;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.world.level.material.MapColor;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.item.Item;
+import net.minecraft.core.Direction;
 import net.minecraft.util.IStringSerializable;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
 import org.jurassicraft.server.tab.TabHandler;
 
 import java.util.Locale;

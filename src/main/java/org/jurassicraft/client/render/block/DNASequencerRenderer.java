@@ -1,15 +1,15 @@
 package org.jurassicraft.client.render.block;
 
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderItem;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.World;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.core.Direction;
+import net.minecraft.util.Mth;
+import net.minecraft.world.level.Level;
 import org.jurassicraft.client.proxy.ClientProxy;
 import org.jurassicraft.server.block.BlockHandler;
 import org.jurassicraft.server.block.OrientedBlock;
@@ -46,7 +46,7 @@ public class DNASequencerRenderer extends TileEntitySpecialRenderer<DNASequencer
 
             GlStateManager.translate(0.0, 0.0, MathHelper.sin((mc.player.ticksExisted + mc.getRenderPartialTicks()) * 0.05F) * 0.025F);
 
-            for (final int inputSlot : tileEntity.getSlotsForFace(EnumFacing.UP)) {
+            for (final int inputSlot : tileEntity.getSlotsForFace(Direction.UP)) {
                 GlStateManager.translate(0.0, 0.0, -0.4);
 
                 if (inputSlot % 2 == 0) {

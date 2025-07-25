@@ -1,11 +1,11 @@
 package org.jurassicraft.server.item;
 
 import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.potion.PotionUtils;
-import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraft.world.level.Level;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.DistOnly;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -21,7 +21,6 @@ public class PotionDart extends Dart {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
         PotionUtils.addPotionTooltip(stack, tooltip, 1.0F);
     }

@@ -3,13 +3,12 @@ package org.jurassicraft.client.particle;
 import net.minecraft.client.particle.IParticleFactory;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.renderer.BufferBuilder;
-import net.minecraft.entity.Entity;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.util.Mth;
+import net.minecraft.world.level.Level;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.DistOnly;
 
-@SideOnly(Side.CLIENT)
 public class HelicopterEngineExhaustParticle extends Particle{
 	float smokeParticleScale;
 
@@ -49,9 +48,9 @@ public class HelicopterEngineExhaustParticle extends Particle{
 	}
 
 	public void onUpdate() {
-		this.prevPosX = this.posX;
-		this.prevPosY = this.posY;
-		this.prevPosZ = this.posZ;
+		this.prevPosX = this.getX();
+		this.prevPosY = this.getY();
+		this.prevPosZ = this.getZ();
 
 		if (this.particleAge++ >= this.particleMaxAge) {
 			this.setExpired();
@@ -61,7 +60,7 @@ public class HelicopterEngineExhaustParticle extends Particle{
 		this.motionY += 0.004D;
 		this.move(this.motionX, this.motionY, this.motionZ);
 
-		if (this.posY == this.prevPosY) {
+		if (this.getY() == this.prevPosY) {
 			this.motionX *= 1.1D;
 			this.motionZ *= 1.1D;
 		}
@@ -76,7 +75,6 @@ public class HelicopterEngineExhaustParticle extends Particle{
 		}
 	}
 
-	@SideOnly(Side.CLIENT)
 	public static class Factory implements IParticleFactory {
 		public Particle createParticle(int particleID, World worldIn, double xCoordIn, double yCoordIn, double zCoordIn, double xSpeedIn, double ySpeedIn, double zSpeedIn, int... p_178902_15_) {
 			return new HelicopterEngineExhaustParticle(worldIn, xCoordIn, yCoordIn, zCoordIn, xSpeedIn, ySpeedIn, zSpeedIn);

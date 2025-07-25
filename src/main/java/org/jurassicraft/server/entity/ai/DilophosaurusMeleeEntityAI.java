@@ -1,6 +1,6 @@
 package org.jurassicraft.server.entity.ai;
 
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.world.entity.EntityLivingBase;
 import net.minecraft.init.MobEffects;
 import org.jurassicraft.server.entity.dinosaur.DilophosaurusEntity;
 

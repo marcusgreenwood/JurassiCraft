@@ -1,12 +1,12 @@
 package org.jurassicraft.server.entity;
 
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityLivingBase;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.core.BlockPos;
+import net.minecraft.util.Mth;
+import net.minecraft.world.level.Level;
 
 public class LegSolver {
     public final Leg[] legs;
@@ -54,7 +54,7 @@ public class LegSolver {
 
         public void update(Entity entity, double sideX, double sideZ, double forwardX, double forwardZ, float scale) {
             this.prevHeight = this.height;
-            float settledHeight = this.settle(entity, entity.posX + sideX * this.side + forwardX * this.forward, entity.posY, entity.posZ + sideZ * this.side + forwardZ * this.forward, this.height);
+            float settledHeight = this.settle(entity, entity.getX() + sideX * this.side + forwardX * this.forward, entity.getY(), entity.getZ() + sideZ * this.side + forwardZ * this.forward, this.height);
             this.height = MathHelper.clamp(settledHeight, -this.range * scale, this.range * scale);
         }
 

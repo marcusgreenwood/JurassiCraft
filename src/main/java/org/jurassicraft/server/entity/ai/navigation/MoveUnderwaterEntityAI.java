@@ -7,7 +7,7 @@ import org.jurassicraft.server.entity.ai.util.MovementType;
 
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.ai.RandomPositionGenerator;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.phys.Vec3;
 
 public class MoveUnderwaterEntityAI extends EntityAIBase
 {

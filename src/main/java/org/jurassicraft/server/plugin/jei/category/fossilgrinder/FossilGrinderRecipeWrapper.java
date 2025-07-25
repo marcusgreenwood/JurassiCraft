@@ -7,11 +7,11 @@ import mezz.jei.api.recipe.IRecipeWrapper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.util.text.TextFormatting;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.DistOnly;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -19,7 +19,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
-@SideOnly(Side.CLIENT)
 public class FossilGrinderRecipeWrapper implements IRecipeWrapper {
     private final GrinderInput input;
 

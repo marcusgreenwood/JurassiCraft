@@ -1,12 +1,12 @@
 package org.jurassicraft.server.world;
 
 import com.google.common.base.Predicate;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.block.state.pattern.BlockMatcher;
 import net.minecraft.init.Blocks;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.util.Mth;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.gen.feature.WorldGenMinable;
 import org.jurassicraft.server.block.BlockHandler;
 

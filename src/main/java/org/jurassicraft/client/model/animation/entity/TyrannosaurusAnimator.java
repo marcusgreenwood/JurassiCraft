@@ -12,10 +12,9 @@ import org.jurassicraft.server.entity.DinosaurEntity;
 import org.jurassicraft.server.entity.dinosaur.TyrannosaurusEntity;
 import net.ilexiconn.llibrary.client.model.tools.AdvancedModelRenderer;
 import net.minecraft.util.SoundCategory;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.DistOnly;
 
-@SideOnly(Side.CLIENT)
 public class TyrannosaurusAnimator extends EntityAnimator<TyrannosaurusEntity> {
 	
 	private HashMap<TyrannosaurusEntity, AnimState> states = new HashMap<>();
@@ -23,7 +22,7 @@ public class TyrannosaurusAnimator extends EntityAnimator<TyrannosaurusEntity> {
     @Override
     protected void performAnimations(AnimatableModel model, TyrannosaurusEntity entity, float f, float f1, float ticks, float rotationYaw, float rotationPitch, float scale) {
     	
-    	if(!entity.isDead && !entity.isCarcass()) {
+    	if(!entity.isRemoved() && !entity.isCarcass()) {
     	if(!states.containsKey(entity))
     		states.put(entity, new AnimState(0, FootStatus.EQUAL, 0, 0, FootStatus.EQUAL, 0));
     	}else if(states.containsKey(entity)) {
@@ -75,7 +74,7 @@ public class TyrannosaurusAnimator extends EntityAnimator<TyrannosaurusEntity> {
 
         final float delta = ClientProxy.MC.getRenderPartialTicks();
         
-		if (!entity.isDead && !entity.isCarcass()) {
+		if (!entity.isRemoved() && !entity.isCarcass()) {
 
 			AnimState statt = this.states.get(entity);
 			FootStatus[] tempStatus = new FootStatus[2];
@@ -98,7 +97,7 @@ public class TyrannosaurusAnimator extends EntityAnimator<TyrannosaurusEntity> {
 					if (tempStatus[i] == FootStatus.DOWN && feet[i].rotateAngleX > 0.5 && (statt.getTicks(isLeft) + 10) <= ticks) {
 						statt.setTicks(isLeft, ticks);
 						if(entity.onGround && !entity.isInWater() && (entity.getAnimation() == EntityAnimation.IDLE.get() || entity.getAnimation() == EntityAnimation.WALKING.get() || entity.getAnimation() == EntityAnimation.RUNNING.get() || entity.getAnimation() == EntityAnimation.ROARING.get() || entity.getAnimation() == EntityAnimation.DRINKING.get() || entity.getAnimation() == EntityAnimation.RESTING.get() || entity.getAnimation() == EntityAnimation.INJURED.get())) 
-							ClientProxy.MC.player.world.playSound(entity.posX, entity.posY, entity.posZ, SoundHandler.TYRANNOSAURUS_STOMP, SoundCategory.HOSTILE, (float) entity.interpolate(0.1F, 1.0F), entity.getSoundPitch(), false);
+							ClientProxy.MC.player.world.playSound(entity.getX(), entity.getY(), entity.getZ(), SoundHandler.TYRANNOSAURUS_STOMP, SoundCategory.HOSTILE, (float) entity.interpolate(0.1F, 1.0F), entity.getSoundPitch(), false);
 					}
 					statt.setStatus(isLeft, tempStatus[i]);
 				}

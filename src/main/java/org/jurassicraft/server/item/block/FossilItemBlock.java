@@ -1,8 +1,8 @@
 package org.jurassicraft.server.item.block;
 
-import net.minecraft.block.Block;
-import net.minecraft.item.ItemBlock;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.item.ItemBlock;
+import net.minecraft.world.item.ItemStack;
 import org.jurassicraft.server.block.FossilBlock;
 import org.jurassicraft.server.dinosaur.Dinosaur;
 import org.jurassicraft.server.util.LangUtils;

@@ -3,7 +3,7 @@ package org.jurassicraft.server.plugin.jei.vanilla;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.wrapper.IShapedCraftingRecipeWrapper;
 import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.potion.PotionType;
 import net.minecraft.potion.PotionUtils;
 import org.jurassicraft.server.item.ItemHandler;

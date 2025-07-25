@@ -2,7 +2,7 @@ package org.jurassicraft.server.plant;
 
 import org.jurassicraft.server.block.BlockHandler;
 
-import net.minecraft.block.Block;
+import net.minecraft.world.level.block.Block;
 
 /**
  * Created by Codyr on 29/10/2016.

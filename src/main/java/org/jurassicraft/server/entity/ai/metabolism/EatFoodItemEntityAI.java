@@ -2,9 +2,9 @@ package org.jurassicraft.server.entity.ai.metabolism;
 
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.item.EntityItem;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.world.World;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import org.jurassicraft.server.entity.DinosaurEntity;
 import org.jurassicraft.server.entity.ai.Mutex;
 import org.jurassicraft.server.food.FoodHelper;
@@ -56,7 +56,7 @@ public class EatFoodItemEntityAI extends EntityAIBase {
 
     @Override
     public boolean shouldContinueExecuting() {
-        return this.dinosaur != null && !this.dinosaur.getNavigator().noPath() && this.item != null && !this.item.isDead;
+        return this.dinosaur != null && !this.dinosaur.getNavigator().noPath() && this.item != null && !this.item.isRemoved();
     }
 
     @Override

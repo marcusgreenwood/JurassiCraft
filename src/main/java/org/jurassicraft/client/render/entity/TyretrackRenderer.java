@@ -2,175 +2,202 @@ package org.jurassicraft.client.render.entity;
 
 import java.util.Comparator;
 import java.util.List;
-import net.minecraftforge.fml.common.Mod;
 import org.apache.commons.lang3.tuple.Pair;
 import org.jurassicraft.JurassiCraft;
-import org.jurassicraft.client.event.ClientEventHandler;
-import org.jurassicraft.client.proxy.ClientProxy;
 import org.jurassicraft.server.entity.vehicle.VehicleEntity;
 import org.jurassicraft.server.entity.vehicle.util.WheelParticleData;
-import org.lwjgl.opengl.GL11;
 import com.google.common.collect.Lists;
-import net.minecraft.block.material.Material;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.Tessellator;
+import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.BufferBuilder;
+import com.mojang.blaze3d.vertex.BufferUploader;
+import com.mojang.blaze3d.vertex.DefaultVertexFormat;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.Tesselator;
+import com.mojang.blaze3d.vertex.VertexFormat;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.BufferBuilder;
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.World;
-import net.minecraftforge.client.event.RenderWorldLastEvent;
-import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.gameevent.TickEvent.ClientTickEvent;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.MapColor;
+import net.minecraft.world.phys.Vec3;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
+import net.neoforged.neoforge.event.tick.LevelTickEvent;
 
-@Mod.EventBusSubscriber(modid=JurassiCraft.MODID, value = Side.CLIENT)
+@EventBusSubscriber(modid = JurassiCraft.MODID, value = Dist.CLIENT)
 public class TyretrackRenderer {
     
-    public static final List<Material> ALLOWED_MATERIALS = Lists.newArrayList(Material.GRASS, Material.GROUND, Material.SAND);//TODO: configurable ?
-    public static final ResourceLocation TYRE_TRACKS_LOCATION = new ResourceLocation(JurassiCraft.MODID, "textures/misc/tyre-tracks.png");
+    // Updated material checking for 1.21 - using MapColor instead of old Material system
+    public static final List<MapColor> ALLOWED_MATERIALS = Lists.newArrayList(
+        MapColor.GRASS, MapColor.DIRT, MapColor.SAND
+    );
+    
+    public static final ResourceLocation TYRE_TRACKS_LOCATION = ResourceLocation.fromNamespaceAndPath(
+        JurassiCraft.MODID, "textures/misc/tyre-tracks.png"
+    );
     
     private static final List<List<WheelParticleData>> DEAD_CARS_LISTS = Lists.newArrayList(); 
     
     @SubscribeEvent
-    @SideOnly(Side.CLIENT)
-    public static void onRenderWorldLast(RenderWorldLastEvent event) {
-    	final Minecraft mc = ClientProxy.MC;
-        World world = mc.world;
-        EntityPlayer player = mc.player;
-        Vec3d playerPos = player.getPositionVector();
+    public static void onRenderWorldLast(RenderLevelStageEvent event) {
+        if (event.getStage() != RenderLevelStageEvent.Stage.AFTER_TRANSLUCENT_BLOCKS) {
+            return;
+        }
         
-        GlStateManager.enableBlend();
-        GlStateManager.shadeModel(GL11.GL_SMOOTH);
-        GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
-        GlStateManager.alphaFunc(GL11.GL_GREATER, 0.003921569F);
+        final Minecraft mc = Minecraft.getInstance();
+        Level level = mc.level;
+        Player player = mc.player;
         
-        mc.getTextureManager().bindTexture(TYRE_TRACKS_LOCATION);
+        if (level == null || player == null) {
+            return;
+        }
+        
+        Vec3 playerPos = player.position();
+        
+        // Modern rendering setup
+        RenderSystem.enableBlend();
+        RenderSystem.defaultBlendFunc();
+        RenderSystem.setShader(GameRenderer::getPositionTexColorShader);
+        RenderSystem.setShaderTexture(0, TYRE_TRACKS_LOCATION);
 
-        Tessellator tess = Tessellator.getInstance();
-        BufferBuilder buffer = tess.getBuffer();
+        Tesselator tesselator = Tesselator.getInstance();
+        BufferBuilder buffer = tesselator.getBuilder();
         
-        double d0 = (player.lastTickPosX + (player.posX - player.lastTickPosX) * (double)event.getPartialTicks());
-        double d1 = (player.lastTickPosY + (player.posY - player.lastTickPosY) * (double)event.getPartialTicks());
-        double d2 = (player.lastTickPosZ + (player.posZ - player.lastTickPosZ) * (double)event.getPartialTicks());
-        buffer.setTranslation(-d0, -d1, -d2);
+        // Camera position calculation for 1.21
+        Vec3 cameraPos = event.getCamera().getPosition();
         
         List<Pair<Long, Runnable>> runList = Lists.newArrayList();
-        buffer.begin(7, DefaultVertexFormats.POSITION_TEX_COLOR);
-        for(Entity entity : Lists.reverse(Lists.newArrayList(world.loadedEntityList))) {
-            if(entity instanceof VehicleEntity) {
-            VehicleEntity car = (VehicleEntity)entity;
+        buffer.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX_COLOR);
+        
+        for(Entity entity : level.getAllEntities()) {
+            if(entity instanceof VehicleEntity car) {
                 for(List<WheelParticleData> list : car.wheelDataList) {
-                    renderList(list, buffer, event.getPartialTicks(), runList);
+                    renderList(list, buffer, event.getPartialTick().getRealtimeDeltaTicks(), runList, cameraPos);
                 }
             }
         }
-        DEAD_CARS_LISTS.forEach(list -> renderList(list, buffer, event.getPartialTicks(), runList));
+        
+        DEAD_CARS_LISTS.forEach(list -> 
+            renderList(list, buffer, event.getPartialTick().getRealtimeDeltaTicks(), runList, cameraPos)
+        );
         
         runList.sort((o1, o2) -> Comparator.<Long>naturalOrder().compare(o2.getLeft(), o1.getLeft()));
         
-        GlStateManager.pushMatrix();
+        PoseStack poseStack = event.getPoseStack();
+        poseStack.pushPose();
         runList.forEach(pair -> pair.getRight().run());
-        GlStateManager.popMatrix();
+        poseStack.popPose();
         
-        tess.draw();
-        buffer.setTranslation(0, 0, 0);
+        BufferUploader.drawWithShader(buffer.end());
             
-        GlStateManager.alphaFunc(GL11.GL_GREATER, 0.1F);
-        GlStateManager.shadeModel(GL11.GL_FLAT);
-        GlStateManager.disableBlend();
+        RenderSystem.disableBlend();
     }
     
-    @SideOnly(Side.CLIENT)
-    private static void renderList(List<WheelParticleData> dataList, BufferBuilder buffer, float partialTicks, List<Pair<Long, Runnable>> list) {
-        World world = ClientProxy.MC.world;
-	for(int i = 0; i < dataList.size() - 1; i++) {
+    private static void renderList(List<WheelParticleData> dataList, BufferBuilder buffer, 
+                                 float partialTicks, List<Pair<Long, Runnable>> list, Vec3 cameraPos) {
+        Level level = Minecraft.getInstance().level;
+        if (level == null) return;
+        
+        for(int i = 0; i < dataList.size() - 1; i++) {
             WheelParticleData start = dataList.get(i);
             if(!start.shouldRender()) {
-        	continue;
+                continue;
             }
             WheelParticleData end = dataList.get(i + 1);
                 
-            Vec3d sv = start.getPosition();
-            Vec3d ev = end.getPosition();
+            Vec3 sv = start.getPosition();
+            Vec3 ev = end.getPosition();
             
-            Vec3d startOpposite = start.getOppositePosition();
-            Vec3d endOpposite = end.getOppositePosition();
-
+            Vec3 startOpposite = start.getOppositePosition();
+            Vec3 endOpposite = end.getOppositePosition();
             
-            BlockPos position = new BlockPos(sv);
-            BlockPos endPosition = new BlockPos(ev);
+            BlockPos position = BlockPos.containing(sv);
+            BlockPos endPosition = BlockPos.containing(ev);
             
-            if(sv.y != ev.y || !isStateAccepted(world, position) || !isStateAccepted(world, endPosition)) {
-        	continue;
+            if(sv.y != ev.y || !isStateAccepted(level, position) || !isStateAccepted(level, endPosition)) {
+                continue;
             }
             
             final int n = i;
             list.add(Pair.of(start.getWorldTime(), () -> {
-        	  double d = 1D / Math.sqrt(Math.pow(sv.x - startOpposite.x, 2) + Math.pow(sv.z - startOpposite.z, 2)) / 2D;    
-                  Vec3d vec = new Vec3d((sv.x - startOpposite.x) * d, 0, (sv.z - startOpposite.z) * d);
-                  
-                  double d1 = 1D / Math.sqrt(Math.pow(ev.x - endOpposite.x, 2) + Math.pow(ev.z - endOpposite.z, 2)) / 2D;    
-                  Vec3d vec1 = new Vec3d((ev.x - endOpposite.x) * d, 0, (ev.z - endOpposite.z) * d);
-                  
-                  float sl = world.getLightBrightness(position);
-                  float el = world.getLightBrightness(endPosition);
-                      
-                      
-                  float sa = start.getAlpha(partialTicks);
-                  float ea = end.getAlpha(partialTicks);
-                                      
-                  double offset = (n + 2) * 0.0001D; //No z-fighting on my watch //TODO: remove n
-                  
-                  buffer.pos(sv.x + vec.x / 2D, sv.y + offset, sv.z + vec.z / 2D).tex(0, 0).color(sl, sl, sl, sa).endVertex();
-                  buffer.pos(sv.x - vec.x / 2D, sv.y + offset, sv.z - vec.z / 2D).tex(0, 1).color(sl, sl, sl, sa).endVertex();
-                  buffer.pos(ev.x - vec1.x / 2D, ev.y + offset, ev.z - vec1.z / 2D).tex(1, 1).color(el, el, el, ea).endVertex();
-                  buffer.pos(ev.x + vec1.x / 2D, ev.y + offset, ev.z + vec1.z / 2D).tex(1, 0).color(el, el, el, ea).endVertex();
-                      
-                  //Flip quad to render upside down. Means when looking at tyre track from underneath, it still rendered. Needed because one set of tyres are upside down. //TODO: Fix that
-                  buffer.pos(sv.x + vec.x / 2D, sv.y + offset, sv.z + vec.z / 2D).tex(0, 0).color(sl, sl, sl, sa).endVertex();
-                  buffer.pos(ev.x + vec1.x / 2D, ev.y + offset, ev.z + vec1.z / 2D).tex(1, 0).color(el, el, el, ea).endVertex();
-                  buffer.pos(ev.x - vec1.x / 2D, ev.y + offset, ev.z - vec1.z / 2D).tex(1, 1).color(el, el, el, ea).endVertex();
-                  buffer.pos(sv.x - vec.x / 2D, sv.y + offset, sv.z - vec.z / 2D).tex(0, 1).color(sl, sl, sl, sa).endVertex();
+                double d = 1D / Math.sqrt(Math.pow(sv.x - startOpposite.x, 2) + Math.pow(sv.z - startOpposite.z, 2)) / 2D;    
+                Vec3 vec = new Vec3((sv.x - startOpposite.x) * d, 0, (sv.z - startOpposite.z) * d);
+                
+                double d1 = 1D / Math.sqrt(Math.pow(ev.x - endOpposite.x, 2) + Math.pow(ev.z - endOpposite.z, 2)) / 2D;    
+                Vec3 vec1 = new Vec3((ev.x - endOpposite.x) * d, 0, (ev.z - endOpposite.z) * d);
+                
+                // Updated light calculation for 1.21
+                float sl = level.getBrightness(net.minecraft.world.level.LightLayer.BLOCK, position);
+                float el = level.getBrightness(net.minecraft.world.level.LightLayer.BLOCK, endPosition);
+                    
+                float sa = start.getAlpha(partialTicks);
+                float ea = end.getAlpha(partialTicks);
+                                    
+                double offset = (n + 2) * 0.0001D; // No z-fighting
+                
+                // Relative to camera position
+                double relX1 = sv.x - cameraPos.x;
+                double relY1 = sv.y - cameraPos.y + offset;
+                double relZ1 = sv.z - cameraPos.z;
+                double relX2 = ev.x - cameraPos.x;
+                double relY2 = ev.y - cameraPos.y + offset;
+                double relZ2 = ev.z - cameraPos.z;
+                
+                buffer.vertex(relX1 + vec.x / 2D, relY1, relZ1 + vec.z / 2D).uv(0, 0).color(sl, sl, sl, sa).endVertex();
+                buffer.vertex(relX1 - vec.x / 2D, relY1, relZ1 - vec.z / 2D).uv(0, 1).color(sl, sl, sl, sa).endVertex();
+                buffer.vertex(relX2 - vec1.x / 2D, relY2, relZ2 - vec1.z / 2D).uv(1, 1).color(el, el, el, ea).endVertex();
+                buffer.vertex(relX2 + vec1.x / 2D, relY2, relZ2 + vec1.z / 2D).uv(1, 0).color(el, el, el, ea).endVertex();
+                    
+                // Flip quad for double-sided rendering
+                buffer.vertex(relX1 + vec.x / 2D, relY1, relZ1 + vec.z / 2D).uv(0, 0).color(sl, sl, sl, sa).endVertex();
+                buffer.vertex(relX2 + vec1.x / 2D, relY2, relZ2 + vec1.z / 2D).uv(1, 0).color(el, el, el, ea).endVertex();
+                buffer.vertex(relX2 - vec1.x / 2D, relY2, relZ2 - vec1.z / 2D).uv(1, 1).color(el, el, el, ea).endVertex();
+                buffer.vertex(relX1 - vec.x / 2D, relY1, relZ1 - vec.z / 2D).uv(0, 1).color(sl, sl, sl, sa).endVertex();
             }));
         }
     }
     
-    private static boolean isStateAccepted(World world, BlockPos position) {
-	BlockPos downPos = position.down();
-        IBlockState downState = world.getBlockState(downPos);
-        return !world.getBlockState(position).getMaterial().isLiquid() && downState.isSideSolid(world, downPos, EnumFacing.UP) && ALLOWED_MATERIALS.contains(downState.getMaterial());
+    private static boolean isStateAccepted(Level level, BlockPos position) {
+        BlockPos downPos = position.below();
+        BlockState downState = level.getBlockState(downPos);
+        BlockState currentState = level.getBlockState(position);
+        
+        return !currentState.liquid() && 
+               downState.isFaceSturdy(level, downPos, Direction.UP) && 
+               ALLOWED_MATERIALS.contains(downState.getMapColor(level, downPos));
     }
     
     @SubscribeEvent
-    @SideOnly(Side.CLIENT)
-    public static void onWorldTick(ClientTickEvent event) {
-	List<List<WheelParticleData>> emptyLists = Lists.newArrayList();
-	DEAD_CARS_LISTS.forEach(list -> {
-	    List<WheelParticleData> markedRemoved = Lists.newArrayList();
-	    list.forEach(wheel -> wheel.onUpdate(markedRemoved));
-	    markedRemoved.forEach(list::remove);
-	    markedRemoved.clear();
-	    if(list.isEmpty()) {
-		emptyLists.add(list);
-	    }
-	});
-	emptyLists.forEach(DEAD_CARS_LISTS::remove);
+    public static void onLevelTick(LevelTickEvent.Post event) {
+        if (!event.getLevel().isClientSide()) {
+            return;
+        }
+        
+        List<List<WheelParticleData>> emptyLists = Lists.newArrayList();
+        DEAD_CARS_LISTS.forEach(list -> {
+            List<WheelParticleData> markedRemoved = Lists.newArrayList();
+            list.forEach(wheel -> wheel.onUpdate(markedRemoved));
+            markedRemoved.forEach(list::remove);
+            markedRemoved.clear();
+            if(list.isEmpty()) {
+                emptyLists.add(list);
+            }
+        });
+        emptyLists.forEach(DEAD_CARS_LISTS::remove);
     }
     
     public static void uploadList(VehicleEntity entity) {
-	if(entity.world.isRemote) {
-	    for(List<WheelParticleData> list : entity.wheelDataList) {
-		DEAD_CARS_LISTS.add(0, list);
-	    }
-	}
+        if(entity.level().isClientSide) {
+            for(List<WheelParticleData> list : entity.wheelDataList) {
+                DEAD_CARS_LISTS.add(0, list);
+            }
+        }
     }
 }

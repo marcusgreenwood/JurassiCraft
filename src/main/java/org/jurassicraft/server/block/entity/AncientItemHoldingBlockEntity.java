@@ -1,12 +1,12 @@
 package org.jurassicraft.server.block.entity;
 
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.DistOnly;
 
 public class AncientItemHoldingBlockEntity extends TileEntity {
 
@@ -72,7 +72,6 @@ public class AncientItemHoldingBlockEntity extends TileEntity {
 	}
 
 	@Override
-	@SideOnly(Side.CLIENT)
 	public void onDataPacket(NetworkManager networkManager, SPacketUpdateTileEntity packet) {
 		this.readFromNBT(packet.getNbtCompound());
 	}

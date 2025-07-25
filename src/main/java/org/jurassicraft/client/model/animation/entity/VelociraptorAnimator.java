@@ -1,13 +1,12 @@
 package org.jurassicraft.client.model.animation.entity;
 
 import net.ilexiconn.llibrary.client.model.tools.AdvancedModelRenderer;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.DistOnly;
 import org.jurassicraft.client.model.AnimatableModel;
 import org.jurassicraft.client.model.animation.EntityAnimator;
 import org.jurassicraft.server.entity.dinosaur.VelociraptorEntity;
 
-@SideOnly(Side.CLIENT)
 public class VelociraptorAnimator extends EntityAnimator<VelociraptorEntity> {
 	
     @Override

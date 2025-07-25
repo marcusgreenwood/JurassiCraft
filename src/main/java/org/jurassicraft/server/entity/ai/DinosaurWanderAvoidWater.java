@@ -2,11 +2,11 @@ package org.jurassicraft.server.entity.ai;
 
 import org.jurassicraft.server.entity.DinosaurEntity;
 
-import net.minecraft.block.material.Material;
+import net.minecraft.world.level.material.MapColor;
 import net.minecraft.entity.ai.RandomPositionGenerator;
 import net.minecraft.init.Blocks;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.Vec3;
 
 public class DinosaurWanderAvoidWater extends DinosaurWanderEntityAI {
 
@@ -36,7 +36,7 @@ public class DinosaurWanderAvoidWater extends DinosaurWanderEntityAI {
 	    Vec3d vec = RandomPositionGenerator.getLandPos(this.entity, 32, 7);
 	    if(vec == null) {
 		continue;
-	    } else if(vec3d == null || this.entity.getPositionVector().distanceTo(vec) < this.entity.getPositionVector().distanceTo(vec3d)) {
+	    } else if(vec3d == null || this.entity.position().distanceTo(vec) < this.entity.position().distanceTo(vec3d)) {
 		vec3d = vec;
 	    }
 	}

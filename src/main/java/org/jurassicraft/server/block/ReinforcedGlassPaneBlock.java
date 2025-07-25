@@ -8,38 +8,38 @@ import javax.annotation.Nullable;
 import org.jurassicraft.JurassiCraft;
 import org.jurassicraft.server.tab.TabHandler;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockAir;
-import net.minecraft.block.BlockLeaves;
-import net.minecraft.block.BlockPane;
-import net.minecraft.block.BlockShulkerBox;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.BlockAir;
+import net.minecraft.world.level.block.BlockLeaves;
+import net.minecraft.world.level.block.BlockPane;
+import net.minecraft.world.level.block.BlockShulkerBox;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.MapColor;
-import net.minecraft.block.material.Material;
+import net.minecraft.world.level.material.MapColor;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
-import net.minecraft.item.Item;
+import net.minecraft.world.item.Item;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumBlockRenderType;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
+import net.minecraft.core.Direction;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.util.Mirror;
 import net.minecraft.util.Rotation;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraft.world.level.Level;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.DistOnly;
 
 public class ReinforcedGlassPaneBlock extends Block {
 
@@ -188,8 +188,8 @@ public class ReinforcedGlassPaneBlock extends Block {
 		}
 
 		return state.withProperty(NORTH, north).withProperty(SOUTH, south).withProperty(WEST, west)
-				.withProperty(EAST, east).withProperty(UP, canPaneConnectToPane(worldIn, pos, EnumFacing.UP))
-				.withProperty(DOWN, canPaneConnectToPane(worldIn, pos, EnumFacing.DOWN))
+				.withProperty(EAST, east).withProperty(UP, canPaneConnectToPane(worldIn, pos, Direction.UP))
+				.withProperty(DOWN, canPaneConnectToPane(worldIn, pos, Direction.DOWN))
 				.withProperty(BLOCK_NORTH, blockNorth).withProperty(BLOCK_SOUTH, blockSouth)
 				.withProperty(BLOCK_WEST, blockWest).withProperty(BLOCK_EAST, blockEast);
 	}
@@ -213,7 +213,6 @@ public class ReinforcedGlassPaneBlock extends Block {
 		return false;
 	}
 
-	@SideOnly(Side.CLIENT)
 	public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos,
 			EnumFacing side) {
 		return blockAccess.getBlockState(pos.offset(side)).getBlock() == this ? false
@@ -245,7 +244,6 @@ public class ReinforcedGlassPaneBlock extends Block {
 	 * CUTOUT or CUTOUT_MIPPED for on-off transparency (glass, reeds), TRANSLUCENT
 	 * for fully blended transparency (stained glass)
 	 */
-	@SideOnly(Side.CLIENT)
 	public BlockRenderLayer getBlockLayer() {
 		// return BlockRenderLayer.CUTOUT_MIPPED;
 		return BlockRenderLayer.TRANSLUCENT;
@@ -370,7 +368,7 @@ public class ReinforcedGlassPaneBlock extends Block {
 	 * @return an approximation of the form of the given face
 	 */
 	public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
-		// return face != EnumFacing.UP && face != EnumFacing.DOWN ?
+		// return face != Direction.UP && face != Direction.DOWN ?
 		// BlockFaceShape.MIDDLE_POLE_THIN
 		// : BlockFaceShape.MIDDLE_POLE_THIN;
 		return BlockFaceShape.MIDDLE_POLE_THIN;

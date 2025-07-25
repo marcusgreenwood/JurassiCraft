@@ -1,6 +1,6 @@
 package org.jurassicraft.server.entity;
 
-import net.minecraft.item.Item;
+import net.minecraft.world.item.Item;
 import org.jurassicraft.server.food.FoodHelper;
 import org.jurassicraft.server.food.FoodType;
 

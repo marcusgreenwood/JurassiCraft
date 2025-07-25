@@ -13,10 +13,10 @@ import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraft.world.entity.EntityLivingBase;
+import net.minecraft.resources.ResourceLocation;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.DistOnly;
 import org.jurassicraft.JurassiCraft;
 import org.jurassicraft.server.dinosaur.Dinosaur;
 import org.jurassicraft.server.entity.DinosaurEntity;
@@ -32,7 +32,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-@SideOnly(Side.CLIENT)
 public class FieldGuideGui extends GuiScreen {
     private static final int SIZE_X = 256;
     private static final int SIZE_Y = 192;
@@ -288,7 +287,6 @@ public class FieldGuideGui extends GuiScreen {
         return false;
     }
 
-    @SideOnly(Side.CLIENT)
     static class PageButton extends GuiButton {
         private final boolean isForward;
 
