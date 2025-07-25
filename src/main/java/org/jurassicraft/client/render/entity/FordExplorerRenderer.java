@@ -1,36 +1,13 @@
 package org.jurassicraft.client.render.entity;
 
-import org.jurassicraft.JurassiCraft;
-import org.jurassicraft.client.model.ResetControlTabulaModel;
-import org.jurassicraft.client.model.animation.entity.vehicle.CarAnimator;
-import org.jurassicraft.client.model.animation.entity.vehicle.CarAnimator.Door;
-import org.jurassicraft.server.entity.vehicle.VehicleEntity;
-import org.jurassicraft.server.entity.vehicle.FordExplorerEntity;
-import org.jurassicraft.server.tabula.TabulaModelHelper;
+// TODO: Rewrite for modern rendering system
+// Temporarily commented out for 1.21 upgrade - old rendering APIs no longer exist
 
-import net.ilexiconn.llibrary.client.model.tabula.TabulaModel;
-import net.ilexiconn.llibrary.client.model.tabula.container.TabulaModelContainer;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.RenderHelper;
-import net.minecraft.client.renderer.entity.Render;
-import net.minecraft.client.renderer.entity.RenderManager;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-
-@SideOnly(Side.CLIENT)
-public class FordExplorerRenderer extends CarRenderer<FordExplorerEntity> {
-
-    public FordExplorerRenderer(RenderManager manager) {
-        super(manager, "ford_explorer");
-    }
-
-    @Override
-    protected CarAnimator createCarAnimator() {
-        return new CarAnimator()
-                .addDoor(new Door("door left main", 0, true))
-                .addDoor(new Door("door right main", 1, false))
-                .addDoor(new Door("Back door left main", 2, true))
-                .addDoor(new Door("Back door right main", 3, false));
-    }
+// Placeholder class for 1.21 upgrade - will be rewritten with modern rendering
+public class FordExplorerRenderer {
+    // TODO: Implement modern entity renderer for FordExplorer
 }
+
+/*
+// Original 1.12.2 implementation - will be rewritten for 1.21
+*/

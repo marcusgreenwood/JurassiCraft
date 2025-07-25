@@ -1,5 +1,8 @@
 package org.jurassicraft.client.render.entity;
 
+// TODO: Rewrite for modern rendering system
+// Temporarily commented out for 1.21 upgrade - old rendering APIs no longer exist
+/*
 import net.minecraft.client.renderer.*;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
@@ -20,7 +23,14 @@ public class AttractionSignRenderer implements IRenderFactory<AttractionSignEnti
     public Render<? super AttractionSignEntity> createRenderFor(RenderManager manager) {
         return new Renderer(manager);
     }
+*/
 
+// Placeholder class for 1.21 upgrade - will be rewritten with modern rendering
+public class AttractionSignRenderer {
+    // TODO: Implement modern entity renderer for AttractionSign
+}
+
+/*
     public static class Renderer extends Render<AttractionSignEntity> {
         private static int DISPLAY_LIST = -1;
         private static boolean HAS_COMPILED = false;
@@ -167,4 +177,4 @@ public class AttractionSignRenderer implements IRenderFactory<AttractionSignEnti
             GlStateManager.color(1.0F, 1.0F, 1.0F);
         }
     }
-}
+*/
